@@ -113,6 +113,10 @@
             // choices: "NO_KEYS", // trial will last duration of trial_duration
             choices: response_choices,
             trial_duration: function(){
+                var prev_trial_data = jsPsych.data.get().last(1).values()[0]
+                if (prev_trial_data.premature_response == true){
+                    return prev_trial_data.fixation_duration
+                } else {
                 var fx_vals = [];
                 var n = 0;
                 while (lower_isi+n*isi_steps <= upper_isi){
@@ -121,6 +125,7 @@
                 }
                 var trial_isi = jsPsych.randomization.sampleWithoutReplacement(fx_vals, 1)[0];
                 return trial_isi
+            }
             },
             data: {
                 task: 'fixation',
