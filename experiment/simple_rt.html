@@ -32,8 +32,9 @@
         var isi_steps = 250 // increment increase between lower and upper ISIs
         var n_trials = 5 // number of trials (per stimulus)
         var max_rt = 600 // maximum reaction time allowed
+        var response_choices = [' ']
         var test_stimuli = [
-            {stimulus: "stim/red_square.png", correct_response: ' '}
+            {stimulus: "stimuli/red_square.png", correct_response: ' '}
         ];
         
         var jsPsych = initJsPsych({
@@ -47,7 +48,7 @@
 
         var preload = {
             type: jsPsychPreload,
-            images: ['stim/red_square.png']
+            images: ['stimuli/red_square.png']
         };
 
         timeline.push(preload)
@@ -91,7 +92,7 @@
             <p>When the red square appears, 
             press the <strong>space bar</strong> as fast as you can.</p>
             <div style='width: 700px;'>
-            <div style='float: center;'><img src='stim/red_square.png'></img>
+            <div style='float: center;'><img src='stimuli/red_square.png'></img>
             </div>
             <p>Press any key to begin.</p>
             </div>
@@ -103,26 +104,41 @@
 
 
         // Fixation trials
-        // TO DO : RESTART IF PREMATURE RESPONSE GIVEN
+        // TO DO : RESTART **WITH SAME DURATION** IF PREMATURE RESPONSE GIVEN
         // ?? MAKE DYNAMIC ISI ??
+
         var fixation = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: '<div style="font-size:60px;">+</div>',
-            choices: "NO_KEYS", // trial will last duration of trial_duration
+            // choices: "NO_KEYS", // trial will last duration of trial_duration
+            choices: response_choices,
             trial_duration: function(){
                 var fx_vals = [];
                 var n = 0;
                 while (lower_isi+n*isi_steps <= upper_isi){
                     fx_vals.push(lower_isi+n*isi_steps)
-                    var n = n+1
+                    var n = n + 1
                 }
-                return jsPsych.randomization.sampleWithoutReplacement(fx_vals, 1)[0];
+                var trial_isi = jsPsych.randomization.sampleWithoutReplacement(fx_vals, 1)[0];
+                return trial_isi
             },
             data: {
                 task: 'fixation',
             },
             on_start: function(trial) {
                 trial.data.fixation_duration = trial.trial_duration
+            },
+            on_finish: function(data){
+                data.premature_response = data.response !== null;
+            }
+        };
+
+        
+        var fixation_procedure = {
+            timeline: [fixation],
+            loop_function: function(data) {
+                var last_fx_trial = jsPsych.data.get().last(1).values()[0];
+                return last_fx_trial.premature_response
             }
         };
 
@@ -131,7 +147,7 @@
         var test = {
             type: jsPsychImageKeyboardResponse,
             stimulus: jsPsych.timelineVariable('stimulus'),
-            choices: [' '],
+            choices: response_choices,
             trial_duration: max_rt,
             data: {
                 task: 'response',
@@ -145,7 +161,7 @@
 
         // Linking fixation and RT trials
         var test_procedure = {
-            timeline: [fixation, test],
+            timeline: [fixation_procedure, test],
             timeline_variables: test_stimuli,
             randomize_order: true, // relevant when > 1 stimulus. When true and reps > 1, order will be re-randomised on each repetition (same stim could appear no more than twice in a row: at end of one rep and start of another)
             // to randomise across all trials, use `fixed-repetitions` - this combines all repetitions and randomizes whole thing, so the same stimulus could appear multiple times in a row.
