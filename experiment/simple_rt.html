@@ -86,16 +86,14 @@
         var instructions = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: `
-            <div>
-            <p>In this experiment, a red square will appear in the center 
-            of the screen.</p>
-            <p>When the red square appears, 
+            <p>In this experiment, a fixation cross (+) will appear in the center 
+            of the screen, followed by a red square.</p>
+            <p>Whenever the red square appears, 
             press the <strong>space bar</strong> as fast as you can.</p>
             <div style='width: 700px;'>
             <div style='float: center;'><img src='stimuli/red_square.png'></img>
             </div>
             <p>Press any key to begin.</p>
-            </div>
             `,
             post_trial_gap: 2000
         };
@@ -104,13 +102,11 @@
 
 
         // Fixation trials
-        // TO DO : RESTART **WITH SAME DURATION** IF PREMATURE RESPONSE GIVEN
         // ?? MAKE DYNAMIC ISI ??
 
         var fixation = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: '<div style="font-size:60px;">+</div>',
-            // choices: "NO_KEYS", // trial will last duration of trial_duration
             choices: response_choices,
             trial_duration: function(){
                 var prev_trial_data = jsPsych.data.get().last(1).values()[0]
@@ -177,21 +173,46 @@
 
 
         // Questions
-        // TO DO : ALLOW NUMERIC INPUT ONLY
+
+        // Duration
+        // Adapted from https://stackoverflow.com/a/51505143/13343754
         var duration_q = {
-            type: jsPsychSurveyText,
-            questions: [
-                {
-                    prompt: 'Without checking, how long do you feel you spent on this task? Please answer in minutes.', 
-                    placeholder: 'Time in minutes', 
-                    required: true, 
-                    name: "duration_estimate"
+        type: jsPsychHtmlButtonResponse,
+        stimulus: `
+            <div>
+                <p>Without checking, how long do you feel you spent on this task? Please answer in minutes.</p>
+                <input type="text" id="numericInput" placeholder="Time in minutes">
+                <p><button id="submitButton">Continue</button></p>
+            </div>
+        `,
+        choices: [],
+        on_load: function() {
+            document.getElementById("numericInput").addEventListener('input', function (event) {
+                var input = event.target;
+                if (!validateInput(input.value)) {
+                    input.value = oldValue;
+                } else {
+                    oldValue = input.value;
                 }
-            ]
+            });
+
+            document.getElementById("submitButton").addEventListener('click', function () {
+                jsPsych.data.write({ duration_estimate: document.getElementById("numericInput").value });
+                jsPsych.finishTrial();
+            });
+
+            function validateInput(str) {
+                return /^[0-9]*$/.test(str);
+            }
+
+            var oldValue = "";
         }
+    };
 
         timeline.push(duration_q)
 
+
+        // Enjoyment
         var repeat_desirability_labels = ["Very annoyed", "Slightly annoyed", "Indifferent", "Slightly happy", "Very happy"]
         var repeat_q = {
             type: jsPsychSurveyLikert,
