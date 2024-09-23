@@ -1,8 +1,10 @@
-**Project Title:** Doggo/Nogo: validation of a gamified simple reaction time task
+**Project Title:** Validation of a Gamified Measure of Processing Speed
 
 **Project Description**
 
-The present study seeks to (a) optimise the number of trials and inter-trial interval for a simple reaction time (RT) task, and (b) compare performance between a basic and a gamified version of the simple RT task.
+Background: *TODO*: maybe just add one paragraph about the importance, correlates and neural basis of processing speed with a couple of references (but not too much). 
+
+Aim: The present study seeks to validate and optimize a simple reaction time task by (1) testing the impact of gamification on processing speed and task engagement and (2) assessing the optimal parameter values (number of trials and ISI range) for a robust yet efficient measure.
 
 - Consent form
 
