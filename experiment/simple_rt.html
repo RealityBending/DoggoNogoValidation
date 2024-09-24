@@ -2,67 +2,53 @@
 <html>
     <head>
         <title>Simple RT task</title>
+
+
+        <!-- Plugins -->
         <script src="https://unpkg.com/jspsych@7.3.4"></script>
-        <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.1.3">
-            // html-keyboard-response plugin for allowing keyboard responses to html text stimuli
-        </script>
-        <script src="https://unpkg.com/@jspsych/plugin-image-keyboard-response@1.1.3">
-            // image-keyboard-response plugin for allowing keyboard responses to visual stimuli
-        </script>
-        <script src="https://unpkg.com/@jspsych/plugin-preload@1.1.3">
-            // Use preload plugin to preload the media elements to prevent lag
-        </script>
-        <script src="https://unpkg.com/@jspsych/plugin-survey-likert@1.1.3">
-            // Likert scale for survey questions
-        </script>
-        <script src="https://unpkg.com/@jspsych/plugin-survey-text@1.1.3">
-            // Text response for survey questions
-        </script>
-        <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.2.0">
-            // Button response for consent
-        </script>
+        <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.1.3"></script>
+        <script src="https://unpkg.com/@jspsych/plugin-image-keyboard-response@1.1.3"></script>
+        <script src="https://unpkg.com/@jspsych/plugin-preload@1.1.3"></script>
         <script src="https://unpkg.com/@jspsych/plugin-survey@1.0.1"></script>
+
+
+        <!-- Stylesheet -->
         <link rel="stylesheet" href="https://unpkg.com/@jspsych/plugin-survey@1.0.1/css/survey.css">
         <link href="https://unpkg.com/jspsych@7.3.4/css/jspsych.css" rel="stylesheet" type="text/css" />
-    </head>
-    <body></body>
-    <script>
 
-        function formatList(list, sep) {
-            if(list.length === 0) return '';
-            if(list.length === 1) return list[0];
-            return list.slice(0, -1).join(', ') + sep + list.slice(-1);
-        }
 
-        // Experiment details
-        var ethics_approval_code = 'TBC'
-        var researchers = ["Benjamin Tribe (<i style='color:DodgerBlue;'>bmt26@sussex.ac.uk</i>)", "Dr Dominique Makowski (<i style='color:DodgerBlue;'>D.Makowski@sussex.ac.uk</i>)"]
-        var researchers_names = formatList(researchers, ' and ')
-        var researchers_contact = formatList(researchers, ' or ')
-        var study_duration = "do we want to include an approx duration if also asking them to estimate?"
-
-        // Experiment parameters
+        <!-- Experiment Parameters -->
+        <script>
         var participant_id = "participant_id" // for file naming
         var upper_isi = 2000
         var lower_isi = 500
         var isi_steps = 250 // increment increase between lower and upper ISIs
         var n_trials = 3 // number of trials (per stimulus)
         var max_rt = 600 // maximum reaction time allowed
-        var response_choices = ['ArrowDown']
-        var response_choice_words = "Down Arrow"
         var test_stimuli = [
-            {stimulus: "stimuli/red_square.png", correct_response: response_choices[0]}
+            {stimulus: "stimuli/red_square.png", correct_response: 'ArrowDown'}
         ];
-        
 
-        
         var jsPsych = initJsPsych({
             on_finish: function(){
                 jsPsych.data.displayData(); //,
                 // jsPsych.data.get().localSave('csv', `${participant_id}.csv`); // save data locally
             }
         }); 
+        </script>
 
+
+        <!-- Procedure files -->
+        <script src="consent.js"></script>
+        <script src="instructions_debrief.js"></script>
+        <script src="demographics.js"></script>
+        <script src="trials.js"></script>
+        <script src="post_experiment_questions.js"></script>
+
+    </head>
+    <body></body>
+    <script>
+        
         var timeline = [];
 
         var preload = {
@@ -71,386 +57,12 @@
         };
 
         timeline.push(preload)
-
-
-        // Welcome
-        var welcome = {
-            type: jsPsychHtmlKeyboardResponse, 
-            stimulus: "Welcome to the experiment. Press any key to begin."
-        };
-
         timeline.push(welcome);
-
-
-        // Consent
-        const ConsentForm = {
-            type: jsPsychSurvey,
-            survey_json: function () {
-                
-                // Get URL variables
-                let urlvars = jsPsych.data.urlVariables()
-
-                // Logo and title
-                let text =
-                "<img src='https://blogs.brighton.ac.uk/sussexwrites/files/2019/06/University-of-Sussex-logo-transparent.png' width='150px' align='right'/><br><br><br><br><br>" +
-                "<h1>Informed Consent</h1>"
-
-                if (urlvars["exp"] == "surveyswap") {
-                    text +=
-                    "<p style='color:green;' align='left'><b>Note: You will receive a <i style='color:purple;'>SurveySwap.io</i> completion code at the end of the experiment.</b></p>"
-                }
-
-                // Main Text
-                text +=
-                // Overview
-                "<p align='left'><b>Invitation to Take Part</b><br>" +
-                `Thank you for considering to take part in this study conducted by ${researchers_names} from the University of Sussex (see contact information below).</p>` +
-                // Description
-                "<p align='left'><b>Why have I been invited and what will I do?</b><br>" +
-                "The goal is to study experience and performance on two different presentations of a simple reaction time task. " +
-                `The whole experiment will take you <b style='color:#FF5722;'>${study_duration}</b> to complete. Please make you sure that you are <b>attentive and in a quiet environment</b>, and that you have time to complete it in one go.</p>` +
-                // Results and personal information
-                "<p align='left'><b>What will happen to the results and my personal information?</b><br>" +
-                "The results of this research may be written into a scientific publication. Your anonymity will be ensured in the way described in the consent information below. <b>Please read this information carefully</b> and then, if you wish to take part, please acknowledge that you have fully understood this sheet, and that you consent to take part in the study as it is described here.</p>" +
-                "<p align='left'><b>Consent</b><br></p>" +
-                // Bullet points
-                "<li align='left'>I understand that by signing below I am agreeing to take part in the University of Sussex research described here, and that I have read and understood this information sheet</li>" +
-                "<li align='left'>I understand that my participation is entirely voluntary, that I can choose not to participate in part or all of the study, and that I can withdraw at any stage without having to give a reason and without being penalized in any way (e.g., if I am a student, my decision whether or not to take part will not affect my grades).</li>" +
-                "<li align='left'>I understand that since the study is anonymous, it will be impossible to withdraw my data once I have completed it.</li>" +
-                "<li align='left'>I understand that my personal data will be used for the purposes of this research study and will be handled in accordance with Data Protection legislation. I understand that the University's Privacy Notice provides further information on how the University uses personal data in its research.</li>" +
-                "<li align='left'>I understand that my collected data will be stored in a de-identified way. De-identified data may be made publicly available through secured scientific online data repositories.</li>"
-
-                // Incentive
-                if (["surveyswap", "prolific"].includes(urlvars["exp"])) {
-                    text +=
-                    "<li align='left'>Please note that <b style='color:#FF5722;'>various checks will be performed to ensure the validity of the data</b>. We reserve the right to withhold credit awards or reimbursement should we detect non-valid responses (e.g., random patterns of answers, instructions not read, ...).</li>"
-                }
-
-                // End
-                text +=
-                "<li align='left'>By participating, you agree to follow the instructions and provide honest answers. If you do not wish to participate or if you don't have the time, simply close your browser.</li></p>" +
-                `<p align='left'><br><sub><sup>For further information about this research, or if you have any concerns, please contact ${researchers_contact}. This research has been approved (${ethics_approval_code}) by the ethics board of the School of Psychology. The University of Sussex has insurance in place to cover its legal liabilities in respect of this study.</sup></sub></p>`
-
-                // Return Survey
-                return {
-                    showQuestionNumbers: false,
-                    completeText: "I read, understood, and I consent",
-                    pages: [
-                        {
-                            elements: [
-                                {
-                                    type: "html",
-                                    name: "ConsentForm",
-                                    html: text,
-                                },
-                            ],
-                        },
-                    ],
-                }
-            },
-        }
-    
         timeline.push(ConsentForm)
-
-
-        // Demographics
-        var demographic_questions = {
-            type: jsPsychSurvey,
-            survey_json: {
-                title: "About yourself",
-                completeText: "Continue",
-                pageNextText: "Next",
-                pagePrevText: "Previous",
-                goNextPageAutomatic: false,
-                showQuestionNumbers: false,
-                showProgressBar: "aboveHeader",
-                pages: [
-                    {
-                        elements: [
-                            {
-                                title: "What is your gender?",
-                                name: "Gender",
-                                type: "radiogroup",
-                                choices: ["Male", "Female", "Other"],
-                                isRequired: true,
-                                colCount: 0,
-                            },
-                            {
-                                type: "text",
-                                title: "Please enter your age (in years)",
-                                name: "Age",
-                                isRequired: true,
-                                inputType: "number",
-                                min: 18,
-                                max: 100,
-                                placeholder: "e.g., 21",
-                            },
-                        ],
-                    },
-                    {
-                        elements: [
-                            {
-                                title: "What is your highest completed education level?",
-                                name: "Education",
-                                type: "radiogroup",
-                                choices: [
-                                    {
-                                        value: "Doctorate",
-                                        text: "University (doctorate)",
-                                    },
-                                    {
-                                        value: "Master",
-                                        text: "University (master)", // "<sub><sup>or equivalent</sup></sub>",
-                                    },
-                                    {
-                                        value: "Bachelor",
-                                        text: "University (bachelor)", // "<sub><sup>or equivalent</sup></sub>",
-                                    },
-                                    {
-                                        value: "High school",
-                                        text: "High school",
-                                    },
-                                    {
-                                        value: "Elementary school",
-                                        text: "Elementary school",
-                                    },
-                                ],
-                                showOtherItem: true,
-                                otherText: "Other",
-                                otherPlaceholder: "Please specify",
-                                isRequired: true,
-                                colCount: 1,
-                            },
-                            {
-                                visibleIf:
-                                    "{Education} == 'Doctorate' || {Education} == 'Master' || {Education} == 'Bachelor'",
-                                title: "What is your discipline?",
-                                name: "Discipline",
-                                type: "radiogroup",
-                                choices: [
-                                    "Arts and Humanities",
-                                    "Literature, Languages",
-                                    "History, Archaeology",
-                                    "Sociology, Anthropology",
-                                    "Political Science, Law",
-                                    "Business, Economics",
-                                    "Psychology, Neuroscience",
-                                    "Medicine",
-                                    "Biology, Chemistry, Physics",
-                                    "Mathematics, Physics",
-                                    "Engineering, Computer Science",
-                                ],
-                                showOtherItem: true,
-                                otherText: "Other",
-                                otherPlaceholder: "Please specify",
-                            },
-                            {
-                                visibleIf:
-                                    "{Education} == 'High school' || {Education} == 'Master' || {Education} == 'Bachelor'",
-                                title: "Are you currrently a student?",
-                                name: "Student",
-                                type: "boolean",
-                                swapOrder: true,
-                                isRequired: true,
-                            },
-                        ],
-                    },
-                    {
-                        elements: [
-                            {
-                                title: "How would you describe your ethnicity?",
-                                name: "Ethnicity",
-                                type: "radiogroup",
-                                choices: [
-                                    "White",
-                                    "Black",
-                                    "Hispanic/Latino",
-                                    "Middle Eastern/North African",
-                                    "South Asian",
-                                    "East Asian",
-                                    "Southeast Asian",
-                                    "Mixed",
-                                    "Prefer not to say",
-                                ],
-                                showOtherItem: true,
-                                otherText: "Other",
-                                otherPlaceholder: "Please specify",
-                                isRequired: false,
-                                colCount: 1,
-                            },
-                            {
-                                title: "In which country are you currently living?",
-                                name: "Country",
-                                type: "dropdown",
-                                choicesByUrl: {
-                                    url: "https://surveyjs.io/api/CountriesExample",
-                                },
-                                placeholder: "e.g., France",
-                                isRequired: false,
-                            },
-                        ],
-                    },
-                ],
-            },
-            data: {
-                screen: "demographic_questions",
-            },
-        }
-
         timeline.push(demographic_questions)
-
-
-        // Instructions
-        var instructions = {
-            type: jsPsychHtmlKeyboardResponse,
-            stimulus: `
-            <p>In this experiment, a fixation cross (+) will appear in the center 
-            of the screen, followed by a red square.</p>
-            <p>Whenever the red square appears, 
-            press the <strong>${response_choice_words}</strong> as fast as you can.</p>
-            <div style='float: centre;'><img src='stimuli/red_square.png'></img>
-            </div>
-            <p>Press any key to begin.</p>
-            `,
-            post_trial_gap: 2000
-        };
-
         timeline.push(instructions);
-
-
-        // Fixation trials
-        var fixation = {
-            type: jsPsychHtmlKeyboardResponse,
-            stimulus: '<div style="font-size:60px;">+</div>',
-            choices: response_choices,
-            trial_duration: function(){
-                var prev_trial_data = jsPsych.data.get().last(1).values()[0]
-                if (prev_trial_data.premature_response == true){
-                    return prev_trial_data.fixation_duration
-                } else {
-                var fx_vals = [];
-                var n = 0;
-                while (lower_isi+n*isi_steps <= upper_isi){
-                    fx_vals.push(lower_isi+n*isi_steps)
-                    var n = n + 1
-                }
-                var trial_isi = jsPsych.randomization.sampleWithoutReplacement(fx_vals, 1)[0];
-                return trial_isi
-            }
-            },
-            data: {
-                task: 'fixation',
-            },
-            on_start: function(trial) {
-                trial.data.fixation_duration = trial.trial_duration
-            },
-            on_finish: function(data){
-                data.premature_response = data.response !== null;
-            }
-        };
-
-        
-        var fixation_procedure = {
-            timeline: [fixation],
-            loop_function: function(data) {
-                var last_fx_trial = jsPsych.data.get().last(1).values()[0];
-                return last_fx_trial.premature_response
-            }
-        };
-
-
-        // RT trials
-        var test = {
-            type: jsPsychImageKeyboardResponse,
-            stimulus: jsPsych.timelineVariable('stimulus'),
-            choices: response_choices,
-            trial_duration: max_rt,
-            data: {
-                task: 'response',
-                correct_response: jsPsych.timelineVariable('correct_response')
-            },
-            on_finish: function(data){
-                data.correct = jsPsych.pluginAPI.compareKeys(data.response, data.correct_response);
-            } // too slow -> correct = false
-        };
-
-
-        // Linking fixation and RT trials
-        var test_procedure = {
-            timeline: [fixation_procedure, test],
-            timeline_variables: test_stimuli,
-            randomize_order: true, 
-            repetitions: n_trials
-        };
-
         timeline.push(test_procedure);
-
-
-        // Questions
-
-        // Duration
-        var post_qs = {
-            type: jsPsychSurvey,
-            survey_json: {
-                title: "Post experiment questions",
-                completeText: "Continue",
-                pageNextText: "Next",
-                pagePrevText: "Previous",
-                goNextPageAutomatic: false,
-                showQuestionNumbers: false,
-                showProgressBar: "aboveHeader",
-                pages: [
-                    {
-                        elements: [
-                            {
-                                type: "text",
-                                title: "Without checking, how long do you feel you spent on this task? Please answer in minutes.",
-                                name: "duration_estimate",
-                                isRequired: true,
-                                inputType: "number",
-                                min: 0,
-                                max: 100,
-                                placeholder: "Time in minutes (e.g., 5)",
-                            },
-                        ],
-                    },
-                    {
-                        elements: [
-                            {
-                                title: "How would you feel if you had to do the task again?",
-                                name: "repeat_desirability",
-                                type: "rating",
-                                minRateDescription: "Very annoyed",
-                                maxRateDescription: "Very happy",
-                                isRequired: true
-                            },
-                        ],
-                    },
-                ],
-            },
-            data: {
-                screen: "post_qs",
-            },
-        }
         timeline.push(post_qs)
-
-
-        // Debrief
-        // TO DO : ADD ANY FURTHER DETAILS, E.G., LINK??
-        var debrief_block = {
-            type: jsPsychHtmlKeyboardResponse,
-            stimulus: function(){
-                var trials = jsPsych.data.get().filter({task:'response'});
-                var correct_trials = trials.filter({correct: true});
-                // var accuracy = Math.round(correct_trials.count()/trials.count()*100);
-                var rt = Math.round(correct_trials.select('rt').mean());
-
-                return `
-                <p>Your average response time was ${rt}ms.</p>
-                <p>Press any key to complete the experiment. Thank you!</p>`
-            }
-        };
-
         timeline.push(debrief_block)
 
         jsPsych.run(timeline)
