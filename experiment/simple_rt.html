@@ -3,7 +3,6 @@
     <head>
         <title>Simple RT task</title>
 
-
         <!-- Plugins -->
         <script src="https://unpkg.com/jspsych@7.3.4"></script>
         <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.1.3"></script>
@@ -11,61 +10,53 @@
         <script src="https://unpkg.com/@jspsych/plugin-preload@1.1.3"></script>
         <script src="https://unpkg.com/@jspsych/plugin-survey@1.0.1"></script>
 
+        <!-- Procedure files -->
+        <script src="demographics.js"></script>
+        <script src="simpleRT.js"></script>
 
         <!-- Stylesheet -->
-        <link rel="stylesheet" href="https://unpkg.com/@jspsych/plugin-survey@1.0.1/css/survey.css">
-        <link href="https://unpkg.com/jspsych@7.3.4/css/jspsych.css" rel="stylesheet" type="text/css" />
-
-
-        <!-- Experiment Parameters -->
-        <script>
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/@jspsych/plugin-survey@1.0.1/css/survey.css"
+        />
+        <link
+            href="https://unpkg.com/jspsych@7.3.4/css/jspsych.css"
+            rel="stylesheet"
+            type="text/css"
+        />
+    </head>
+    <body></body>
+    <script>
+        // Experiment parameters
         var participant_id = "participant_id" // for file naming
         var upper_isi = 2000
         var lower_isi = 500
         var isi_steps = 250 // increment increase between lower and upper ISIs
         var n_trials = 3 // number of trials (per stimulus)
         var max_rt = 600 // maximum reaction time allowed
-        var test_stimuli = [
-            {stimulus: "stimuli/red_square.png", correct_response: 'ArrowDown'}
-        ];
+        var test_stimuli = [{ stimulus: "stimuli/red_square.png", correct_response: "ArrowDown" }]
 
         var jsPsych = initJsPsych({
-            on_finish: function(){
-                jsPsych.data.displayData(); //,
+            on_finish: function () {
+                jsPsych.data.displayData() //,
                 // jsPsych.data.get().localSave('csv', `${participant_id}.csv`); // save data locally
-            }
-        }); 
-        </script>
-
-
-        <!-- Procedure files -->
-        <script src="consent.js"></script>
-        <script src="instructions_debrief.js"></script>
-        <script src="demographics.js"></script>
-        <script src="trials.js"></script>
-        <script src="post_experiment_questions.js"></script>
-
-    </head>
-    <body></body>
-    <script>
-        
-        var timeline = [];
+            },
+        })
+        var timeline = []
 
         var preload = {
             type: jsPsychPreload,
-            images: ['stimuli/red_square.png']
-        };
+            images: ["stimuli/red_square.png"],
+        }
 
         timeline.push(preload)
-        timeline.push(welcome);
         timeline.push(ConsentForm)
         timeline.push(demographic_questions)
-        timeline.push(instructions);
-        timeline.push(test_procedure);
-        timeline.push(post_qs)
-        timeline.push(debrief_block)
+        timeline.push(simpleRT_instructions)
+        timeline.push(test_procedure)
+        timeline.push(simpleRT_assessment)
+        timeline.push(simpleRT_debrief)
 
         jsPsych.run(timeline)
-
     </script>
 </html>
