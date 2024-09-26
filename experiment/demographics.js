@@ -66,7 +66,7 @@ const ConsentForm = {
 }
 
 // Demographics
-var demographic_questions = {
+const demographic_questions = {
     type: jsPsychSurvey,
     survey_json: {
         title: "About yourself",

@@ -5,7 +5,7 @@ function randomInteger(min = 1, max = 10) {
 
 // Instructions ===================================================================================
 // Instructions
-var simpleRT_instructions = {
+const simpleRT_instructions = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
     <p>In this experiment, a fixation cross (+) will appear in the center 
@@ -21,12 +21,11 @@ var simpleRT_instructions = {
 
 // Debrief
 // TO DO : ADD ANY FURTHER DETAILS, E.G., LINK??
-var simpleRT_debrief = {
+const simpleRT_debrief = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: function () {
         var trials = jsPsych.data.get().filter({ screen: "response" })
         var correct_trials = trials.filter({ correct: true })
-        // var accuracy = Math.round(correct_trials.count()/trials.count()*100);
         var rt = Math.round(correct_trials.select("rt").mean())
 
         return `
@@ -38,7 +37,7 @@ var simpleRT_debrief = {
 // Post-task assessment ==============================================================================
 
 // Questions
-var simpleRT_assessment = {
+const simpleRT_assessment = {
     type: jsPsychSurvey,
     survey_json: {
         title: "Post experiment questions",
@@ -83,47 +82,72 @@ var simpleRT_assessment = {
 }
 
 // Experiment =====================================================================================
-// Fixation trials
-var fixation = {
+// Fixation trials - if repeats following premature key presses don't have to be the same duration
+const fixation = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: '<div style="font-size:60px;">+</div>',
     choices: ["ArrowDown"],
     trial_duration: function () {
-        var prev_trial_data = jsPsych.data.get().last(1).values()[0]
-        if (prev_trial_data.premature_response == true) {
-            return prev_trial_data.fixation_duration
-        } else {
-            var fx_vals = []
-            var n = 0
-            while (lower_isi + n * isi_steps <= upper_isi) {
-                fx_vals.push(lower_isi + n * isi_steps)
-                var n = n + 1
-            }
-            var trial_isi = jsPsych.randomization.sampleWithoutReplacement(fx_vals, 1)[0]
-            return trial_isi
-        }
+            return randomInteger(lower_isi, upper_isi)
+    },
+    save_trial_parameters: {
+        trial_duration: true
     },
     data: {
         screen: "fixation",
     },
-    on_start: function (trial) {
-        trial.data.fixation_duration = trial.trial_duration
-    },
-    on_finish: function (data) {
-        data.premature_response = data.response !== null
-    },
+    response_ends_trial: true,
 }
 
-var fixation_procedure = {
+const fixation_procedure = {
     timeline: [fixation],
-    loop_function: function (data) {
-        var last_fx_trial = jsPsych.data.get().last(1).values()[0]
-        return last_fx_trial.premature_response
-    },
+    loop_function: function(data) {
+        if (jsPsych.pluginAPI.compareKeys(data.values()[0].response, null)) {
+            return false
+        } else {
+            return true
+        }
+    }
 }
+
+// // Fixation trials - if repeats should be the same duration
+// const fixation = {
+//     type: jsPsychHtmlKeyboardResponse,
+//     stimulus: '<div style="font-size:60px;">+</div>',
+//     choices: ["ArrowDown"],
+//     trial_duration: function () {
+//         var prev_trial_data = jsPsych.data.get().last(1).values()[0]
+//         if (prev_trial_data.premature_response == true){
+//             return prev_trial_data.fixation_duration
+//         } else {
+//             return randomInteger(lower_isi, upper_isi)
+//         }
+//     },
+//     save_trial_parameters: {
+//         trial_duration: true
+//     },
+//     data: {
+//         screen: "fixation",
+//     },
+//     on_start: function (trial) {
+//         trial.data.fixation_duration = trial.trial_duration
+//     },
+//     on_finish: function (data) {
+//         data.premature_response = data.response !== null
+//     },
+//     response_ends_trial: true,
+// }
+
+// const fixation_procedure = {
+//     timeline: [fixation],
+//     loop_function: function (data) {
+//         var last_fx_trial = jsPsych.data.get().last(1).values()[0]
+//         return last_fx_trial.premature_response
+//     },
+// }
 
 // RT trials
-var test = {
+const test = {
     type: jsPsychImageKeyboardResponse,
     stimulus: jsPsych.timelineVariable("stimulus"),
     choices: ["ArrowDown"],
@@ -138,7 +162,7 @@ var test = {
 }
 
 // Linking fixation and RT trials
-var test_procedure = {
+const test_procedure = {
     timeline: [fixation_procedure, test],
     timeline_variables: test_stimuli,
     randomize_order: true,
