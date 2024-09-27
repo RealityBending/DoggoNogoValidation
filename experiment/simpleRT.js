@@ -14,7 +14,7 @@ const simpleRT_instructions = {
     press the <strong>Down Arrow</strong> as fast as you can.</p>
     <div style='float: centre;'><img src='stimuli/red_square.png'></img>
     </div>
-    <p>Press any key to begin.</p>
+    <p>Press the <b>down arrow</b> to begin.</p>
     `,
     post_trial_gap: 2000,
 }
@@ -88,10 +88,10 @@ const fixation = {
     stimulus: '<div style="font-size:60px;">+</div>',
     choices: ["ArrowDown"],
     trial_duration: function () {
-            return randomInteger(lower_isi, upper_isi)
+        return randomInteger(500, 2000)
     },
     save_trial_parameters: {
-        trial_duration: true
+        trial_duration: true,
     },
     data: {
         screen: "fixation",
@@ -101,13 +101,13 @@ const fixation = {
 
 const fixation_procedure = {
     timeline: [fixation],
-    loop_function: function(data) {
+    loop_function: function (data) {
         if (jsPsych.pluginAPI.compareKeys(data.values()[0].response, null)) {
             return false
         } else {
             return true
         }
-    }
+    },
 }
 
 // // Fixation trials - if repeats should be the same duration
@@ -149,24 +149,19 @@ const fixation_procedure = {
 // RT trials
 const test = {
     type: jsPsychImageKeyboardResponse,
-    stimulus: jsPsych.timelineVariable("stimulus"),
+    stimulus: "stimuli/red_square.png",
     choices: ["ArrowDown"],
-    trial_duration: max_rt,
+    trial_duration: 600, // maximum reaction time allowed
     data: {
         screen: "response",
-        correct_response: jsPsych.timelineVariable("correct_response"),
     },
-    on_finish: function (data) {
-        data.correct = jsPsych.pluginAPI.compareKeys(data.response, data.correct_response)
-    }, // too slow -> correct = false
 }
 
 // Linking fixation and RT trials
 const test_procedure = {
     timeline: [fixation_procedure, test],
-    timeline_variables: test_stimuli,
     randomize_order: true,
-    repetitions: n_trials,
+    repetitions: 3, // number of trials
 }
 
 // // Fixation trials
