@@ -98,10 +98,10 @@ const demographic_questions = {
                         placeholder: "e.g., 21",
                     },
                     {
-                        title: "What is your handedness? If you are ambidextrous, please select the hand you would rather use to complete the experiment.",
+                        title: "What is your handedness?",
                         name: "Handedness",
                         type: "radiogroup",
-                        choices: ["Left handed", "Right handed"],
+                        choices: ["Left handed", "Right handed", "Ambidextrous"],
                         isRequired: true,
                         colCount: 0,
                     },
