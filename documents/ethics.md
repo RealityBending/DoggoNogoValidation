@@ -2,10 +2,13 @@
 
 **Project Description**
 
-Background: *TODO*: maybe just add one paragraph about the importance, correlates and neural basis of processing speed with a couple of references (but not too much). 
+Background:
+
+Processing speed is an element of cognitive control describing the duration between being exposed to a stimulus and purposefully responding to it. Quick processing facilitates cognitive efficiency (e.g., being able to complete an exam in the allocated time) and personal safety; a driver breaks on seeing a car pull into the road ahead; medical staff move away from a patient on hearing 'clear'. Processing speed can be compromised temporarily, for example, from sleep deprivation (Bougard et al., 2015). It can also be chronically impaired, for example, in demyelinating diseases such as multiple sclerosis (Sivakolundu et al., 2020), or mental health conditions such as schizophrenia (Panagiotaropoulou et al., 2019) or bipolar disorder (Little et al., 2024). When processing speed is compromised, response time (RT) increases; the student may not get through all the exam questions; the driver may crash; the staff member may receive a nasty shock.
+
+From a neural standpoint, changes in processing speed may occur as a result of disruption in the broader cognitive control network, described by Cole and Schneider (2007) as comprising the anterior cingulate cortex/pre-supplementary motor area, dorsolateral prefrontal cortex, inferior frontal junction, anterior insular cortex, dorsal pre-motor cortex, and posterior parietal cortex. Specifically, processing speed has been associated with abnormal activity in the dorsolateral prefrontal cortex (Panagiotaropoulou et al., 2019), and reduced fronto-parietal activation (Basner et al., 2013).
 
 Aim: The present study seeks to validate and optimize a simple reaction time task by (1) testing the impact of gamification on processing speed and task engagement and (2) assessing the optimal parameter values (number of trials and ISI range) for a robust yet efficient measure.
-
 
 The procedure involves the following phases:
 
