@@ -101,7 +101,7 @@ const demographic_questions = {
                         title: "What is your handedness?",
                         name: "Handedness",
                         type: "radiogroup",
-                        choices: ["Left handed", "Right handed", "Ambidextrous"],
+                        choices: ["Left handed", "Right-handed", "Ambidextrous"],
                         isRequired: true,
                         colCount: 0,
                     },
