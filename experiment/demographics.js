@@ -44,7 +44,7 @@ const ConsentForm = {
         // End
         text +=
             "<li align='left'>By participating, you agree to follow the instructions and provide honest answers. If you do not wish to participate or if you don't have the time, simply close your browser.</li></p>" +
-            `<p align='left'><br><sub><sup>For further information about this research, or if you have any concerns, please contact Benjamin Tribe (<i style='color:DodgerBlue;'>bmt26@sussex.ac.uk</i>) or Dr Dominique Makowski (<i style='color:DodgerBlue;'>D.Makowski@sussex.ac.uk</i>). This research has been approved (<b style='color:red;'>TBC</b>) by the ethics board of the School of Psychology. The University of Sussex has insurance in place to cover its legal liabilities in respect of this study.</sup></sub></p>`
+            `<p align='left'><br><sub><sup>For further information about this research, or if you have any concerns, please contact Benjamin Tribe (<i style='color:DodgerBlue;'>bmt26@sussex.ac.uk</i>) or Dr Dominique Makowski (<i style='color:DodgerBlue;'>D.Makowski@sussex.ac.uk</i>). This research has been approved (ER/BMT26/2) by the ethics board of the School of Psychology. The University of Sussex has insurance in place to cover its legal liabilities in respect of this study.</sup></sub></p>`
 
         // Return Survey
         return {
