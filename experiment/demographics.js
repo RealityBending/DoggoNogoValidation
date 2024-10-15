@@ -88,6 +88,16 @@ const demographic_questions = {
                         colCount: 0,
                     },
                     {
+                        visibleIf:
+                            "{Gender} == 'Other'",
+                        title: "You selected 'Other' as your gender. Specify if you wish.",
+                        name: "GenderOther",
+                        type: "text",
+                        isRequired: false,
+                        inputType: "text",
+                        placeholder: "Gender"
+                    },
+                    {
                         type: "text",
                         title: "Please enter your age (in years)",
                         name: "Age",
@@ -101,7 +111,7 @@ const demographic_questions = {
                         title: "What is your handedness?",
                         name: "Handedness",
                         type: "radiogroup",
-                        choices: ["Left handed", "Right-handed", "Ambidextrous"],
+                        choices: ["Left-handed", "Right-handed", "Ambidextrous"],
                         isRequired: true,
                         colCount: 0,
                     },
