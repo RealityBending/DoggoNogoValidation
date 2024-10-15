@@ -52,7 +52,7 @@ const simpleRT_assessment = {
                 elements: [
                     {
                         type: "text",
-                        title: "Without checking, how long do you feel you spent on this task? Please answer in minutes.",
+                        title: "Without checking, how long do you feel you spent on the previous task? Please answer in minutes.",
                         name: "duration_estimate",
                         isRequired: true,
                         inputType: "number",
