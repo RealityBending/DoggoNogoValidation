@@ -118,7 +118,7 @@ Example: Participants will be recruited through advertisements at local pastry s
 More information: The answer to this question requires a specific set of instructions so that another person could repeat the data collection procedures and recreate the study population. Alternatively, if the study population would be unable to be reproduced because it relies on a specific set of circumstances unlikely to be recreated (e.g., a community of people from a specific time and location), the criteria and methods for creating the group and the rationale for this unique set of subjects should be clear. 
 --> 
 
-Participants will be recruited via convenience sampling (e.g., via social media), or via other recruitment platforms if available (e.g., SONA, Prolific). The samples from different methods of recruitment will be collected separately in case they are different (the incentive type - e.g., student credits - and amount - or lack thereof - will thus be known to mitigate its potential effect). As we aim at recruiting a diverse sample, the only inclusion criteria will be fluency in English.
+Participants will be recruited via convenience sampling (e.g., via social media), or via other recruitment platforms if available (e.g., SONA, Prolific). The samples from different methods of recruitment will be collected separately in case they are different (the incentive type - e.g., student credits - and amount - or lack thereof - will thus be known to mitigate its potential effect). As we aim at recruiting a diverse sample, the only inclusion criteria will be fluency in English. Participants will be compensated according to the university guidelines. 
 
 
 ### 13.	Sample size
@@ -135,7 +135,7 @@ Example: Our target sample size is 280 participants. We will attempt to recruit 
 More information: For some studies, this will simply be the number of samples or the number of clusters. For others, this could be an expected range, minimum, or maximum number. 
 -->
 
-*Enter a description of your sample size here. *
+Given the exploratory nature of the investigation, we set a lower limit of 30 participants and no upper limit. 
 
 ### 14. Sample size rationale 
 
@@ -159,7 +159,7 @@ Example: We will post participant sign-up slots by week on the preceding Friday 
 More information: You may specify a stopping rule based on p-values only in the specific case of sequential analyses with pre-specified checkpoints, alphas levels, and stopping rules. Unacceptable rationales include stopping based on p-values if checkpoints and stopping rules are not specified. If you have control over your sample size, then including a stopping rule is not necessary, though it must be clear in this question or a previous question how an exact sample size is attained. 
 -->
 
-*Enter your stopping rule here or state not applicable. *
+Not applicable.
 
 ## Variables 
 
