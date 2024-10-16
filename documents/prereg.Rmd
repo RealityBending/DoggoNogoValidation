@@ -118,7 +118,7 @@ Example: Participants will be recruited through advertisements at local pastry s
 More information: The answer to this question requires a specific set of instructions so that another person could repeat the data collection procedures and recreate the study population. Alternatively, if the study population would be unable to be reproduced because it relies on a specific set of circumstances unlikely to be recreated (e.g., a community of people from a specific time and location), the criteria and methods for creating the group and the rationale for this unique set of subjects should be clear. 
 --> 
 
-Participants will be recruited via convenience sampling (e.g., via social media), or via other recruitment platforms if available (e.g., SONA, Prolific). The samples from different methods of recruitment will be collected separately in case they are different (the incentive type - e.g., student credits - and amount - or lack thereof - will thus be known to mitigate its potential effect). As we aim at recruiting a diverse sample, there are no exclusion criteria **colour blindness? english proficiency?**.
+Participants will be recruited via convenience sampling (e.g., via social media), or via other recruitment platforms if available (e.g., SONA, Prolific). The samples from different methods of recruitment will be collected separately in case they are different (the incentive type - e.g., student credits - and amount - or lack thereof - will thus be known to mitigate its potential effect). As we aim at recruiting a diverse sample, the only inclusion criteria will be fluency in English.
 
 
 ### 13.	Sample size
