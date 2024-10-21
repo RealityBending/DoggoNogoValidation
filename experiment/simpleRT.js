@@ -40,34 +40,43 @@ const simpleRT_debrief = {
 const simpleRT_assessment = {
     type: jsPsychSurvey,
     survey_json: {
-        title: "Post experiment questions",
+        title: "Feedback",
         completeText: "Continue",
         pageNextText: "Next",
         pagePrevText: "Previous",
-        goNextPageAutomatic: false,
+        goNextPageAutomatic: true,
         showQuestionNumbers: false,
-        showProgressBar: "aboveHeader",
         pages: [
             {
                 elements: [
                     {
+                        title: "How much did you enjoy the previous task?",
+                        name: "TaskFeedback_Enjoyment",
+                        type: "rating",
+                        minRateDescription: "Boring",
+                        maxRateDescription: "Fun",
+                        rateType: "stars",
+                        rateMin: 0,
+                        rateMax: 7,
+                        isRequired: true,
+                    },
+                    {
                         type: "text",
-                        title: "Without checking, how long do you feel you spent on the previous task? Please answer in minutes.",
-                        name: "duration_estimate",
+                        title: "Without checking the time, how long do you think you spent doing the previous task?",
+                        name: "TaskFeedback_Duration",
                         isRequired: true,
                         inputType: "number",
                         min: 0,
-                        max: 100,
-                        placeholder: "Time in minutes (e.g., 5)",
+                        max: 90,
+                        placeholder: "Time in minutes (e.g., 6.5)",
                     },
-                ],
-            },
-            {
-                elements: [
                     {
-                        title: "How would you feel if you had to do the task again?",
-                        name: "repeat_desirability",
+                        title: "How would you feel if you had to do the same task again one more time?",
+                        name: "TaskFeedback_Repeat",
                         type: "rating",
+                        rateType: "smileys",
+                        rateMin: -4,
+                        rateMax: 4,
                         minRateDescription: "Very annoyed",
                         maxRateDescription: "Very happy",
                         isRequired: true,
@@ -83,7 +92,7 @@ const simpleRT_assessment = {
 
 // Experiment =====================================================================================
 // Fixation trials - if repeats following premature key presses don't have to be the same duration
-const fixation = {
+const _simpleRT_fixationcross = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: '<div style="font-size:60px;">+</div>',
     choices: ["ArrowDown"],
@@ -99,8 +108,9 @@ const fixation = {
     response_ends_trial: true,
 }
 
-const fixation_procedure = {
-    timeline: [fixation],
+// The fixation trials are put into a timeline that loops if an early response is detected
+const simpleRT_fixationcross = {
+    timeline: [_simpleRT_fixationcross],
     loop_function: function (data) {
         if (jsPsych.pluginAPI.compareKeys(data.values()[0].response, null)) {
             return false
@@ -110,7 +120,7 @@ const fixation_procedure = {
     },
 }
 
-// // Fixation trials - if repeats should be the same duration
+//
 // const fixation = {
 //     type: jsPsychHtmlKeyboardResponse,
 //     stimulus: '<div style="font-size:60px;">+</div>',
@@ -147,7 +157,7 @@ const fixation_procedure = {
 // }
 
 // RT trials
-const test = {
+const simpleRT_trial = {
     type: jsPsychImageKeyboardResponse,
     stimulus: "stimuli/red_square.png",
     choices: ["ArrowDown"],
@@ -158,8 +168,8 @@ const test = {
 }
 
 // Linking fixation and RT trials
-const test_procedure = {
-    timeline: [fixation_procedure, test],
+const simpleRT_task = {
+    timeline: [simpleRT_fixationcross, simpleRT_trial],
     randomize_order: true,
     repetitions: 3, // number of trials
 }
