@@ -13,7 +13,7 @@ exec(
 )
 
 # Connect to OSF and get files --------------------------------------------
-token = "zYboMoukFI8HKabenQ35DH6tESHJo6oZll5BvOPma6Dppjqc2jnIB6sPCERCuaqO0UrHAa"  # Paste OSF token here to access private repositories
+token = ""  # Paste OSF token here to access private repositories
 files = osf_listfiles(  # Function in the data_OSF.py script loaded above
     token=token,
     data_subproject="wk3yz",  # Data subproject ID
