@@ -1,21 +1,3 @@
----
-title: ""
-author: ""
-date: ""
-output: pdf_document
----
-
-```{r setup, include=FALSE}
-# By default, the code chunks are hidden for brevity. Set the echo argument to TRUE for blocks you want to share the code in the output for. 
-knitr::opts_chunk$set(echo = F)
-```
-
-```{r packages and data }
-# Load packages and data to be clear from the start
-
-
-```
-
 ## Study Information
 
 ### 1.	Title 
@@ -43,7 +25,7 @@ More info: The description should be no longer than the length of an abstract. I
 -->
 
 
-The present study seeks to validate and optimize a simple reaction time task by (1) testing the impact of gamification on processing speed and task engagement and (2) assessing the optimal parameter values (number of trials and ISI range) for a robust yet efficient measure.
+The present study seeks to validate and optimize a simple reaction time task by (1) testing the impact of gamification on processing speed assessment and task engagement and (2) assessing the optimal parameter values (number of trials and ISI range) for a robust yet efficient measure.
 
 ### 4.	Hypotheses
 
@@ -51,8 +33,11 @@ The present study seeks to validate and optimize a simple reaction time task by 
 List specific, concise, and testable hypotheses. Please state if the hypotheses are directional or non-directional. If directional, state the direction. A predicted effect is also appropriate here. If a specific interaction or moderation is important to your research, you can list that as a separate hypothesis. 
 -->
 
-1. Validity of the gamified version will be equivalent to that of the non-gamified version (**i.e.,...**).
+1. The validity of the gamified version will be equivalent to that of the non-gamified version (**i.e.,...**).
+  - The correlation between individual task indices (e.g., median RT) should be high between the two versions.
 2. The gamified version will be more engaging (**as measured by... participant rating? Maintaining quick RT for longer?**) than the non-gamified version.
+  - Higher ratings of task enjoyment for the gamified version.
+  - RT variability (e.g., SD(RTs)) should be lower for the gamified version.
  
 ## Design Plan
 
@@ -135,7 +120,8 @@ Example: Our target sample size is 280 participants. We will attempt to recruit 
 More information: For some studies, this will simply be the number of samples or the number of clusters. For others, this could be an expected range, minimum, or maximum number. 
 -->
 
-Given the exploratory nature of the investigation, we set a lower limit of 30 participants and no upper limit. 
+A minimum of 30 participants will be recruited (and more if possible).
+
 
 ### 14. Sample size rationale 
 
@@ -147,7 +133,8 @@ Example: We used the software program G*Power to conduct a power analysis. Our g
 More information: This gives you an opportunity to specifically state how the sample size will be determined. A wide range of possible answers is acceptable; remember that transparency is more important than principled justifications. If you state any reason for a sample size upfront, it is better than stating no reason and leaving the reader to “fill in the blanks.” Acceptable rationales include: a power analysis, an arbitrary number of subjects, or a number based on time or monetary constraints. 
 -->
 
-*Enter your sample size rationale here. *
+The lower bound of the participant number is driven by the limited study resources. Given the exploratory nature of the study, we hope to collect more data if possible. 
+
 
 ### 15. Stopping rule 
 
