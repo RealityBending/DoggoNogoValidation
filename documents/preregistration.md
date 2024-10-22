@@ -180,21 +180,25 @@ More information: Observational studies and meta-analyses will include only meas
 
 1. Reaction time (ms)
 
-2. Perceived task duration ('Without checking, how long do you feel you spent on the previous task? Please answer in minutes.')
+2. Task enjoyment ('How much did you enjoy the previous task?' 1 = Boring, 5 = Fun)
 
-3. Willingness to repeat the task ('How would you feel if you had to do the task again?'; 1 = Very annoyed, 5 = Very happy)
+3. Perceived task duration ('Without checking the time, how long do you think you spent doing the previous task?')
+
+4. Willingness to repeat the task ('How would you feel if you had to do the task again one more time?'; 1 = Very annoyed, 5 = Very happy)
 
 ### 18. Indices 
 
 <!-- 
-If any measurements are  going to be combined into an index (or even a mean), what measures will you use and how will they be combined? Include either a formula or a precise description of your method. If your are using a more complicated statistical method to combine measures (e.g. a factor analysis), you can note that here but describe the exact method in the analysis plan section.
+If any measurements are  going to be combined into an index (or even a mean), what measures will you use and how will they be combined? 
+
+Include either a formula or a precise description of your method. If your are using a more complicated statistical method to combine measures (e.g. a factor analysis), you can note that here but describe the exact method in the analysis plan section.
 
 Example: We will take the mean of the two questions above to create a single measure of ‘brownie enjoyment.’ 
 
 More information: If you are using multiple pieces of data to construct a single variable, how will this occur? Both the data that are included and the formula or weights for each measure must be specified. Standard summary statistics, such as “means” do not require a formula, though more complicated indices require either the exact formula or, if it is an established index in the field, the index must be unambiguously defined. For example, “biodiversity index” is too broad, whereas “Shannon’s biodiversity index” is appropriate. 
 -->
 
-*Describe any indices here or state not applicable.*
+The following indices of reaction time will be calculated across participants, for each trial of each task: Mean, Median, Mode, SD, MAD, and IQR. Correlations will be calculated between the pairs of these indices (e.g., Mean_gamified and Mean_non_gamified) in order to assess the validity of the gamified task compared to the non-gamified task, and to see how this might change over time.
 
 ## Analysis Plan
 
