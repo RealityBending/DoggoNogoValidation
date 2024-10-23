@@ -164,10 +164,6 @@ More information: For any experimental manipulation, you should give a precise d
 
 2. Inter-stimulus interval: **A-Bms**
 
-3. Stimulus location **not done for simple version**
-
-4. Stimulus size **not done for simple version**
-
 ### 17. Measured variables 
 
 <!-- 
