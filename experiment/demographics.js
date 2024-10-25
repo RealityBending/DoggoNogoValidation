@@ -63,6 +63,34 @@ const ConsentForm = {
             ],
         }
     },
+    data: {
+        screen: "demographic_consentform",
+    },
+}
+
+// Retrieve and save browser info ========================================================
+var demographics_browser_info = {
+    type: jsPsychBrowserCheck,
+    data: {
+        screen: "browser_info",
+        date: new Date().toLocaleDateString("fr-FR"),
+        time: new Date().toLocaleTimeString("fr-FR"),
+    },
+    on_finish: function (data) {
+        dat = jsPsych.data.get().filter({ screen: "browser_info" }).values()[0]
+
+        // Rename
+        data["screen_height"] = dat["height"]
+        data["screen_width"] = dat["width"]
+
+        // Add URL variables - ?sona_id=x&exp=1
+        let urlvars = jsPsych.data.urlVariables()
+        data["researcher"] = urlvars["exp"]
+        data["sona_id"] = urlvars["sona_id"]
+        data["prolific_id"] = urlvars["PROLIFIC_PID"] // Prolific
+        data["study_id"] = urlvars["STUDY_ID"] // Prolific
+        data["session_id"] = urlvars["SESSION_ID"] // Prolific
+    },
 }
 
 // Demographics
@@ -88,14 +116,13 @@ const demographic_questions = {
                         colCount: 0,
                     },
                     {
-                        visibleIf:
-                            "{Gender} == 'Other'",
+                        visibleIf: "{Gender} == 'Other'",
                         title: "You selected 'Other' as your gender. Specify if you wish.",
                         name: "GenderOther",
                         type: "text",
                         isRequired: false,
                         inputType: "text",
-                        placeholder: "Gender"
+                        placeholder: "Gender",
                     },
                     {
                         type: "text",
@@ -111,7 +138,11 @@ const demographic_questions = {
                         title: "What is your handedness?",
                         name: "Handedness",
                         type: "radiogroup",
-                        choices: ["Left-handed", "Right-handed", "Ambidextrous"],
+                        choices: [
+                            "Left-handed",
+                            "Right-handed",
+                            "Ambidextrous",
+                        ],
                         isRequired: true,
                         colCount: 0,
                     },
