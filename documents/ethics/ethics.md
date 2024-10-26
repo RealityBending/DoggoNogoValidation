@@ -34,8 +34,8 @@ A10: N/A
 
 **Section B**
 
-- B.1: Study will attempt to recruit a minimum of 30 participants (based on typical samples of similar studies), with no exclusion criteria.
-- B.2: Participants will be recruited via convenience sampling (e.g., via social media), or via other recruitment platforms if available (e.g., SONA, Prolific). The samples from different methods of recruitment will be collected separately in case they are different (the incentive type - e.g., student credits - and amount - or lack thereof - will thus be known to mitigate its potential effect). As we aim at recruiting a diverse sample, there are no exclusion criteria.
+- B.1: Study will attempt to recruit a minimum of 30 participants (based on typical samples of similar studies), with only fluency in english as inclusion criteria.
+- B.2: Participants will be recruited via convenience sampling (e.g., via social media), or via other recruitment platforms if available (e.g., SONA, Prolific). The samples from different methods of recruitment will be collected separately in case they are different (the incentive type - e.g., student credits - and amount - or lack thereof - will thus be known to mitigate its potential effect). As we aim at recruiting a diverse sample, the only inclusion criteria is fluency in english.
 - B.3: The study will be completed online and involves some self-completion questions
 - B.4: Online
 - B.5: No
