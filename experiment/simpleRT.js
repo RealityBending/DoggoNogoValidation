@@ -33,6 +33,7 @@ const experiment_feedback = {
                 elements: [
                     {
                         title: "It is the end of the experiment! Don't hesitate to leave us feedback.",
+                        description: "Please note that these comments might be shared publically alongside the results of this study.",
                         name: "comments",
                         type: "comment",
                         autoGrow: true,
