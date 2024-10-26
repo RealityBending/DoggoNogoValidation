@@ -7,8 +7,6 @@
         <script src="https://unpkg.com/jspsych@8.0.2"></script>
         <script src="https://unpkg.com/@jspsych/plugin-browser-check@1.0.3"></script>
         <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@2.0.0"></script>
-        <script src="https://unpkg.com/@jspsych/plugin-image-keyboard-response@2.0.0"></script>
-        <script src="https://unpkg.com/@jspsych/plugin-preload@2.0.0"></script>
         <script src="https://unpkg.com/@jspsych/plugin-survey@2.0.0"></script>
         <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe"></script>
 
@@ -49,11 +47,6 @@
         // timeline.push(demographic_questions)
 
         // Task ===================================================================
-        // timeline.push({
-        //     type: jsPsychPreload,
-        //     images: ["stimuli/red_square.png"],
-        // })
-
         timeline.push(simpleRT_instructions)
         timeline.push(simpleRT_task)
         timeline.push(simpleRT_assessment)
