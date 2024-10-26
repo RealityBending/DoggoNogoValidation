@@ -3,8 +3,12 @@ function randomInteger(min = 1, max = 10) {
     return Math.round(Math.random() * (max - min) + min)
 }
 
+function opacity(min=0, max=1){
+    let randomOpacity = Math.random() * (max - min) + min;
+    return parseFloat(randomOpacity.toFixed(2))
+}
+
 // Instructions ===================================================================================
-// Instructions
 const simpleRT_instructions = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
@@ -12,8 +16,8 @@ const simpleRT_instructions = {
     of the screen, followed by a red square.</p>
     <p>Whenever the red square appears,
     press the <strong>Down Arrow</strong> as fast as you can.</p>
-    <div style='float: centre;'><img src='stimuli/red_square.png'></img>
-    </div>
+    <div style='float: centre; font-size: 200px; color: red;'>&#9632
+    </div><br><br>
     <p>Press the <b>down arrow</b> to begin.</p>
     `,
     post_trial_gap: 2000,
@@ -129,21 +133,6 @@ const endscreen = {
     },
 }
 
-// Debrief
-// TO DO : ADD ANY FURTHER DETAILS, E.G., LINK??
-const simpleRT_debrief = {
-    type: jsPsychHtmlKeyboardResponse,
-    stimulus: function () {
-        var trials = jsPsych.data.get().filter({ screen: "response" })
-        var correct_trials = trials.filter({ correct: true })
-        var rt = Math.round(correct_trials.select("rt").mean())
-
-        return `
-        <p>Your average response time was ${rt}ms.</p>
-        <p>Press any key to complete the experiment. Thank you!</p>`
-    },
-}
-
 // Post-task assessment ==============================================================================
 
 // Questions
@@ -201,7 +190,7 @@ const simpleRT_assessment = {
 }
 
 // Experiment =====================================================================================
-// Fixation trials - if repeats following premature key presses don't have to be the same duration
+// Fixation trials - repeats following premature key presses don't have to be the same duration
 const _simpleRT_fixationcross = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: '<div style="font-size:60px;">+</div>',
@@ -230,51 +219,20 @@ const simpleRT_fixationcross = {
     },
 }
 
-//
-// const fixation = {
-//     type: jsPsychHtmlKeyboardResponse,
-//     stimulus: '<div style="font-size:60px;">+</div>',
-//     choices: ["ArrowDown"],
-//     trial_duration: function () {
-//         var prev_trial_data = jsPsych.data.get().last(1).values()[0]
-//         if (prev_trial_data.premature_response == true){
-//             return prev_trial_data.fixation_duration
-//         } else {
-//             return randomInteger(lower_isi, upper_isi)
-//         }
-//     },
-//     save_trial_parameters: {
-//         trial_duration: true
-//     },
-//     data: {
-//         screen: "fixation",
-//     },
-//     on_start: function (trial) {
-//         trial.data.fixation_duration = trial.trial_duration
-//     },
-//     on_finish: function (data) {
-//         data.premature_response = data.response !== null
-//     },
-//     response_ends_trial: true,
-// }
-
-// const fixation_procedure = {
-//     timeline: [fixation],
-//     loop_function: function (data) {
-//         var last_fx_trial = jsPsych.data.get().last(1).values()[0]
-//         return last_fx_trial.premature_response
-//     },
-// }
-
 // RT trials
 const simpleRT_trial = {
-    type: jsPsychImageKeyboardResponse,
-    stimulus: "stimuli/red_square.png",
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: function(){
+        let windowWidth = (window.innerWidth/2)*0.75;
+        let windowHeight = (window.innerHeight/2)*0.75;
+        return `<div style="position: relative; left: ${randomInteger(-windowWidth, windowWidth)}px; top: ${randomInteger(-windowHeight,windowHeight)}px;`+
+        `color: red; opacity: ${opacity(0.2,1)}; font-size: ${randomInteger(5,30)*10}px">&#9632</div>`
+},
     choices: ["ArrowDown"],
-    trial_duration: 600, // maximum reaction time allowed
+    trial_duration: 600,
     data: {
         screen: "response",
-    },
+    }
 }
 
 // Linking fixation and RT trials
@@ -283,54 +241,3 @@ const simpleRT_task = {
     randomize_order: true,
     repetitions: 3, // number of trials
 }
-
-// // Fixation trials
-// const simpleRT_FixationCross = {
-//     type: jsPsychHtmlKeyboardResponse,
-//     stimulus: '<div style="font-size:80px;">+</div>',
-//     choices: ["ArrowDown"],
-//     trial_duration: function () {
-//         return 2000 // randomInteger(600, 1100)
-//     },
-//     save_trial_parameters: {
-//         trial_duration: true,
-//     },
-//     data: {
-//         screen: "SimpleRT_FixationCross",
-//     },
-//     response_ends_trial: true,
-// }
-
-// // Early response conditionally looping timeline
-// const simpleRT_TimelineFixationCross = {
-//     timeline: [FixationCross],
-//     loop_function: function (data) {
-//         // If no response (good trial), don't repeat
-//         if (jsPsych.pluginAPI.compareKeys(data.values()[0].response, null)) {
-//             return false
-//         } else {
-//             return true
-//         }
-//     },
-// }
-
-// const simpleRT_Stimulus = {
-//     type: jsPsychImageKeyboardResponse,
-//     stimulus: "stimuli/red_square.png",
-//     choices: ["ArrowDown"],
-//     trial_duration: 5000, // Max RT
-//     response_ends_trial: true,
-//     data: {
-//         screen: "SimpleRT_Stimulus",
-//     },
-//     on_finish: function (data) {
-//         data.correct = jsPsych.pluginAPI.compareKeys(data.response, data.correct_response)
-//     }, // too slow -> correct = false
-// }
-
-// // Main timeline
-// const SimpleRT = {
-//     timeline: [TimelineFixationCross, Stimulus],
-//     randomize_order: true,
-//     repetitions: 3,
-// }
