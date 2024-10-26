@@ -1,3 +1,6 @@
+// Participant ID
+const participantID = jsPsych.randomization.randomID(10)
+
 // Consent
 const ConsentForm = {
     type: jsPsychSurvey,
@@ -73,7 +76,7 @@ var demographics_browser_info = {
     type: jsPsychBrowserCheck,
     data: {
         screen: "browser_info",
-        date: new Date().toLocaleDateString("fr-FR"),
+        date: new Date().toLocaleDateString("fr-FR"), // Do we want these set to "en-GB"? 
         time: new Date().toLocaleTimeString("fr-FR"),
     },
     on_finish: function (data) {

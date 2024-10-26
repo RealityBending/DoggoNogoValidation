@@ -10,9 +10,24 @@
         <script src="https://unpkg.com/@jspsych/plugin-survey@2.0.0"></script>
         <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe"></script>
 
+        <script>
+            // Initialize experiment =================================================
+        var jsPsych = initJsPsych({
+            // show_progress_bar: true,
+            // message_progress_bar: "Progress",
+            on_finish: function () {
+                jsPsych.data.displayData("json") // Display data in browser
+                // window.location = "https://realitybending.github.io/" // Redirect to lab website
+                // jsPsych.data.get().localSave('csv', `${participant_id}.csv`); // save data locally
+            },
+        })
+        </script>
+
+
         <!-- Procedure files -->
         <script src="demographics.js"></script>
         <script src="simpleRT.js"></script>
+        <script src="doggoNogo.js"></script>
 
         <!-- Stylesheet -->
         <link
@@ -27,20 +42,21 @@
     </head>
     <body></body>
     <script>
-        // Initialize experiment =================================================
-        var jsPsych = initJsPsych({
-            // show_progress_bar: true,
-            // message_progress_bar: "Progress",
-            on_finish: function () {
-                jsPsych.data.displayData("json") // Display data in browser
-                // window.location = "https://realitybending.github.io/" // Redirect to lab website
-                // jsPsych.data.get().localSave('csv', `${participant_id}.csv`); // save data locally
-            },
-        })
+        // // Initialize experiment =================================================
+        // var jsPsych = initJsPsych({
+        //     // show_progress_bar: true,
+        //     // message_progress_bar: "Progress",
+        //     on_finish: function () {
+        //         jsPsych.data.displayData("json") // Display data in browser
+        //         // window.location = "https://realitybending.github.io/" // Redirect to lab website
+        //         // jsPsych.data.get().localSave('csv', `${participant_id}.csv`); // save data locally
+        //     },
+        // })
 
         // Initialize timeline
         var timeline = []
 
+        timeline.push(doggoNogo_instructions)
         // Demographics ===========================================================
         timeline.push(ConsentForm)
         timeline.push(demographics_browser_info)
@@ -54,14 +70,14 @@
         timeline.push(experiment_feedback)
         timeline.push(demographics_debriefing)
 
-        // Save data via DataPipe
-        timeline.push({
-            type: jsPsychPipe,
-            action: "save",
-            experiment_id: "Vqb57uxj5LaN", // This in generated in the DataPipe interface
-            filename: `${jsPsych.randomization.randomID(10)}.csv`,
-            data_string: () => jsPsych.data.get().csv(),
-        })
+        // // Save data via DataPipe
+        // timeline.push({
+        //     type: jsPsychPipe,
+        //     action: "save",
+        //     experiment_id: "Vqb57uxj5LaN", // This in generated in the DataPipe interface
+        //     filename: `${jsPsych.randomization.randomID(10)}.csv`,
+        //     data_string: () => jsPsych.data.get().csv(),
+        // })
 
         timeline.push(endscreen)
 
