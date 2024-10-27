@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Simple RT task</title>
+        <title>Psychology Experiment</title>
 
         <!-- Plugins -->
         <script src="https://unpkg.com/jspsych@8.0.2"></script>
@@ -12,6 +12,7 @@
 
         <!-- Procedure files -->
         <script src="demographics.js"></script>
+        <script src="tasks.js"></script>
         <script src="simpleRT.js"></script>
         <script src="doggoNogo.js"></script>
 
@@ -40,20 +41,24 @@
         })
         // Participant ID
         const participantID = jsPsych.randomization.randomID(10)
+        const taskorder = jsPsych.randomization.shuffle(["DoggoFirst", "SimpleFirst"])[0]
 
         // Initialize timeline
         var timeline = []
 
-        // timeline.push(doggoNogo_instructions)
         // Demographics ===========================================================
-        timeline.push(ConsentForm)
+        // timeline.push(ConsentForm)
         timeline.push(demographics_browser_info)
         // timeline.push(demographic_questions)
 
         // Task ===================================================================
-        // timeline.push(simpleRT_instructions)
-        // timeline.push(simpleRT_task)
-        // timeline.push(simpleRT_assessment)
+        if (taskorder === "DoggoFirst") {
+            timeline.push(DoggoNogo)
+            timeline.push(SimpleRT)
+        } else {
+            timeline.push(SimpleRT)
+            timeline.push(DoggoNogo)
+        }
 
         // timeline.push(experiment_feedback)
         // timeline.push(demographics_debriefing)
