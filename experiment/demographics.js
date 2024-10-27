@@ -1,6 +1,3 @@
-// Participant ID
-const participantID = jsPsych.randomization.randomID(10)
-
 // Consent
 const ConsentForm = {
     type: jsPsychSurvey,
@@ -76,13 +73,14 @@ var demographics_browser_info = {
     type: jsPsychBrowserCheck,
     data: {
         screen: "browser_info",
-        date: new Date().toLocaleDateString("fr-FR"), // Do we want these set to "en-GB"? 
+        date: new Date().toLocaleDateString("fr-FR"), // Do we want these set to "en-GB"?
         time: new Date().toLocaleTimeString("fr-FR"),
     },
     on_finish: function (data) {
-        dat = jsPsych.data.get().filter({ screen: "browser_info" }).values()[0]
+        data["participantID"] = participantID
 
         // Rename
+        dat = jsPsych.data.get().filter({ screen: "browser_info" }).values()[0]
         data["screen_height"] = dat["height"]
         data["screen_width"] = dat["width"]
 
@@ -141,11 +139,7 @@ const demographic_questions = {
                         title: "What is your handedness?",
                         name: "Handedness",
                         type: "radiogroup",
-                        choices: [
-                            "Left-handed",
-                            "Right-handed",
-                            "Ambidextrous",
-                        ],
+                        choices: ["Left-handed", "Right-handed", "Ambidextrous"],
                         isRequired: true,
                         colCount: 0,
                     },
