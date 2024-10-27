@@ -52,16 +52,17 @@
         // timeline.push(demographic_questions)
 
         // Task ===================================================================
-        if (taskorder === "DoggoFirst") {
-            timeline.push(DoggoNogo)
-            timeline.push(SimpleRT)
-        } else {
-            timeline.push(SimpleRT)
-            timeline.push(DoggoNogo)
-        }
+        // if (taskorder === "DoggoFirst") {
+        //     timeline.push(DoggoNogo)
+        //     timeline.push(SimpleRT)
+        // } else {
+        //     timeline.push(SimpleRT)
+        //     timeline.push(DoggoNogo)
+        // }
 
-        // timeline.push(experiment_feedback)
-        // timeline.push(demographics_debriefing)
+        // End of experiment ======================================================
+        timeline.push(experiment_feedback)
+        timeline.push(experiment_debriefing)
 
         // // Save data via DataPipe
         // timeline.push({
@@ -72,7 +73,7 @@
         //     data_string: () => jsPsych.data.get().csv(),
         // })
 
-        // timeline.push(endscreen)
+        timeline.push(experiment_endscreen)
 
         jsPsych.run(timeline)
     </script>

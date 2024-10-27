@@ -254,3 +254,115 @@ const demographic_questions = {
         screen: "demographic_questions",
     },
 }
+
+// Thank you ========================================================================
+
+var experiment_feedback = {
+    type: jsPsychSurvey,
+    survey_json: {
+        title: "Feedback",
+        description: "It is the end of the experiment! Don't hesitate to leave us a feedback.",
+        completeText: "Complete the experiment",
+        showQuestionNumbers: false,
+        pages: [
+            {
+                elements: [
+                    {
+                        type: "rating",
+                        name: "Feedback_Enjoyment",
+                        title: "Did you enjoy doing this experiment?",
+                        isRequired: false,
+                        rateMin: 0,
+                        rateMax: 4,
+                        rateType: "stars",
+                    },
+                    {
+                        type: "comment",
+                        name: "Feedback_Text",
+                        title: "Anything else you would like to share with us?",
+                        description:
+                            "Please note that these comments might be shared publicly as part of the results of this study - avoid sharing personal information.",
+                        isRequired: false,
+                    },
+                ],
+            },
+        ],
+    },
+    data: {
+        screen: "experiment_feedback",
+    },
+}
+
+const experiment_debriefing = {
+    type: jsPsychSurvey,
+    survey_json: {
+        showQuestionNumbers: false,
+        completeText: "Continue",
+        pages: [
+            {
+                elements: [
+                    {
+                        type: "html",
+                        name: "debrief",
+                        html:
+                            "<h2>Debriefing</h2>" +
+                            "<p align='left'>The purpose of this study was to investigate the validity and effect of a gamified simple reaction time task on engagement and performance. " +
+                            "Specifically, we want to see whether individuals performed similarly across the two versions of the task, " +
+                            "and to test the hypothesis that gamification would lead to reduced variability (i.e., more consistency) in individuals reaction times, and greater enjoyment ratings than the non-gamified version.</p>" +
+                            "<p align='left'><b>Thank you!</b> Your participation in this study will be kept completely confidential. If you have any questions or concerns about the project, please contact Benjamin Tribe (<i style='color:DodgerBlue;'>bmt26@sussex.ac.uk</i>) or Dr Dominique Makowski (<i style='color:DodgerBlue;'>D.Makowski@sussex.ac.uk</i>)</p>" +
+                            "<p>To complete your participation in this study, click on 'Continue' and <b>wait until your responses have been successfully saved</b> before closing the tab.</p> ",
+                    },
+                ],
+            },
+        ],
+    },
+    data: {
+        screen: "debriefing",
+    },
+}
+
+const experiment_endscreen = {
+    type: jsPsychSurvey,
+    survey_json: function () {
+        let text =
+            "<h1>Thank you for participating</h1>" +
+            "<p>It means a lot to us. Don't hesitate to share the study by sending this link <i>(but please don't reveal the details of the experiment)</i>:</p>" +
+            "<p><a href='" +
+            "https://realitybending.github.io/DoggoNogoValidation/experiment/index.html" + // Modify this link to the actual experiment
+            "'>" +
+            "https://realitybending.github.io/DoggoNogoValidation/experiment/index.html" + // Modify this link to the actual experiment
+            "<a/></p>"
+
+        // Deal with Prolific/SurveyCircle/SurveySwap/SONA
+        if (jsPsych.data.urlVariables()["exp"] == "surveycircle") {
+            text +=
+                "<p style='color:red;'><b>Click " +
+                "<a href='https://www.surveycircle.com/HZPT-7R9E-GVNM-PQ45/'>here<a/>" +
+                " to redeem your SurveyCircle participation</b><br>(in case the link doesn't work, the code is: HZPT-7R9E-GVNM-PQ45)</p>" // code??
+        }
+        if (jsPsych.data.urlVariables()["exp"] == "surveyswap") {
+            text +=
+                "<p style='color:red;'><b>Click " +
+                "<a href='https://surveyswap.io/sr/E9XP-DWMS-BHA3'>here<a/>" +
+                " to redeem your SurveySwap participation</b><br>(in case the link doesn't work, the code is: E9XP-DWMS-BHA3)</p>" // code??
+        }
+        return {
+            showQuestionNumbers: false,
+            completeText: "End experiment",
+            pages: [
+                {
+                    elements: [
+                        {
+                            type: "html",
+                            name: "endscreen",
+                            html: text,
+                        },
+                    ],
+                },
+            ],
+        }
+    },
+    data: {
+        screen: "end",
+    },
+}

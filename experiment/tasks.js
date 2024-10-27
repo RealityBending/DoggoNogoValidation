@@ -243,6 +243,8 @@ var SimpleRT = {
         simpleRT_block,
         simpleRT_break,
         simpleRT_block,
+        simpleRT_break,
+        simpleRT_block,
         task_assessment,
     ],
 }
