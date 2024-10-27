@@ -73,8 +73,8 @@ var demographics_browser_info = {
     type: jsPsychBrowserCheck,
     data: {
         screen: "browser_info",
-        date: new Date().toLocaleDateString("fr-FR"), // Do we want these set to "en-GB"?
-        time: new Date().toLocaleTimeString("fr-FR"),
+        date: new Date().toLocaleDateString("en-GB"),
+        time: new Date().toLocaleTimeString("en-GB"),
     },
     on_finish: function (data) {
         data["participantID"] = participantID
