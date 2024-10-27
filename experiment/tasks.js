@@ -95,8 +95,8 @@ const instructions_simpleRT = {
         text +=
             "<p>In this game of speed, a fixation cross (+) will appear in the center of the screen, followed by a red square.</p>" +
             "<p>Whenever the red square appears, press the <b>Down Arrow</b> as fast as you can.</p>" +
-            "<p style='float: centre; font-size: 1000%; color: red;'>&#9632</p>" +
-            "<p><br>Press the <b>down arrow</b> to begin.</p>"
+            `<p style='float:centre'><img src='stimuli/red_square.png' style='height:${window.innerHeight/6}px; margin: 10px'/></p>` +
+            "<p>Press the <b>down arrow</b> to begin.</p>"
         return text
     },
     data: {
@@ -148,16 +148,15 @@ const simpleRT_fixationcross = {
 const simpleRT_trial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: function () {
-        let windowWidth = (window.innerWidth / 2) * 0.75
-        let windowHeight = (window.innerHeight / 2) * 0.75
+        let size = randomInteger(5, 20)*10
+        let windowWidth = ((window.innerWidth / 2)-(size/2)) * 0.9
+        let windowHeight = ((window.innerHeight / 2)-(size/2)) * 0.9
         return (
-            `<div style="position: relative; left: ${randomInteger(
-                -windowWidth,
-                windowWidth
-            )}px; top: ${randomInteger(-windowHeight, windowHeight)}px;` +
-            `color: red; opacity: ${opacity(0.2, 1)}; font-size: ${
-                randomInteger(5, 30) * 10
-            }px">&#9632</div>`
+            `<img src="stimuli/red_square.png" style="position:relative; left: ${
+                randomInteger(-windowWidth, windowWidth)
+            }px; top: ${
+                randomInteger(-windowHeight, windowHeight)
+            }px; width: ${size}px; opacity: ${opacity(1,1)}">`
         )
     },
     choices: ["ArrowDown"],

@@ -6,6 +6,7 @@
         <!-- Plugins -->
         <script src="https://unpkg.com/jspsych@8.0.2"></script>
         <script src="https://unpkg.com/@jspsych/plugin-browser-check@1.0.3"></script>
+        <script src="https://unpkg.com/@jspsych/plugin-preload@2.0.0"></script>
         <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@2.0.0"></script>
         <script src="https://unpkg.com/@jspsych/plugin-survey@2.0.0"></script>
         <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe"></script>
@@ -13,7 +14,6 @@
         <!-- Procedure files -->
         <script src="demographics.js"></script>
         <script src="tasks.js"></script>
-        <script src="simpleRT.js"></script>
         <script src="doggoNogo.js"></script>
 
         <!-- Stylesheet -->
@@ -52,13 +52,19 @@
         // timeline.push(demographic_questions)
 
         // Task ===================================================================
-        // if (taskorder === "DoggoFirst") {
-        //     timeline.push(DoggoNogo)
-        //     timeline.push(SimpleRT)
-        // } else {
-        //     timeline.push(SimpleRT)
-        //     timeline.push(DoggoNogo)
-        // }
+        timeline.push({
+            type: jsPsychPreload,
+            images: ["stimuli/red_square.png"]
+        }
+        )
+
+        if (taskorder === "DoggoFirst") {
+            timeline.push(DoggoNogo)
+            timeline.push(SimpleRT)
+        } else {
+            timeline.push(SimpleRT)
+            timeline.push(DoggoNogo)
+        }
 
         // End of experiment ======================================================
         timeline.push(experiment_feedback)
