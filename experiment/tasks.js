@@ -95,7 +95,9 @@ const instructions_simpleRT = {
         text +=
             "<p>In this game of speed, a fixation cross (+) will appear in the center of the screen, followed by a red square.</p>" +
             "<p>Whenever the red square appears, press the <b>Down Arrow</b> as fast as you can.</p>" +
-            `<p style='float:centre'><img src='stimuli/red_square.png' style='height:${window.innerHeight/6}px; margin: 10px'/></p>` +
+            `<p style='float:centre'><img src='stimuli/red_square.png' style='height:${
+                window.innerHeight / 6
+            }px; margin: 10px'/></p>` +
             "<p>Press the <b>down arrow</b> to begin.</p>"
         return text
     },
@@ -109,7 +111,7 @@ const simpleRT_break = {
     stimulus:
         "<h1>Break</h1>" +
         "<p>You're doing well! Feel free to take a break to relax your eyes.</p>" +
-        "<p>Press the <b>down arrow</b> to continue.</p>",
+        "<p>Press the <b>down arrow</b> to continue. Don't forget to respond as fast as possible!</p>",
     data: {
         screen: "SimpleRT_break",
     },
@@ -148,16 +150,16 @@ const simpleRT_fixationcross = {
 const simpleRT_trial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: function () {
-        let size = randomInteger(5, 20)*10
-        let windowWidth = ((window.innerWidth / 2)-(size/2)) * 0.9
-        let windowHeight = ((window.innerHeight / 2)-(size/2)) * 0.9
-        return (
-            `<img src="stimuli/red_square.png" style="position:relative; left: ${
-                randomInteger(-windowWidth, windowWidth)
-            }px; top: ${
-                randomInteger(-windowHeight, windowHeight)
-            }px; width: ${size}px; opacity: ${opacity(1,1)}">`
-        )
+        let size = randomInteger(5, 20) * 10
+        let windowWidth = (window.innerWidth / 2 - size / 2) * 0.9
+        let windowHeight = (window.innerHeight / 2 - size / 2) * 0.9
+        return `<img src="stimuli/red_square.png" style="position:relative; left: ${randomInteger(
+            -windowWidth,
+            windowWidth
+        )}px; top: ${randomInteger(
+            -windowHeight,
+            windowHeight
+        )}px; width: ${size}px; opacity: ${opacity(1, 1)}">`
     },
     choices: ["ArrowDown"],
     trial_duration: 600,
