@@ -257,7 +257,7 @@ More information: Any rule for excluding a particular set of data is acceptable.
 *Describe your data exclusion criteria here or state not applicable.*
 
 - We will compute the RT distribution for each participants for both tasks. Non-typical RT distributions (typically, distributions collapsed to the left are indicative of careless responses, and distributions that are wide and non-lognormally distributed are indicative of low attentional engagement) will lead to the removal of the data of that whole task.
-- We will additionally remove very fast trials (e.g., < 150 ms) and very long trials (> 1000 ms). See Theriault et al. 2024 for details ["Check your outliers! something"] **TODO: add correct reference**
+- We will additionally remove very fast trials (e.g., < 150 ms) and very long trials (> 1000 ms). See Thériault et al. 2024 for details.
 
 ### 23. Missing data
 
@@ -293,4 +293,5 @@ Not applicable.
 
 ## References
 
-*Enter any references used throughout the text here.*
+Thériault, R., Ben-Shachar, M. S., Patil, I., Lüdecke, D., Wiernik, B. M., & Makowski, D. (2024). Check your outliers! An introduction to identifying statistical outliers in R with easystats. *Behavior Research Methods, 56*(4), 4162–4172. https://doi.org/10.3758/s13428-024-02356-w
+
