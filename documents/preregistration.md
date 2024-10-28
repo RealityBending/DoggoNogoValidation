@@ -10,9 +10,9 @@ Validation of a Gamified Measure of Processing Speed
 List authors and affiliations as applicable. Placing a number or letter in upward arrows, (e.g. ^2^) creates a superscript
 -->
 
-*Author A^1^*
+Benjamin Tribe^1^, Max Lovell^1^, and Dominique Makowski^1^
 
-*^1^ Affiliation A*
+*^1^ School of Psychology, University of Sussex*
 
 ### 3. Description
 
@@ -176,11 +176,11 @@ More information: Observational studies and meta-analyses will include only meas
 
 1. Reaction time (ms)
 
-2. Task enjoyment ('How much did you enjoy the previous task?' 1 = Boring, 5 = Fun)
+2. Task enjoyment ('How much did you enjoy the previous task?' 0 = Boring, 7 = Fun)
 
 3. Perceived task duration ('Without checking the time, how long do you think you spent doing the previous task?')
 
-4. Willingness to repeat the task ('How would you feel if you had to do the task again one more time?'; 1 = Very annoyed, 5 = Very happy)
+4. Willingness to repeat the task ('How would you feel if you had to do the task again one more time?'; -4 = Very annoyed, 4 = Very happy)
 
 ### 18. Indices
 
@@ -194,7 +194,7 @@ Example: We will take the mean of the two questions above to create a single mea
 More information: If you are using multiple pieces of data to construct a single variable, how will this occur? Both the data that are included and the formula or weights for each measure must be specified. Standard summary statistics, such as “means” do not require a formula, though more complicated indices require either the exact formula or, if it is an established index in the field, the index must be unambiguously defined. For example, “biodiversity index” is too broad, whereas “Shannon’s biodiversity index” is appropriate.
 -->
 
-The following indices of reaction time will be calculated across participants, for each version of the task: Mean, Median, Mode, SD, MAD, and IQR. Correlations will be calculated between the pairs of these indices (e.g., Mean_gamified and Mean_non_gamified) in order to assess the validity of the gamified task compared to the non-gamified task, and to see how this might change as a function of the number of trials.
+The following indices of reaction time will be calculated across participants, for each version of the task: Mean, Median, Mode, SD, MAD, and IQR.
 
 ## Analysis Plan
 
@@ -217,7 +217,8 @@ If someone specifies a 2x3 ANOVA with both factors within subjects, there is sti
 If you are going to perform a sequential analysis and check after 50, 100, and 150 samples, you must also specify the p-values you’ll test against at those three points.
 -->
 
-*Describe your planned statistical model(s) here. *
+- Correlations will be calculated between the pairs of these indices (e.g., Mean_gamified and Mean_non_gamified) in order to assess the validity of the gamified task compared to the non-gamified task (in capturing interindividual variability), and to see how this might change as a function of the number of trials.
+- Bayesian t-tests will be computed to compare the gamified vs. non-gamified indices.
 
 ### 20. Transformations
 
@@ -229,7 +230,7 @@ Example: The “Effect of sugar on brownie tastiness” does not require any add
 More information: If any categorical predictors are included in a regression, indicate how those variables will be coded (e.g. dummy coding, summation coding, etc.) and what the reference category will be.
 -->
 
-*Describe any transformations here or state not applicable.*
+Not applicable.
 
 ### 21. Inference criteria
 
@@ -241,7 +242,7 @@ Example: We will use the standard p<.05 criteria for determining if the ANOVA an
 More information: P-values, confidence intervals, and effect sizes are standard means for making an inference, and any level is acceptable, though some criteria must be specified in this or previous fields. Bayesian analyses should specify a Bayes factor or a credible interval. If you are selecting models, then how will you determine the relative quality of each? In regards to multiple comparisons, this is a question with few “wrong” answers. In other words, transparency is more important than any specific method of controlling the false discovery rate or false error rate. One may state an intention to report all tests conducted or one may conduct a specific correction procedure; either strategy is acceptable.
 -->
 
-*Describe your inference criteria here or state not applicable.*
+Bayes factors superior to 3.
 
 ### 22. Data exclusion
 
@@ -256,7 +257,7 @@ More information: Any rule for excluding a particular set of data is acceptable.
 *Describe your data exclusion criteria here or state not applicable.*
 
 - We will compute the RT distribution for each participants for both tasks. Non-typical RT distributions (typically, distributions collapsed to the left are indicative of careless responses, and distributions that are wide and non-lognormally distributed are indicative of low attentional engagement) will lead to the removal of the data of that whole task.
-- We will additionally remove very fast trials (e.g., < 150 ms) and very long trials (> 1000 ms). See Theriault et al. 2024 for details ["Check your outliers! something"]
+- We will additionally remove very fast trials (e.g., < 150 ms) and very long trials (> 1000 ms). See Theriault et al. 2024 for details ["Check your outliers! something"] **TODO: add correct reference**
 
 ### 23. Missing data
 
