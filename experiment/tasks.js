@@ -33,7 +33,7 @@ const instructions_DoggoNogo = {
             "<p>You need to <b>finish the game</b> and then <b>return to this tab</b> to continue the experiment (<i style='color:red;'>do not close this tab while playing the game</i>).</p>"
 
         text +=
-            "<p align='center'><a href='https://sussex-psychology-software-team.github.io/DoggoNogo/?datapipe=AlXXHjfLwVP3&p=" +
+            "<p align='center'><a href='https://sussex-psychology-software-team.github.io/DoggoNogo/?datapipe=Vqb57uxj5LaN&p=" +
             participantID +
             "&s=DoggoNogoValidation&l1n=60' target='_blank'><b style='color:purple; font-size: 150%;'>CLICK HERE TO START THE GAME</b></a></p>"
 
@@ -119,10 +119,10 @@ const simpleRT_break = {
     },
 }
 
-const simpleRT_breakStop = Object.assign({}, simpleRT_break, // to ensure participants don't accidentally skip the break
-    {choices: ["NO_KEYS"],
-     trial_duration: 500,
-    data: {screen: "SimpleRT_breakStop"}},
+const simpleRT_breakStop = Object.assign(
+    {},
+    simpleRT_break, // to ensure participants don't accidentally skip the break
+    { choices: ["NO_KEYS"], trial_duration: 500, data: { screen: "SimpleRT_breakStop" } }
 )
 
 // Fixation trials - repeats following premature key presses don't have to be the same duration
@@ -146,23 +146,23 @@ const _simpleRT_fixationcross = {
 const tooFastMessage = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: function (data) {
-        if (jsPsych.data.get().last().values()[0].response == 'ArrowDown') {
+        if (jsPsych.data.get().last().values()[0].response == "ArrowDown") {
             return '<div style="font-size:40px; color:red;">Too fast! Wait until the red square appears</div>'
-        } else { 
+        } else {
             return '<div style="font-size:60px;">+</div>'
         }
     },
     choices: ["NO_KEYS"],
     trial_duration: function (data) {
-        if (jsPsych.data.get().last().values()[0].response == 'ArrowDown') {
+        if (jsPsych.data.get().last().values()[0].response == "ArrowDown") {
             return 1000
-        } else { 
-            return 0 
+        } else {
+            return 0
         }
     },
     data: {
         screen: "tooFastMessage",
-    }
+    },
 }
 
 // The fixation trials are put into a timeline that loops if an early response is detected
@@ -236,6 +236,7 @@ const task_assessment = {
                     {
                         type: "text",
                         title: "Without checking the time, how long do you think you spent doing the previous task?",
+                        description: "We are interested in your subjective perception of time",
                         name: "TaskFeedback_Duration",
                         isRequired: true,
                         inputType: "number",
