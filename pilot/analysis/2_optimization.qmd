@@ -308,6 +308,17 @@ dat |>
   labs(y="2 * median RT", x="99th percentile RT", title="Is 2 * median RT a good upper bound?") 
 ```
 
+### Score for Feedback
+
+```{r}
+#| code-fold: false
+
+df |> 
+  summarize(Median = median(RT), .by=c("Participant", "Session")) |> 
+  filter(Session == "S1") |> 
+  summarize(Mean_RT = mean(Median), SD_RT = sd(Median))
+```
+
 
 ## Figures
 
