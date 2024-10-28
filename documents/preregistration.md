@@ -33,9 +33,9 @@ The present study seeks to validate and optimize a simple reaction time task by 
 List specific, concise, and testable hypotheses. Please state if the hypotheses are directional or non-directional. If directional, state the direction. A predicted effect is also appropriate here. If a specific interaction or moderation is important to your research, you can list that as a separate hypothesis.
 -->
 
-1. The validity of the gamified version will be equivalent to that of the non-gamified version (**i.e.,...**).
-  - The correlation between individual task indices (e.g., median RT) should be high between the two versions.
-2. The gamified version will be more engaging (**as measured by... participant rating? Maintaining quick RT for longer?**) than the non-gamified version.
+1. The validity of the gamified version will be equivalent to that of the non-gamified version.
+  - The correlation between individual task indices of processing speed (e.g., median RT) should be high between the two versions.
+2. The gamified version will be more engaging than the non-gamified version.
   - Higher ratings of task enjoyment for the gamified version.
   - RT variability (e.g., SD(RTs)) should be lower for the gamified version.
 
