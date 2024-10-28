@@ -101,6 +101,7 @@ const instructions_simpleRT = {
             "<p>Press the <b>down arrow</b> to begin.</p>"
         return text
     },
+    choices: ["ArrowDown"],
     data: {
         screen: "instructions_SimpleRT",
     },
@@ -112,10 +113,17 @@ const simpleRT_break = {
         "<h1>Break</h1>" +
         "<p>You're doing well! Feel free to take a break to relax your eyes.</p>" +
         "<p>Press the <b>down arrow</b> to continue. Don't forget to respond as fast as possible!</p>",
+    choices: ["ArrowDown"],
     data: {
         screen: "SimpleRT_break",
     },
 }
+
+const simpleRT_breakStop = Object.assign({}, simpleRT_break, // to ensure participants don't accidentally skip the break
+    {choices: ["NO_KEYS"],
+     trial_duration: 500,
+    data: {screen: "SimpleRT_breakStop"}},
+)
 
 // Fixation trials - repeats following premature key presses don't have to be the same duration
 const _simpleRT_fixationcross = {
@@ -134,9 +142,32 @@ const _simpleRT_fixationcross = {
     response_ends_trial: true,
 }
 
+// Message following premature responses
+const tooFastMessage = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: function (data) {
+        if (jsPsych.data.get().last().values()[0].response == 'ArrowDown') {
+            return '<div style="font-size:40px; color:red;">Too fast! Wait until the red square appears</div>'
+        } else { 
+            return '<div style="font-size:60px;">+</div>'
+        }
+    },
+    choices: ["NO_KEYS"],
+    trial_duration: function (data) {
+        if (jsPsych.data.get().last().values()[0].response == 'ArrowDown') {
+            return 1000
+        } else { 
+            return 0 
+        }
+    },
+    data: {
+        screen: "tooFastMessage",
+    }
+}
+
 // The fixation trials are put into a timeline that loops if an early response is detected
 const simpleRT_fixationcross = {
-    timeline: [_simpleRT_fixationcross],
+    timeline: [_simpleRT_fixationcross, tooFastMessage],
     loop_function: function (data) {
         if (jsPsych.pluginAPI.compareKeys(data.values()[0].response, null)) {
             return false
@@ -242,8 +273,10 @@ var SimpleRT = {
     timeline: [
         instructions_simpleRT,
         simpleRT_block,
+        simpleRT_breakStop,
         simpleRT_break,
         simpleRT_block,
+        simpleRT_breakStop,
         simpleRT_break,
         simpleRT_block,
         task_assessment,
