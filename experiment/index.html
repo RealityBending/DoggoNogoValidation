@@ -14,7 +14,6 @@
         <!-- Procedure files -->
         <script src="demographics.js"></script>
         <script src="tasks.js"></script>
-        <script src="doggoNogo.js"></script>
 
         <!-- Stylesheet -->
         <link
@@ -54,9 +53,8 @@
         // Task ===================================================================
         timeline.push({
             type: jsPsychPreload,
-            images: ["stimuli/red_square.png"]
-        }
-        )
+            images: ["stimuli/red_square.png"],
+        })
 
         if (taskorder === "DoggoFirst") {
             timeline.push(DoggoNogo)

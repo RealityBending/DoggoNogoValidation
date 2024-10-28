@@ -78,6 +78,7 @@ var demographics_browser_info = {
     },
     on_finish: function (data) {
         data["participantID"] = participantID
+        data["condition"] = taskorder
 
         // Rename
         dat = jsPsych.data.get().filter({ screen: "browser_info" }).values()[0]
