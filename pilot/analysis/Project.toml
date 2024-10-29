@@ -1,0 +1,11 @@
+[deps]
+CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
+CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+Mooncake = "da2b9cff-9c12-43a0-ae48-6db2b0edb7d6"
+ParetoSmooth = "a68b5a21-f429-434e-8bfa-46b447300aac"
+Pigeons = "0eb8d820-af6a-4919-95ae-11206f830c31"
+RxInfer = "86711068-29c9-4ff7-b620-ae75d7495b3d"
+SequentialSamplingModels = "0e71a2a6-2b30-4447-8742-d083a85e82d1"
+StatsFuns = "4c63d2b9-4356-54db-8cca-17b64c39e42c"
+Turing = "fce5fe82-541a-59a6-adf8-730c64b5f9a0"
