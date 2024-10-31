@@ -1,4 +1,4 @@
-# Activate: using Pkg; using Revise; Pkg.activate(@__DIR__); cd(@__DIR__)
+# Activate: using Pkg; Pkg.activate(@__DIR__); cd(@__DIR__)
 using Turing, StatsFuns
 using SequentialSamplingModels
 using Downloads
@@ -8,6 +8,49 @@ include(Downloads.download("https://raw.githubusercontent.com/RealityBending/scr
 
 
 # Normal ======================================================================================
+# Linear ------------------------------------------------------------------------------------
+@model function model_Linear(rt, isi, participant, min_rt=minimum(rt), n=length(unique(participant)))
+
+    # Priors - Fixed Effects
+    μ_intercept ~ Normal(0.3, 0.5)
+    μ_isi1 ~ Normal(0, 0.5)
+    μ_isi2 ~ Normal(0, 0.5)
+
+    σ ~ truncated(Normal(0.0, 1), 0.0, Inf)
+
+    # Priors - Random Effects
+    μ_intercept_random_sd ~ truncated(Normal(0.0, 0.3), 0.0, Inf)
+    μ_isi1_random_sd ~ truncated(Normal(0, 0.3), 0.0, Inf)
+    μ_isi2_random_sd ~ truncated(Normal(0, 0.3), 0.0, Inf)
+
+    # Participant-level priors
+    μ_intercept_random ~ filldist(Normal(0, μ_intercept_random_sd), n)
+    μ_isi1_random ~ filldist(Normal(0, μ_isi1_random_sd), n)
+    μ_isi2_random ~ filldist(Normal(0, μ_isi2_random_sd), n)
+
+    for i in 1:length(rt)
+        # Compute μ
+        μ = μ_intercept + μ_intercept_random[participant[i]]
+        μ += (μ_isi1 + μ_isi1_random[participant[i]]) * isi[i, 1]
+        μ += (μ_isi2 + μ_isi2_random[participant[i]]) * isi[i, 2]
+
+        # Likelihood
+        rt[i] ~ Normal(μ, σ)
+    end
+end
+
+function model_Linear(rt, isi, participant; min_rt=minimum(rt))
+
+    # Data preparation
+    isi2 = data_poly(isi, 2; orthogonal=true)  # Transform ISI into polynomials
+    ppt_id = [findfirst(ppt .== unique(participant)) for ppt in participant] # Convert participant to integers
+    n = length(unique(participant))
+
+    return model_Linear(rt, isi2, ppt_id, min_rt, n)
+end
+
+
+
 # Gaussian ------------------------------------------------------------------------------------
 @model function model_Gaussian(rt, isi, participant, min_rt=minimum(rt), n=length(unique(participant)))
 
@@ -55,21 +98,18 @@ end
 function model_Gaussian(rt, isi, participant; min_rt=minimum(rt))
 
     # Data preparation
-    isi = data_poly(isi, 2; orthogonal=true)  # Transform ISI into polynomials
+    isi2 = data_poly(isi, 2; orthogonal=true)  # Transform ISI into polynomials
     ppt_id = [findfirst(ppt .== unique(participant)) for ppt in participant] # Convert participant to integers
     n = length(unique(participant))
 
-    return model_Gaussian(rt, isi, ppt_id, min_rt, n)
+    return model_Gaussian(rt, isi2, ppt_id, min_rt, n)
 end
 
 
 
 
 # Exgaussian ------------------------------------------------------------------------------------
-@model function model_ExGaussian(rt; min_rt=minimum(rt), isi=nothing)
-
-    # Transform ISI into polynomials
-    isi = data_poly(isi, 2; orthogonal=true)
+@model function model_ExGaussian(rt, isi, participant, min_rt=minimum(rt), n=length(unique(participant)))
 
     # Priors - Fixed Effects
     μ_intercept ~ Normal(0.3, 0.5)
@@ -84,13 +124,58 @@ end
     τ_isi1 ~ Normal(0, 3)
     τ_isi2 ~ Normal(0, 3)
 
+    # Priors - Random Effects
+    μ_intercept_random_sd ~ truncated(Normal(0.0, 0.3), 0.0, Inf)
+    μ_isi1_random_sd ~ truncated(Normal(0, 0.3), 0.0, Inf)
+    μ_isi2_random_sd ~ truncated(Normal(0, 0.3), 0.0, Inf)
+    σ_intercept_random_sd ~ truncated(Normal(0, 0.3), 0.0, Inf)
+    σ_isi1_random_sd ~ truncated(Normal(0, 0.3), 0.0, Inf)
+    σ_isi2_random_sd ~ truncated(Normal(0, 0.3), 0.0, Inf)
+    τ_intercept_random_sd ~ truncated(Normal(0, 0.3), 0.0, Inf)
+    τ_isi1_random_sd ~ truncated(Normal(0, 0.3), 0.0, Inf)
+    τ_isi2_random_sd ~ truncated(Normal(0, 0.3), 0.0, Inf)
+
+    # Participant-level priors
+    μ_intercept_random ~ filldist(Normal(0, μ_intercept_random_sd), n)
+    μ_isi1_random ~ filldist(Normal(0, μ_isi1_random_sd), n)
+    μ_isi2_random ~ filldist(Normal(0, μ_isi2_random_sd), n)
+    σ_intercept_random ~ filldist(Normal(0, σ_intercept_random_sd), n)
+    σ_isi1_random ~ filldist(Normal(0, σ_isi1_random_sd), n)
+    σ_isi2_random ~ filldist(Normal(0, σ_isi2_random_sd), n)
+    τ_intercept_random ~ filldist(Normal(0, τ_intercept_random_sd), n)
+    τ_isi1_random ~ filldist(Normal(0, τ_isi1_random_sd), n)
+    τ_isi2_random ~ filldist(Normal(0, τ_isi2_random_sd), n)
+
     for i in 1:length(rt)
-        μ = μ_intercept + (μ_isi1 * isi[i, 1]) + (μ_isi2 * isi[i, 2])
-        σ = σ_intercept + (σ_isi1 * isi[i, 1]) + (σ_isi2 * isi[i, 2])
-        τ = τ_intercept + (τ_isi1 * isi[i, 1]) + (τ_isi2 * isi[i, 2])
+        # Compute μ
+        μ = μ_intercept + μ_intercept_random[participant[i]]
+        μ += (μ_isi1 + μ_isi1_random[participant[i]]) * isi[i, 1]
+        μ += (μ_isi2 + μ_isi2_random[participant[i]]) * isi[i, 2]
+
+        # Compute σ
+        σ = σ_intercept + σ_intercept_random[participant[i]]
+        σ += (σ_isi1 + σ_isi1_random[participant[i]]) * isi[i, 1]
+        σ += (σ_isi2 + σ_isi2_random[participant[i]]) * isi[i, 2]
+
+        # Compute τ
+        τ = τ_intercept + τ_intercept_random[participant[i]]
+        τ += (τ_isi1 + τ_isi1_random[participant[i]]) * isi[i, 1]
+        τ += (τ_isi2 + τ_isi2_random[participant[i]]) * isi[i, 2]
+
         rt[i] ~ ExGaussian(μ, softplus(σ), softplus(τ))
     end
 end
+
+function model_ExGaussian(rt, isi, participant; min_rt=minimum(rt))
+
+    # Data preparation
+    isi2 = data_poly(isi, 2; orthogonal=true)  # Transform ISI into polynomials
+    ppt_id = [findfirst(ppt .== unique(participant)) for ppt in participant] # Convert participant to integers
+    n = length(unique(participant))
+
+    return model_ExGaussian(rt, isi2, ppt_id, min_rt, n)
+end
+
 
 # LogNormal --------------------------------------------------------------------------------------
 @model function model_LogNormal(rt; min_rt=minimum(rt), isi=nothing)
@@ -179,7 +264,7 @@ end
 
 
 # Log-Weibull (Gumbel) -------------------------------------------------------------------------
-# https://en.wikipedia.org/wiki/Gumbel_distribution 
+# https://en.wikipedia.org/wiki/Gumbel_distribution
 
 @model function model_LogWeibull(rt; min_rt=minimum(rt), isi=nothing)
 
@@ -386,6 +471,7 @@ end
 
 # =================================================================================================
 MODELS = Dict{String,Any}(
+    "model_Linear" => model_Linear,
     "model_Gaussian" => model_Gaussian,
     "model_ExGaussian" => model_ExGaussian,
     "model_LogNormal" => model_LogNormal,
