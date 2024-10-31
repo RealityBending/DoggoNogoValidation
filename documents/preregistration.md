@@ -10,7 +10,7 @@ Validation of a Gamified Measure of Processing Speed
 List authors and affiliations as applicable. Placing a number or letter in upward arrows, (e.g. ^2^) creates a superscript
 -->
 
-Benjamin Tribe^1^, Max Lovell^1^, and Dominique Makowski^1^
+Benjamin Tribe^1^, Max Lovell^1^, Ana Neves^1^, and Dominique Makowski^1^
 
 *^1^ School of Psychology, University of Sussex*
 
@@ -25,7 +25,7 @@ More info: The description should be no longer than the length of an abstract. I
 -->
 
 
-The present study seeks to validate and optimize a simple reaction time task by (1) testing the impact of gamification on processing speed assessment and task engagement and (2) assessing the optimal parameter values (number of trials and ISI range) for a robust yet efficient measure.
+The present study seeks to validate a simple reaction time task by testing the impact of gamification on processing speed assessment and task engagement.
 
 ### 4.	Hypotheses
 
@@ -162,7 +162,7 @@ More information: For any experimental manipulation, you should give a precise d
 
 1. Task version: (i) the **gamified** version involves a storyline, has a visual background, a main character and a character-relevant target stimulus, in addition to continuous in-game performance feedback; (ii) the **non-gamified** version involves basic instructions to respond to the plain stimulus which is presented on a white background and involves no in-task performance feedback.
 
-2. Inter-stimulus interval: **A-Bms** [TODO]
+2. Inter-stimulus interval: Uniformly sampled between 1-4s*
 
 ### 17. Measured variables
 
@@ -280,6 +280,9 @@ Example: We expect that certain demographic traits may be related to taste prefe
 -->
 
 Depending on the final sample size, we might look at the relationship between demographic variables and processing speed.
+
+A second aim is to optimize the new task by assessing the optimal parameter values (number of trials and ISI range) for a robust yet efficient measure. 
+This will be achieved by modeling the effect of ISI on RT, as well as investigating the "convergence" of performance indices (e.g., mean RT) as a function of the number of trials.
 
 ## Other
 
