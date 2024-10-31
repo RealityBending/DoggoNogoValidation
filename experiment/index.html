@@ -33,8 +33,8 @@
             // show_progress_bar: true,
             // message_progress_bar: "Progress",
             on_finish: function () {
-                jsPsych.data.displayData("json") // Display data in browser
-                // window.location = "https://realitybending.github.io/" // Redirect to lab website
+                // jsPsych.data.displayData("json") // Display data in browser
+                window.location = "https://realitybending.github.io/research/" // Redirect to lab website
                 // jsPsych.data.get().localSave('csv', `${participant_id}.csv`); // save data locally
             },
         })
@@ -46,9 +46,9 @@
         var timeline = []
 
         // Demographics ===========================================================
-        // timeline.push(ConsentForm)
+        timeline.push(ConsentForm)
         timeline.push(demographics_browser_info)
-        // timeline.push(demographic_questions)
+        timeline.push(demographic_questions)
 
         // Task ===================================================================
         timeline.push({
@@ -68,14 +68,14 @@
         timeline.push(experiment_feedback)
         timeline.push(experiment_debriefing)
 
-        // // Save data via DataPipe
-        // timeline.push({
-        //     type: jsPsychPipe,
-        //     action: "save",
-        //     experiment_id: "Vqb57uxj5LaN", // This in generated in the DataPipe interface
-        //     filename: `Experiment_${participantID}.csv`,
-        //     data_string: () => jsPsych.data.get().csv(),
-        // })
+        // Save data via DataPipe
+        timeline.push({
+            type: jsPsychPipe,
+            action: "save",
+            experiment_id: "Vqb57uxj5LaN", // This in generated in the DataPipe interface
+            filename: `Experiment_${participantID}.csv`,
+            data_string: () => jsPsych.data.get().csv(),
+        })
 
         timeline.push(experiment_endscreen)
 
