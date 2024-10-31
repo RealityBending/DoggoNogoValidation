@@ -3,7 +3,8 @@ library(easystats)
 library(jsonlite)
 
 # path <- "C:/Users/dmm56/Box/Data/DoggoNogoValidation"
-path <- "C:/Users/domma/Box/Data/DoggoNogoValidation"
+# path <- "C:/Users/domma/Box/Data/DoggoNogoValidation"
+path <- "C:/Users/Benjamin Tribe/Box/DoggoNogoValidation"
 
 
 
@@ -22,12 +23,28 @@ for (file in files) {
 
   data_ppt <- data.frame(Participant = dat$participantID,
                          Recruitment = dat$researcher,
-                         Condition = dat$condition)  # TODO: add info
+                         Condition = dat$condition,
+                         StartDate = as.POSIXct(paste(dat$date, dat$time), format = "%d/%m/%Y %H:%M:%S"),
+                         TimeElapsed = dat$time_elapsed,
+                         BrowserVersion = paste(dat$browser, dat$browser_version),
+                         Mobile = dat$mobile,
+                         Platform = dat$os,
+                         ScreenWidth = dat$screen_width,
+                         ScreenHeight = dat$screen_height,
+                         Fullscreen = dat$fullscreen,
+                         RefreshRate = dat$vsync_rate)  # TODO: add info - DONE?
 
 
 
   # Demographics
-  # TODO.
+  dems <- lapply(rawdata[rawdata$screen == "demographic_questions",]$response, jsonlite::fromJSON) |> 
+    unlist() |> 
+    as.data.frame() |> 
+    tibble::rownames_to_column()
+  names(dems) <- c("Var", "Val")
+  dems <- dems |> pivot_wider(names_from = "Var", values_from = "Val")
+  data_ppt <- cbind(data_ppt, dems)
+  
 
   # Post-task questionnaires
   dat <- rawdata[rawdata$screen == "task_assessment",]
@@ -82,7 +99,18 @@ for (file in files) {
   dat <- do.call(rbind, lapply(dog$level1, as.data.frame))
   dog_l1 <- data.frame(Participant = dog_ppt$Participant,
                        RT = dat$rt,
-                       ISI = dat$isi)  # TODO: add rest
+                       ISI = dat$isi,
+                       Response_Type = dat$responseType,
+                       Trial_Score = dat$trialScore,
+                       Total_Score = dat$totalScore,
+                       Threshold = dat$threshold,
+                       Valid_Trial = dat$validTrial,
+                       Valid_Trial_Count = dat$validTrialCount,
+                       Stimulus_Size = dat$stimulusScale,
+                       Stimulus_X = dat$stimulusX,
+                       Stimulus_Y = dat$stimulusY,
+                       Stimulus_Orientation = dat$stimulusOrientation
+                       )  # TODO: add rest - Added rest from dat, except datetime, screenWidth, screenHeight, canvasWidth, canvasHeight, canvasScaleFactor
 
   # Merge
   alldata_dog <- rbind(alldata_dog, dog_ppt)
@@ -121,5 +149,5 @@ alldata <- merge(alldata, alldata_dog, by="Participant")
 
 write.csv(alldata, "../data/rawdata_participants.csv", row.names = FALSE)
 write.csv(alldata_rt, "../data/rawdata_simple.csv", row.names = FALSE)
-write.csv(alldata_dog, "../data/rawdata_doggonogo.csv", row.names = FALSE)
+write.csv(alldata_dogRT, "../data/rawdata_doggonogo.csv", row.names = FALSE)
 
