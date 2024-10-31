@@ -18,4 +18,4 @@ https://github.com/RealityBending/DoggoNogo/assets/8875533/68245fcf-f237-4458-b6
 
 ## Study 1
 
-*In progress*
+- [Experiment](https://realitybending.github.io/DoggoNogoValidation/experiment/index?exp=README)
