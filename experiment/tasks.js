@@ -35,7 +35,7 @@ const instructions_DoggoNogo = {
         text +=
             "<p align='center'><a href='https://sussex-psychology-software-team.github.io/DoggoNogo/?datapipe=Vqb57uxj5LaN&p=" +
             participantID +
-            "&s=DoggoNogoValidation&l1n=90' target='_blank'><b style='color:purple; font-size: 150%;'>CLICK HERE TO START THE GAME</b></a></p>"
+            "&s=DoggoNogoValidation&l1n=150' target='_blank'><b style='color:purple; font-size: 150%;'>CLICK HERE TO START THE GAME</b></a></p>"
 
         text +=
             "<p style='color:green;' align='center'>(Note that the game might take a few seconds to load)</p>"
@@ -67,7 +67,7 @@ const instructions_DoggoNogo = {
 
                 setTimeout(function () {
                     doggoNogoNext.style.display = "inline-block"
-                }, 1200) // set to ~120000 ms? (2mins)
+                }, 120000) // set to ~120000 ms? (2mins)
             } else {
                 requestAnimationFrame(hideButton)
             }
@@ -203,7 +203,7 @@ const simpleRT_trial = {
 const simpleRT_block = {
     timeline: [simpleRT_fixationcross, simpleRT_trial],
     randomize_order: true,
-    repetitions: 30, // number of trials (N total = this x3)
+    repetitions: 50, // number of trials (N total = this x3)
 }
 
 // Post-task assessment ==============================================================================
