@@ -58,7 +58,7 @@ for (file in files) {
 # }
 #
 # dog_l1 |>
-#   mutate(rt = ifelse(responseType %in% c("early", "missed"), NA, rt)) |>
+#   mutate(rt = ifelse(responseType %in% c("early"), NA, rt)) |>
 #   mutate(medianRT = c(NA, cumulative_median(rt)[1:(length(rt)-1)])) |>
 #   select(trialNumber, responseType, rt, threshold, medianRT) |>
 #   ggplot(aes(x=trialNumber)) +
