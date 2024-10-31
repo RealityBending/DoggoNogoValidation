@@ -55,9 +55,6 @@ const instructions_DoggoNogo = {
                     ],
                 },
             ],
-            data: {
-                screen: "instructions_DoggoNogo",
-            },
         }
     },
     // This function hides the 'Continue' button for a couple of seconds
@@ -76,6 +73,9 @@ const instructions_DoggoNogo = {
             }
         }
         hideButton()
+    },
+    data: {
+        screen: "instructions_DoggoNogo",
     },
 }
 
