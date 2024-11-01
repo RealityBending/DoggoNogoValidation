@@ -1,5 +1,4 @@
-# Activate: using Pkg; using Revise; Pkg.activate(@__DIR__); cd(@__DIR__)
-
+# Activate: using Pkg; Pkg.activate(@__DIR__); cd(@__DIR__)
 using CSV
 using DataFrames
 using Downloads
@@ -20,15 +19,15 @@ include(Downloads.download("https://raw.githubusercontent.com/RealityBending/scr
 df = CSV.read(Downloads.download("https://raw.githubusercontent.com/RealityBending/DoggoNogo/main/study1/data/data_game.csv"), DataFrame)
 df.ppt = [findfirst(ppt .== unique(df.Participant)) for ppt in df.Participant]
 df = df[df.Session.=="S1", :]
-df = df[1:120*4, :]
 
 cd(@__DIR__)  # pwd()
 
 objects = (
+    Linear=Serialization.deserialize("models/Linear.turing"),
     Gaussian=Serialization.deserialize("models/Gaussian.turing"),
     ExGaussian=Serialization.deserialize("models/ExGaussian.turing"),
-    LogNormal=Serialization.deserialize("models/LogNormal.turing"),
-    InverseGaussian=Serialization.deserialize("models/InverseGaussian.turing"),
+    # LogNormal=Serialization.deserialize("models/LogNormal.turing"),
+    # InverseGaussian=Serialization.deserialize("models/InverseGaussian.turing"),
     # Weibull=Serialization.deserialize("models/Weilbull.turing"),
     # LogWeibull=Serialization.deserialize("models/LogWeibull.turing"),
     # InverseWeibull=Serialization.deserialize("models/InverseWeibull.turing"),
@@ -42,6 +41,7 @@ objects = (
 
 
 colors = (
+    Linear="#1A237E",
     Gaussian="#3F51B5",
     ExGaussian="#2196F3",
     LogNormal="#03A9F4",
@@ -57,6 +57,10 @@ colors = (
 )
 
 
+pred = Array(predict(MODELS["model_Gaussian"](fill(missing, length(df.ISI))[1:end-90], df.ISI[1:end-90], df.Participant[1:end-90]; min_rt=minimum(df.RT)), objects[:Gaussian]["posteriors"]))
+pred = predict(MODELS["model_Gaussian"](fill(missing, 5), [1.0, 2.0, 1.0, 4.0, 5.0], df.Participant[1:5]; min_rt=minimum(df.RT)), objects[:Gaussian]["posteriors"])
+Array(pred)
+
 # Durations -------------------------------------------------------------------------------------
 order = sortperm([o["duration"] for o in values(objects)])
 xaxis = [String(k) for k in keys(objects)][order]
@@ -70,14 +74,10 @@ f
 
 
 # PP Check --------------------------------------------------------------------------------------
-function make_predictions(df, info, isi)
+function make_predictions(data, info, df)
     # Generate predictions
-    if info["model"] ∈ ["model_Gaussian"]
-        pred = predict(MODELS[info["model"]]([missing for i in 1:length(isi)], df.ISI, df.Participant; min_rt=minimum(df.RT)), info["posteriors"])
-    else
-        pred = predict(MODELS[info["model"]]([missing for i in 1:length(isi)]; min_rt=minimum(df.RT), isi=isi), info["posteriors"])
-    end
-
+    pred = predict(MODELS[info["model"]]([missing for i in 1:length(data.ISI)], data.ISI, data.Participant; min_rt=minimum(df.RT)), info["posteriors"])
+    pred[:τ_intercept_random_sd]
     # Format predictions
     if info["model"] ∈ Set(["model_LBA", "model_LNR", "model_RDM"])
         pred = Array(pred)[:, 2:2:end]
@@ -85,16 +85,17 @@ function make_predictions(df, info, isi)
         pred = Array(pred)
     end
     # Select random rows from Matrix
-    pred = pred[sample(1:size(pred, 1), 400; replace=false), :]
+    # pred = pred[sample(1:size(pred, 1), 400; replace=false), :]
     return pred
 end
 
 
-function make_ppcheck(df, info, f, i; color="orange", title="TITLE")
-    pred = make_predictions(df, info, df.ISI)
+function make_ppcheck(df, info, f, i; color="orange")
+    pred = make_predictions(df, info, df)
+    names(pred)
 
     # Make figure
-    ax = Axis(f[i, 1], title=String(title))
+    ax = Axis(f[i, 1], title=replace(info["model"], "model_" => ""), ylabel="Density")
     CairoMakie.density!(ax, df.RT, color="black")
     for i in 1:size(pred, 1)
         CairoMakie.density!(ax, pred[i, :], color=(:black, 0), strokecolor=(color, 0.05), strokewidth=1)
@@ -111,20 +112,15 @@ f
 
 
 # ISI -------------------------------------------------------------------------------------------
-function make_effectISI(grid, df, info, f, i; color="orange", title="TITLE")
-    # pred = predict(info["model"]([missing for i in 1:length(grid)]; min_rt=minimum(df.RT), isi=grid), info["posteriors"])
-    # if title ∈ Set([:LBA, :LNR, :RDM])
-    #     pred = Array(pred)[:, 2:2:end]
-    # else
-    #     pred = Array(pred)
-    # end
-    pred = make_predictions(df, info, grid)
+function make_effectISI(df, info, f, i; color="orange")
+    grid = DataFrame(ISI=data_grid(df.ISI; n=20), Participant="S002")
+    pred = make_predictions(grid, info, df)
 
     xaxis = collect(1:length(grid)) * 10  # So that each distribution is separated
 
     xticks = range(minimum(xaxis), maximum(xaxis), length=6)
     xlabels = string.(round.(range(minimum(grid), maximum(grid), length=6); digits=2))
-    ax = Axis(f[i, 2], title=String(title), xticks=(xticks, xlabels))
+    ax = Axis(f[i, 2], title=replace(info["model"], "model_" => ""), xticks=(xticks, xlabels))
     for (i, isi) in enumerate(grid)
         CairoMakie.density!(ax, pred[:, i], offset=i * 10, direction=:y,
             # color=:y, colormap=:thermal, colorrange=(0, 1))
@@ -138,7 +134,7 @@ end
 
 f = Figure()
 for (i, k) in enumerate(keys(objects))
-    f = make_effectISI(data_grid(df.ISI; n=20), df, objects[k], f, i; color=colors[i], title=k)
+    f = make_effectISI(df, objects[k], f, i; color=colors[i])
 end
 f
 
@@ -149,9 +145,9 @@ f
 # Comparison =====================================================================================
 # - cv_elpd: The difference in total leave-one-out cross validation scores between models.
 # - cv_avg: The difference in average LOO-CV scores between models.
-# - weight: A set of Akaike-like weights assigned to each model, which can be used in pseudo-Bayesian model averaging. 
+# - weight: A set of Akaike-like weights assigned to each model, which can be used in pseudo-Bayesian model averaging.
 # Akaike weights are can be used in model averaging. They represent the relative likelihood of a model.
-# Interpretation: "The ExGaussian model has a 95% chance of being the best model." 
+# Interpretation: "The ExGaussian model has a 95% chance of being the best model."
 psis = []
 for (i, k) in enumerate(keys(objects))
     push!(psis, psis_loo(objects[k]["fit"], objects[k]["posteriors"]; source="mcmc"))
@@ -176,5 +172,5 @@ f
 # mll_exg = stepping_stone(pt_exg)
 # mll_wald = stepping_stone(pt_wald)
 
-# # The BF is obtained by exponentiating the difference between marginal log likelihoods. 
+# # The BF is obtained by exponentiating the difference between marginal log likelihoods.
 # bf = exp(mll_exg - mll_wald)

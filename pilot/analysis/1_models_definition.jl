@@ -3,6 +3,7 @@ using Turing, StatsFuns
 using SequentialSamplingModels
 using Downloads
 
+
 include(Downloads.download("https://raw.githubusercontent.com/RealityBending/scripts/main/data_poly.jl"))
 
 

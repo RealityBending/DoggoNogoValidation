@@ -1,4 +1,4 @@
-# Activate: using Pkg; using Revise; Pkg.activate(@__DIR__); cd(@__DIR__)
+# Activate: using Pkg; Pkg.activate(@__DIR__); cd(@__DIR__)
 using Random
 using DataFrames, CSV
 using Serialization
@@ -24,7 +24,7 @@ function sample_and_save(m, df, name="name"; pt=false, optim=false)
     t0 = time()
     if any([occursin(x, name) for x in ["LBA", "LNR", "RDM"]])  # Needs choice variable
         fit = m([(choice=1, rt=df.RT[i]) for i in 1:length(df.RT)], min_rt=minimum(df.RT), isi=df.ISI)
-    elseif name ∈ ["Gaussian"]
+    elseif name ∈ ["Linear", "Gaussian", "ExGaussian"]
         fit = m(df.RT, df.ISI, df.Participant; min_rt=minimum(df.RT))
     else
         fit = m(df.RT, min_rt=minimum(df.RT), isi=df.ISI)
@@ -80,6 +80,7 @@ end
 Random.seed!(123)
 
 
+linear = sample_and_save(model_Linear, df, "Linear"; pt=false, optim=false)
 gaussian = sample_and_save(model_Gaussian, df, "Gaussian"; pt=false, optim=false)
 exgaussian = sample_and_save(model_ExGaussian, df, "ExGaussian"; pt=false)
 lognormal = sample_and_save(model_LogNormal, df, "LogNormal"; pt=false)
