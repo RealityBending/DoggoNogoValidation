@@ -84,5 +84,8 @@ fit = model_ExGaussian(df.RT[1:50], df.ISI[1:50], df.Participant[1:50])
 posteriors = sample(fit, NUTS(), 200)
 
 pred1 = predict(model_ExGaussian(fill(missing, length(df.ISI)), df.ISI, df.Participant; min_rt=minimum(df.RT)), posteriors)
+
 names(pred1)
+size(Array(pred1))
+length(df.ISI)
 
