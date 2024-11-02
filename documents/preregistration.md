@@ -160,9 +160,9 @@ Example: We manipulated the percentage of sugar by mass added to brownies. The f
 More information: For any experimental manipulation, you should give a precise definition of each manipulated variable. This must include a precise description of the levels at which each variable will be set, or a specific definition for each categorical treatment. For example, “loud or quiet,” should instead give either a precise decibel level or a means of recreating each level. 'Presence/absence' or 'positive/negative' is an acceptable description if the variable is precisely described.
 -->
 
-1. Task version: (i) the **gamified** version involves a storyline, has a visual background, a main character and a character-relevant target stimulus, in addition to continuous in-game performance feedback; (ii) the **non-gamified** version involves basic instructions to respond to the plain stimulus which is presented on a white background and involves no in-task performance feedback.
+1. Task version: (i) the **gamified** version involves a storyline, has a visual background, a main character and a character-relevant target stimulus, in addition to continuous in-game performance feedback; (ii) the **non-gamified** version involves basic instructions to respond to the plain stimulus which is presented on a white background and the only in-task feedback occurs when participants try to respond prematurely, serving as a reminder to wait for the stimulus.
 
-2. Inter-stimulus interval: Uniformly sampled between 1-4s*
+2. Inter-stimulus interval: Uniformly sampled between 1-4s
 
 ### 17. Measured variables
 
@@ -254,10 +254,8 @@ Example: No checks will be performed to determine eligibility for inclusion besi
 More information: Any rule for excluding a particular set of data is acceptable. One may describe rules for excluding a participant or for identifying outlier data.
 -->
 
-*Describe your data exclusion criteria here or state not applicable.*
-
 - We will compute the RT distribution for each participants for both tasks. Non-typical RT distributions (typically, distributions collapsed to the left are indicative of careless responses, and distributions that are wide and non-lognormally distributed are indicative of low attentional engagement) will lead to the removal of the data of that whole task.
-- We will additionally remove very fast trials (e.g., < 150 ms) and very long trials (> 1000 ms). See Thériault et al. 2024 for details.
+- We will additionally remove very fast trials (e.g., < 150 ms) and very long trials (> 1000 ms). See Thériault et al. (2024) for details.
 
 ### 23. Missing data
 
@@ -269,7 +267,7 @@ Example: If a subject does not complete any of the three indices of tastiness, t
 More information: Any relevant explanation is acceptable. As a final reminder, remember that the final analysis must follow the specified plan, and deviations must be either strongly justified or included as a separate, exploratory analysis.
 -->
 
-Not applicable.
+Participants for which Doggo/Nogo (gamified task) data is missing will be removed.
 
 ### 24. Exploratory analysis
 
