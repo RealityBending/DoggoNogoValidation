@@ -128,9 +128,14 @@ alldata <- merge(alldata, alldata_dog, by="Participant")
 
 
 # Anonymize ---------------------------------------------------------------
-
-
-
+# Generate IDs
+ids <- paste0("S", format(sprintf("%03d", 1:nrow(alldata))))
+# Sort Participant according to date and assign new IDs
+names(ids) <- alldata$Participant[order(alldata$Experiment_StartDate)]
+# Replace IDs
+alldata$Participant <- ids[alldata$Participant]
+alldata_rt$Participant <- ids[alldata_rt$Participant]
+alldata_dogRT$Participant <- ids[alldata_dogRT$Participant]
 
 # Save --------------------------------------------------------------------
 
