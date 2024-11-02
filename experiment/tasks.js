@@ -94,7 +94,7 @@ const instructions_simpleRT = {
 
         text +=
             "<p>In this game of speed, a fixation cross (+) will appear in the center of the screen, followed by a red square.</p>" +
-            "<p>Whenever the red square appears, press the <b>Down Arrow</b> as fast as you can.</p>" +
+            "<p>Whenever the red square appears anywhere on the screen, press the <b>Down Arrow</b> as fast as you can.</p>" +
             `<p style='float:centre'><img src='stimuli/red_square.png' style='height:${
                 window.innerHeight / 6
             }px; margin: 10px'/></p>` +
