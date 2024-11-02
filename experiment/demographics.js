@@ -115,6 +115,7 @@ const demographic_questions = {
                         type: "radiogroup",
                         choices: ["Male", "Female"],
                         showOtherItem: true,
+                        otherText: "Other",
                         isRequired: true,
                         colCount: 0,
                     },
