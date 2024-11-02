@@ -1,5 +1,3 @@
-library(tidyverse)
-library(easystats)
 library(jsonlite)
 
 # path <- "C:/Users/dmm56/Box/Data/DoggoNogoValidation"
@@ -18,37 +16,36 @@ for (file in files) {
   rawdata <- read.csv(paste0(path, "/", file))
   # unique(rawdata$screen)
 
+
   # Initialize participant-level data
   dat <- rawdata[rawdata$screen == "browser_info",]
 
   data_ppt <- data.frame(Participant = dat$participantID,
                          Recruitment = dat$researcher,
                          Condition = dat$condition,
-                         StartDate = as.POSIXct(paste(dat$date, dat$time), format = "%d/%m/%Y %H:%M:%S"),
-                         TimeElapsed = dat$time_elapsed,
-                         BrowserVersion = paste(dat$browser, dat$browser_version),
+                         Experiment_StartDate = as.POSIXct(paste(dat$date, dat$time), format = "%d/%m/%Y %H:%M:%S"),
+                         Experiment_Duration = rawdata[rawdata$screen == "debriefing", "time_elapsed"] / 1000 / 60,
+                         Browser_Version = paste(dat$browser, dat$browser_version),
                          Mobile = dat$mobile,
                          Platform = dat$os,
-                         ScreenWidth = dat$screen_width,
-                         ScreenHeight = dat$screen_height,
-                         Fullscreen = dat$fullscreen,
-                         RefreshRate = dat$vsync_rate)  # TODO: add info - DONE?
+                         Screen_Width = dat$screen_width,
+                         Screen_Height = dat$screen_height,
+                         Refresh_Rate = dat$vsync_rate)
 
 
 
   # Demographics
-  dems <- lapply(rawdata[rawdata$screen == "demographic_questions",]$response, jsonlite::fromJSON) |> 
-    unlist() |> 
-    as.data.frame()
-  dems$Var <- rownames(dems)
-  rownames(dems) <- NULL
-  names(dems) <- c("Val", "Var")
-  dems$ID <- 1
-  dems <- reshape(dems, timevar = "Var", idvar = "ID", direction = "wide")
-  dems$ID <- NULL
-  names(dems) <- gsub("Val.", "", names(dems))
-  data_ppt <- cbind(data_ppt, dems)
-  
+  demog <- jsonlite::fromJSON(rawdata[rawdata$screen == "demographic_questions",]$response)
+  demog <- as.data.frame(t(demog))
+  demog$GenderOther <- NULL
+  data_ppt <- cbind(data_ppt, demog)
+
+  # Feedback
+  feedback <- jsonlite::fromJSON(rawdata[rawdata$screen == "experiment_feedback", "response"])
+  data_ppt$Experiment_Enjoyment <- feedback$Feedback_Enjoyment
+  data_ppt$Experiment_Feedback <- ifelse(is.null(feedback$Feedback_Text), NA, feedback$Feedback_Text)
+
+
 
   # Post-task questionnaires
   dat <- rawdata[rawdata$screen == "task_assessment",]
@@ -73,7 +70,9 @@ for (file in files) {
                         Trial = 1:nrow(dat),
                         RT = dat$rt,
                         ISI = rawdata[as.numeric(rownames(dat))-2, "trial_duration"],
-                        Stimulus_Size = as.numeric(gsub(".*width: (.*)px; opa.*", "\\1", dat$stimulus)))
+                        Stimulus_Size = as.numeric(gsub(".*width: (.*)px; opa.*", "\\1", dat$stimulus)),
+                        Stimulus_X = as.numeric(gsub(".*left: (.*)px; top.*", "\\1", dat$stimulus)),
+                        Stimulus_Y = as.numeric(gsub(".*top: (.*)px; width.*", "\\1", dat$stimulus)))
 
   # Merge everything
   alldata <- rbind(alldata, data_ppt)
@@ -114,34 +113,18 @@ for (file in files) {
                        Stimulus_X = dat$stimulusX,
                        Stimulus_Y = dat$stimulusY,
                        Stimulus_Orientation = dat$stimulusOrientation
-                       )  # TODO: add rest - Added rest from dat, except datetime, screenWidth, screenHeight, canvasWidth, canvasHeight, canvasScaleFactor
+                       )
 
   # Merge
   alldata_dog <- rbind(alldata_dog, dog_ppt)
   alldata_dogRT <- rbind(alldata_dogRT, dog_l1)
-
-
-  # Quick Check
-  # library(tidyverse)
-  #
-  # cumulative_median <- function(x) {
-  #   sapply(seq_along(x), function(i) median(x[1:i], na.rm=TRUE))
-  # }
-  #
-  # dog_l1 |>
-  #   mutate(rt = ifelse(responseType %in% c("early"), NA, rt)) |>
-  #   mutate(medianRT = c(NA, cumulative_median(rt)[1:(length(rt)-1)])) |>
-  #   select(trialNumber, responseType, rt, threshold, medianRT) |>
-  #   ggplot(aes(x=trialNumber)) +
-  #   geom_line(aes(y=threshold), color="black") +
-  #   geom_line(aes(y=medianRT), color="blue")
 
 }
 alldata <- merge(alldata, alldata_dog, by="Participant")
 
 
 # Award -------------------------------------------------------------------
-
+# alldata[, c("Gender", "Age", "Experiment_Duration")]
 
 
 # Anonymize ---------------------------------------------------------------
@@ -152,6 +135,6 @@ alldata <- merge(alldata, alldata_dog, by="Participant")
 # Save --------------------------------------------------------------------
 
 write.csv(alldata, "../data/rawdata_participants.csv", row.names = FALSE)
-write.csv(alldata_rt, "../data/rawdata_simple.csv", row.names = FALSE)
+write.csv(alldata_rt, "../data/rawdata_simpleRT.csv", row.names = FALSE)
 write.csv(alldata_dogRT, "../data/rawdata_doggonogo.csv", row.names = FALSE)
 
