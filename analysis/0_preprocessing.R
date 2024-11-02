@@ -39,10 +39,14 @@ for (file in files) {
   # Demographics
   dems <- lapply(rawdata[rawdata$screen == "demographic_questions",]$response, jsonlite::fromJSON) |> 
     unlist() |> 
-    as.data.frame() |> 
-    tibble::rownames_to_column()
-  names(dems) <- c("Var", "Val")
-  dems <- dems |> pivot_wider(names_from = "Var", values_from = "Val")
+    as.data.frame()
+  dems$Var <- rownames(dems)
+  rownames(dems) <- NULL
+  names(dems) <- c("Val", "Var")
+  dems$ID <- 1
+  dems <- reshape(dems, timevar = "Var", idvar = "ID", direction = "wide")
+  dems$ID <- NULL
+  names(dems) <- gsub("Val.", "", names(dems))
   data_ppt <- cbind(data_ppt, dems)
   
 
