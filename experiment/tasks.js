@@ -33,7 +33,7 @@ const instructions_DoggoNogo = {
             "<p>You need to <b>finish the game</b> and then <b>return to this tab</b> to continue the experiment (<i style='color:red;'>do not close this tab while playing the game</i>).</p>"
 
         text +=
-            "<p align='center'><a href='https://sussex-psychology-software-team.github.io/DoggoNogo/?datapipe=Vqb57uxj5LaN&p=" +
+            "<p align='center'><a href='https://SussexPsychologySoftware.github.io/DoggoNogo/?datapipe=Vqb57uxj5LaN&p=" +
             participantID +
             "&s=DoggoNogoValidation&l1n=150' target='_blank'><b style='color:purple; font-size: 150%;'>CLICK HERE TO START THE GAME</b></a></p>"
 

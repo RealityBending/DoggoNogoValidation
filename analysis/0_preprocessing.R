@@ -20,6 +20,10 @@ for (file in files) {
   # Initialize participant-level data
   dat <- rawdata[rawdata$screen == "browser_info",]
 
+  if (!dat$researcher %in% c("PILOT2")) {
+    next
+  }
+
   data_ppt <- data.frame(Participant = dat$participantID,
                          Recruitment = dat$researcher,
                          Condition = dat$condition,
@@ -86,7 +90,12 @@ files <- list.files(path, pattern = "*.json")
 alldata_dog <- data.frame()
 alldata_dogRT <- data.frame()
 for (file in files) {
+
   dog <- jsonlite::read_json(paste0(path, "/", file))
+  if (!dog$metadata$participantName %in% alldata$Participant) {
+    next
+  }
+
 
   dog_ppt <- data.frame(Participant = dog$metadata$participantName,
                         DoggoNogo_ID = dog$metadata$randomID,
@@ -121,10 +130,10 @@ for (file in files) {
 
 }
 alldata <- merge(alldata, alldata_dog, by="Participant")
-
+setdiff(alldata$Participant, alldata_dog$Participant)
 
 # Award -------------------------------------------------------------------
-# alldata[, c("Gender", "Age", "Experiment_Duration")]
+# alldata[, c("Participant", "Gender", "Age", "Experiment_StartDate", "Experiment_Duration")]
 
 
 # Anonymize ---------------------------------------------------------------
