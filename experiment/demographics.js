@@ -15,6 +15,11 @@ const ConsentForm = {
                 "<p style='color:green;' align='left'><b>Note: You will receive a <i style='color:purple;'>SurveySwap.io</i> completion code at the end of the experiment.</b></p>"
         }
 
+        if (jsPsych.data.urlVariables()["exp"] == "SONA") {
+            text +=
+                "<p style='color:green;' align='left'><b>Note: You will receive a <i style='color:purple;'>SONA</i> completion link at the end of the experiment.</b></p>"
+        }
+
         // Main Text
         text +=
             // Overview
@@ -142,7 +147,11 @@ const demographic_questions = {
                         title: "What is your handedness?",
                         name: "Handedness",
                         type: "radiogroup",
-                        choices: ["Left-handed", "Right-handed", "Ambidextrous"],
+                        choices: [
+                            "Left-handed",
+                            "Right-handed",
+                            "Ambidextrous",
+                        ],
                         isRequired: true,
                         colCount: 0,
                     },
@@ -264,7 +273,8 @@ var experiment_feedback = {
     type: jsPsychSurvey,
     survey_json: {
         title: "Feedback",
-        description: "It is the end of the experiment! Don't hesitate to leave us a feedback.",
+        description:
+            "It is the end of the experiment! Don't hesitate to leave us a feedback.",
         completeText: "Complete the experiment",
         showQuestionNumbers: false,
         pages: [
@@ -349,6 +359,15 @@ const experiment_endscreen = {
                 "<a href='https://surveyswap.io/sr/E9XP-DWMS-BHA3'>here<a/>" +
                 " to redeem your SurveySwap participation</b><br>(in case the link doesn't work, the code is: E9XP-DWMS-BHA3)</p>" // code??
         }
+        if (jsPsych.data.urlVariables()["exp"] == "SONA") {
+            text +=
+                "<p style='color:red;'><b>Click " +
+                "<a href='https://sussexpsychology.sona-systems.com/webstudy_credit.aspx?experiment_id=1906&credit_token=ec164f49e113489ea9a181962295d8e8&survey_code=" +
+                jsPsych.data.urlVariables()["sona_id"] +
+                "'>here<a/>" +
+                " to redeem your SONA credits</b><br></p>"
+        }
+
         return {
             showQuestionNumbers: false,
             completeText: "End experiment",
