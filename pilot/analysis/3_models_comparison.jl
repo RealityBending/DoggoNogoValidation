@@ -24,8 +24,8 @@ cd(@__DIR__)  # pwd()
 
 objects = (
     Linear=Serialization.deserialize("models/Linear.turing"),
-    Gaussian=Serialization.deserialize("models/Gaussian.turing"),
-    ExGaussian=Serialization.deserialize("models/ExGaussian.turing"),
+    # Gaussian=Serialization.deserialize("models/Gaussian.turing"),
+    # ExGaussian=Serialization.deserialize("models/ExGaussian.turing"),
     # LogNormal=Serialization.deserialize("models/LogNormal.turing"),
     # InverseGaussian=Serialization.deserialize("models/InverseGaussian.turing"),
     # Weibull=Serialization.deserialize("models/Weilbull.turing"),
@@ -57,10 +57,6 @@ colors = (
 )
 
 
-pred = Array(predict(MODELS["model_Gaussian"](fill(missing, length(df.ISI))[1:end-90], df.ISI[1:end-90], df.Participant[1:end-90]; min_rt=minimum(df.RT)), objects[:Gaussian]["posteriors"]))
-pred = predict(MODELS["model_Gaussian"](fill(missing, 5), [1.0, 2.0, 1.0, 4.0, 5.0], df.Participant[1:5]; min_rt=minimum(df.RT)), objects[:Gaussian]["posteriors"])
-Array(pred)
-
 # Durations -------------------------------------------------------------------------------------
 order = sortperm([o["duration"] for o in values(objects)])
 xaxis = [String(k) for k in keys(objects)][order]
@@ -76,8 +72,12 @@ f
 # PP Check --------------------------------------------------------------------------------------
 function make_predictions(data, info, df)
     # Generate predictions
-    pred = predict(MODELS[info["model"]]([missing for i in 1:length(data.ISI)], data.ISI, data.Participant; min_rt=minimum(df.RT)), info["posteriors"])
-    pred[:τ_intercept_random_sd]
+    if "Participant" ∈ names(data)
+        pred = predict(MODELS[info["model"]]([missing for i in 1:length(data.ISI)], data.ISI, data.Participant; min_rt=minimum(df.RT)), info["posteriors"])
+    else
+        pred = predict(MODELS[info["model"]]([missing for i in 1:length(data.ISI)], data.ISI, nothing; min_rt=minimum(df.RT)), info["posteriors"])
+    end
+
     # Format predictions
     if info["model"] ∈ Set(["model_LBA", "model_LNR", "model_RDM"])
         pred = Array(pred)[:, 2:2:end]
@@ -92,7 +92,6 @@ end
 
 function make_ppcheck(df, info, f, i; color="orange")
     pred = make_predictions(df, info, df)
-    names(pred)
 
     # Make figure
     ax = Axis(f[i, 1], title=replace(info["model"], "model_" => ""), ylabel="Density")
@@ -110,18 +109,18 @@ for (i, k) in enumerate(keys(objects))
 end
 f
 
-
+# info = objects[:Linear]
 # ISI -------------------------------------------------------------------------------------------
 function make_effectISI(df, info, f, i; color="orange")
-    grid = DataFrame(ISI=data_grid(df.ISI; n=20), Participant="S002")
+    grid = DataFrame(ISI=data_grid(df.ISI; n=20))
     pred = make_predictions(grid, info, df)
 
-    xaxis = collect(1:length(grid)) * 10  # So that each distribution is separated
+    xaxis = collect(1:nrow(grid)) * 10  # So that each distribution is separated
 
     xticks = range(minimum(xaxis), maximum(xaxis), length=6)
-    xlabels = string.(round.(range(minimum(grid), maximum(grid), length=6); digits=2))
+    xlabels = string.(round.(range(minimum(grid.ISI), maximum(grid.ISI), length=6); digits=2))
     ax = Axis(f[i, 2], title=replace(info["model"], "model_" => ""), xticks=(xticks, xlabels))
-    for (i, isi) in enumerate(grid)
+    for (i, isi) in enumerate(grid.ISI)
         CairoMakie.density!(ax, pred[:, i], offset=i * 10, direction=:y,
             # color=:y, colormap=:thermal, colorrange=(0, 1))
             color=(:darkgrey, 0.8))

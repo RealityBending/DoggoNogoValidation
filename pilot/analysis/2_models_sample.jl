@@ -40,6 +40,7 @@ function sample_and_save(m, df, name="name"; pt=false, optim=false)
     else
         map = false
         initial_params = nothing
+        # initial_params = mean(hcat([rand(Vector, fit) for _ in 1:100]...), dims=2)
     end
 
     if pt == false

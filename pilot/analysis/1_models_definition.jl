@@ -7,7 +7,6 @@ using Downloads
 include(Downloads.download("https://raw.githubusercontent.com/RealityBending/scripts/main/data_poly.jl"))
 
 
-
 # Normal ======================================================================================
 # Linear ------------------------------------------------------------------------------------
 @model function model_Linear(rt, isi, participant, min_rt=minimum(rt), n=length(unique(participant)))
@@ -17,39 +16,47 @@ include(Downloads.download("https://raw.githubusercontent.com/RealityBending/scr
     μ_isi1 ~ Normal(0, 0.5)
     μ_isi2 ~ Normal(0, 0.5)
 
-    σ ~ truncated(Normal(0.0, 1), 0.0, Inf)
+    σ ~ truncated(Normal(0.0, 1), lower=0)
 
     # Priors - Random Effects
-    μ_intercept_random_sd ~ truncated(Normal(0.0, 0.3), 0.0, Inf)
-    μ_isi1_random_sd ~ truncated(Normal(0, 0.3), 0.0, Inf)
-    μ_isi2_random_sd ~ truncated(Normal(0, 0.3), 0.0, Inf)
+    μ_intercept_random_sd ~ truncated(Normal(0.0, 0.3), lower=0)
+    μ_isi1_random_sd ~ truncated(Normal(0, 0.3), lower=0)
+    μ_isi2_random_sd ~ truncated(Normal(0, 0.3), lower=0)
 
     # Participant-level priors
-    μ_intercept_random ~ filldist(Normal(0, μ_intercept_random_sd), n)
-    μ_isi1_random ~ filldist(Normal(0, μ_isi1_random_sd), n)
-    μ_isi2_random ~ filldist(Normal(0, μ_isi2_random_sd), n)
-
-    for i in 1:length(rt)
-        # Compute μ
-        μ = μ_intercept + μ_intercept_random[participant[i]]
-        μ += (μ_isi1 + μ_isi1_random[participant[i]]) * isi[i, 1]
-        μ += (μ_isi2 + μ_isi2_random[participant[i]]) * isi[i, 2]
-
-        # Likelihood
-        rt[i] ~ Normal(μ, σ)
+    if participant !== nothing
+        μ_intercept_random ~ filldist(Normal(0, μ_intercept_random_sd), n)
+        μ_isi1_random ~ filldist(Normal(0, μ_isi1_random_sd), n)
+        μ_isi2_random ~ filldist(Normal(0, μ_isi2_random_sd), n)
     end
+
+    # Fixed effects
+    μ = μ_intercept .+ μ_isi1 .* isi[:, 1] .+ μ_isi2 .* isi[:, 2]
+
+    # Random effects
+    if participant !== nothing
+        μ = μ .+ μ_intercept_random[participant] .+ μ_isi1_random[participant] .* isi[:, 1] .+ μ_isi2_random[participant] .* isi[:, 2]
+    end
+
+    # Likelihood
+    rt .~ Normal.(μ, σ)
+
 end
 
 function model_Linear(rt, isi, participant; min_rt=minimum(rt))
 
     # Data preparation
-    isi2 = data_poly(isi, 2; orthogonal=true)  # Transform ISI into polynomials
-    ppt_id = [findfirst(ppt .== unique(participant)) for ppt in participant] # Convert participant to integers
-    n = length(unique(participant))
+    isi2 = data_poly(isi, 2)  # Transform ISI into polynomials
+    if participant !== nothing
+        ppt_id = [findfirst(ppt .== unique(participant)) for ppt in participant] # Convert participant to integers
+        n = length(unique(participant))
+    else
+        ppt_id = nothing
+        n = 0
+    end
 
     return model_Linear(rt, isi2, ppt_id, min_rt, n)
 end
-
 
 
 # Gaussian ------------------------------------------------------------------------------------
@@ -65,43 +72,48 @@ end
     σ_isi2 ~ Normal(0, 3)
 
     # Priors - Random Effects
-    μ_intercept_random_sd ~ truncated(Normal(0.0, 0.3), 0.0, Inf)
-    μ_isi1_random_sd ~ truncated(Normal(0, 0.3), 0.0, Inf)
-    μ_isi2_random_sd ~ truncated(Normal(0, 0.3), 0.0, Inf)
-    σ_intercept_random_sd ~ truncated(Normal(0, 0.3), 0.0, Inf)
-    σ_isi1_random_sd ~ truncated(Normal(0, 0.3), 0.0, Inf)
-    σ_isi2_random_sd ~ truncated(Normal(0, 0.3), 0.0, Inf)
+    μ_intercept_random_sd ~ truncated(Normal(0.0, 0.3), lower=0)
+    μ_isi1_random_sd ~ truncated(Normal(0, 0.3), lower=0)
+    μ_isi2_random_sd ~ truncated(Normal(0, 0.3), lower=0)
+    σ_intercept_random_sd ~ truncated(Normal(0, 0.3), lower=0)
+    σ_isi1_random_sd ~ truncated(Normal(0, 0.3), lower=0)
+    σ_isi2_random_sd ~ truncated(Normal(0, 0.3), lower=0)
 
     # Participant-level priors
-    μ_intercept_random ~ filldist(Normal(0, μ_intercept_random_sd), n)
-    μ_isi1_random ~ filldist(Normal(0, μ_isi1_random_sd), n)
-    μ_isi2_random ~ filldist(Normal(0, μ_isi2_random_sd), n)
-    σ_intercept_random ~ filldist(Normal(0, σ_intercept_random_sd), n)
-    σ_isi1_random ~ filldist(Normal(0, σ_isi1_random_sd), n)
-    σ_isi2_random ~ filldist(Normal(0, σ_isi2_random_sd), n)
-
-    for i in 1:length(rt)
-        # Compute μ
-        μ = μ_intercept + μ_intercept_random[participant[i]]
-        μ += (μ_isi1 + μ_isi1_random[participant[i]]) * isi[i, 1]
-        μ += (μ_isi2 + μ_isi2_random[participant[i]]) * isi[i, 2]
-
-        # Compute σ
-        σ = σ_intercept + σ_intercept_random[participant[i]]
-        σ += (σ_isi1 + σ_isi1_random[participant[i]]) * isi[i, 1]
-        σ += (σ_isi2 + σ_isi2_random[participant[i]]) * isi[i, 2]
-
-        # Likelihood
-        rt[i] ~ Normal(μ, softplus(σ))
+    if participant !== nothing
+        μ_intercept_random ~ filldist(Normal(0, μ_intercept_random_sd), n)
+        μ_isi1_random ~ filldist(Normal(0, μ_isi1_random_sd), n)
+        μ_isi2_random ~ filldist(Normal(0, μ_isi2_random_sd), n)
+        σ_intercept_random ~ filldist(Normal(0, σ_intercept_random_sd), n)
+        σ_isi1_random ~ filldist(Normal(0, σ_isi1_random_sd), n)
+        σ_isi2_random ~ filldist(Normal(0, σ_isi2_random_sd), n)
     end
+
+    # Fixed effects
+    μ = μ_intercept .+ μ_isi1 .* isi[:, 1] .+ μ_isi2 .* isi[:, 2]
+    σ = σ_intercept .+ σ_isi1 .* isi[:, 1] .+ σ_isi2 .* isi[:, 2]
+
+    # Random effects
+    if participant !== nothing
+        μ = μ .+ μ_intercept_random[participant] .+ μ_isi1_random[participant] .* isi[:, 1] .+ μ_isi2_random[participant] .* isi[:, 2]
+        σ = σ .+ σ_intercept_random[participant] .+ σ_isi1_random[participant] .* isi[:, 1] .+ σ_isi2_random[participant] .* isi[:, 2]
+    end
+
+    # Likelihood
+    rt .~ Normal.(μ, softplus.(σ))
 end
 
 function model_Gaussian(rt, isi, participant; min_rt=minimum(rt))
 
     # Data preparation
-    isi2 = data_poly(isi, 2; orthogonal=true)  # Transform ISI into polynomials
-    ppt_id = [findfirst(ppt .== unique(participant)) for ppt in participant] # Convert participant to integers
-    n = length(unique(participant))
+    isi2 = data_poly(isi, 2)  # Transform ISI into polynomials
+    if participant !== nothing
+        ppt_id = [findfirst(ppt .== unique(participant)) for ppt in participant] # Convert participant to integers
+        n = length(unique(participant))
+    else
+        ppt_id = nothing
+        n = 0
+    end
 
     return model_Gaussian(rt, isi2, ppt_id, min_rt, n)
 end
@@ -126,15 +138,15 @@ end
     τ_isi2 ~ Normal(0, 3)
 
     # Priors - Random Effects
-    μ_intercept_random_sd ~ truncated(Normal(0.0, 0.3), 0.0, Inf)
-    μ_isi1_random_sd ~ truncated(Normal(0, 0.3), 0.0, Inf)
-    μ_isi2_random_sd ~ truncated(Normal(0, 0.3), 0.0, Inf)
-    σ_intercept_random_sd ~ truncated(Normal(0, 0.3), 0.0, Inf)
-    σ_isi1_random_sd ~ truncated(Normal(0, 0.3), 0.0, Inf)
-    σ_isi2_random_sd ~ truncated(Normal(0, 0.3), 0.0, Inf)
-    τ_intercept_random_sd ~ truncated(Normal(0, 0.3), 0.0, Inf)
-    τ_isi1_random_sd ~ truncated(Normal(0, 0.3), 0.0, Inf)
-    τ_isi2_random_sd ~ truncated(Normal(0, 0.3), 0.0, Inf)
+    μ_intercept_random_sd ~ truncated(Normal(0.0, 0.3), lower=0)
+    μ_isi1_random_sd ~ truncated(Normal(0, 0.3), lower=0)
+    μ_isi2_random_sd ~ truncated(Normal(0, 0.3), lower=0)
+    σ_intercept_random_sd ~ truncated(Normal(0, 0.3), lower=0)
+    σ_isi1_random_sd ~ truncated(Normal(0, 0.3), lower=0)
+    σ_isi2_random_sd ~ truncated(Normal(0, 0.3), lower=0)
+    τ_intercept_random_sd ~ truncated(Normal(0, 0.3), lower=0)
+    τ_isi1_random_sd ~ truncated(Normal(0, 0.3), lower=0)
+    τ_isi2_random_sd ~ truncated(Normal(0, 0.3), lower=0)
 
     # Participant-level priors
     μ_intercept_random ~ filldist(Normal(0, μ_intercept_random_sd), n)
