@@ -9,6 +9,7 @@ path <- "C:/Users/Benjamin Tribe/Box/DoggoNogoValidation"
 # JsPsych experiment ------------------------------------------------------
 
 files <- list.files(path, pattern = "*.csv")
+files <- files[!files %in% "Experiment_zg2w0dwcv7.csv"] # temporary fix for dodgy pilot - DELETE
 
 alldata <- data.frame()
 alldata_rt <- data.frame()
@@ -20,9 +21,9 @@ for (file in files) {
   # Initialize participant-level data
   dat <- rawdata[rawdata$screen == "browser_info",]
 
-  if (!dat$researcher %in% c("PILOT2")) {
-    next
-  }
+  # if (!dat$researcher %in% c("SONA")) { # UNCOMMENT
+  #   next
+  # }
 
   data_ppt <- data.frame(Participant = dat$participantID,
                          Recruitment = dat$researcher,
@@ -100,13 +101,13 @@ for (file in files) {
 
 
   dog_ppt <- data.frame(Participant = dog$metadata$participantName,
-                        # DoggoNogo_ID = dog$metadata$randomID, # These variables missing in latest collections
+                        # DoggoNogo_ID = dog$metadata$sessionID, # UNCOMMENT
                         DoggoNogo_Study = dog$metadata$studyName,
-                        # DoggoNogo_Start = dog$metadata$start,
-                        # DoggoNogo_End = dog$metadata$end,
-                        DoggoNogo_Level1_N = dog$metadata$l1n#,
-                        # DoggoNogo_L1_Start = dog$metadata$startL1,
-                        # DoggoNogo_L1_End = dog$metadata$endL1
+                        DoggoNogo_Start = dog$metadata$start,
+                        DoggoNogo_End = dog$metadata$end,
+                        DoggoNogo_Level1_N = dog$metadata$l1n,
+                        DoggoNogo_L1_Start = dog$metadata$startL1,
+                        DoggoNogo_L1_End = dog$metadata$endL1
   )
 
 
