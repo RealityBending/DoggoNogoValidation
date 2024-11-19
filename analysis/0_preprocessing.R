@@ -9,7 +9,7 @@ path <- "C:/Users/Benjamin Tribe/Box/DoggoNogoValidation"
 # JsPsych experiment ------------------------------------------------------
 
 files <- list.files(path, pattern = "*.csv")
-files <- files[!files %in% "Experiment_zg2w0dwcv7.csv"] # temporary fix for dodgy pilot - DELETE
+# files <- files[!files %in% "Experiment_zg2w0dwcv7.csv"] # temporary fix for dodgy pilot - DELETE
 
 alldata <- data.frame()
 alldata_rt <- data.frame()
@@ -21,15 +21,17 @@ for (file in files) {
   # Initialize participant-level data
   dat <- rawdata[rawdata$screen == "browser_info",]
 
-  # if (!dat$researcher %in% c("SONA")) { # UNCOMMENT
-  #   next
-  # }
+  if (!dat$researcher %in% c("SONA")) { # UNCOMMENT
+    next
+  }
 
   data_ppt <- data.frame(Participant = dat$participantID,
                          Recruitment = dat$researcher,
                          Condition = dat$condition,
                          Experiment_StartDate = as.POSIXct(paste(dat$date, dat$time), format = "%d/%m/%Y %H:%M:%S"),
                          Experiment_Duration = rawdata[rawdata$screen == "debriefing", "time_elapsed"] / 1000 / 60,
+                         SimpleRT_start = rawdata[rawdata$screen %in% c("SimpleRT_fixation", "tooFastMessage", "SimpleRT_stimulus", "SimpleRT_breakStop", "SimpleRT_break"), ]$time_elapsed[1],
+                         SimpleRT_end = rawdata[rawdata$screen %in% c("SimpleRT_fixation", "tooFastMessage", "SimpleRT_stimulus", "SimpleRT_breakStop", "SimpleRT_break"), ]$time_elapsed[nrow(rawdata[rawdata$screen %in% c("SimpleRT_fixation", "tooFastMessage", "SimpleRT_stimulus", "SimpleRT_breakStop", "SimpleRT_break"), ])],
                          Browser_Version = paste(dat$browser, dat$browser_version),
                          Mobile = dat$mobile,
                          Platform = dat$os,
@@ -82,6 +84,11 @@ for (file in files) {
                         Stimulus_Y = as.numeric(gsub(".*top: (.*)px; width.*", "\\1", dat$stimulus)))
 
   # Merge everything
+  if (!(nrow(alldata) == 0)){
+    all_cols <- union(names(alldata), names(data_ppt))
+    alldata[setdiff(all_cols, names(alldata))] <- NA
+    data_ppt[setdiff(all_cols, names(data_ppt))] <- NA
+  }
   alldata <- rbind(alldata, data_ppt)
   alldata_rt <- rbind(alldata_rt, data_rt)
 }
@@ -101,7 +108,7 @@ for (file in files) {
 
 
   dog_ppt <- data.frame(Participant = dog$metadata$participantName,
-                        # DoggoNogo_ID = dog$metadata$sessionID, # UNCOMMENT
+                        DoggoNogo_ID = dog$metadata$sessionID, # UNCOMMENT
                         DoggoNogo_Study = dog$metadata$studyName,
                         DoggoNogo_Start = dog$metadata$start,
                         DoggoNogo_End = dog$metadata$end,
