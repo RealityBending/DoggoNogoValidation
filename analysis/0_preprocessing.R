@@ -39,15 +39,17 @@ for (file in files) {
 
 
   # Demographics
-  demog <- jsonlite::fromJSON(rawdata[rawdata$screen == "demographic_questions",]$response)
+  demog <- unlist(lapply(
+    jsonlite::fromJSON(rawdata[rawdata$screen == "demographic_questions",]$response, simplifyDataFrame = FALSE),
+    function(x) if (is.null(x)) NA else x)) 
   demog <- as.data.frame(t(demog))
   demog$GenderOther <- NULL
   data_ppt <- cbind(data_ppt, demog)
 
   # Feedback
-  feedback <- jsonlite::fromJSON(rawdata[rawdata$screen == "experiment_feedback", "response"])
+  feedback <- lapply(jsonlite::fromJSON(rawdata[rawdata$screen == "experiment_feedback", "response"]), function(x) if (is.null(x)) NA else x)
   data_ppt$Experiment_Enjoyment <- feedback$Feedback_Enjoyment
-  data_ppt$Experiment_Feedback <- ifelse(is.null(feedback$Feedback_Text), NA, feedback$Feedback_Text)
+  data_ppt$Experiment_Feedback <- feedback$Feedback_Text
 
 
 
@@ -98,13 +100,13 @@ for (file in files) {
 
 
   dog_ppt <- data.frame(Participant = dog$metadata$participantName,
-                        DoggoNogo_ID = dog$metadata$randomID,
+                        # DoggoNogo_ID = dog$metadata$randomID, # These variables missing in latest collections
                         DoggoNogo_Study = dog$metadata$studyName,
-                        DoggoNogo_Start = dog$metadata$start,
-                        DoggoNogo_End = dog$metadata$end,
-                        DoggoNogo_Level1_N = dog$metadata$l1n,
-                        DoggoNogo_L1_Start = dog$metadata$startL1,
-                        DoggoNogo_L1_End = dog$metadata$endL1
+                        # DoggoNogo_Start = dog$metadata$start,
+                        # DoggoNogo_End = dog$metadata$end,
+                        DoggoNogo_Level1_N = dog$metadata$l1n#,
+                        # DoggoNogo_L1_Start = dog$metadata$startL1,
+                        # DoggoNogo_L1_End = dog$metadata$endL1
   )
 
 
