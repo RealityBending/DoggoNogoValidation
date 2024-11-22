@@ -120,8 +120,8 @@ for (file in files) {
 
   dat <- do.call(rbind, lapply(dog$level1, as.data.frame))
   dog_l1 <- data.frame(Participant = dog_ppt$Participant,
-                       RT = dat$rt,
-                       ISI = dat$isi,
+                       RT = dat$rt*1000,
+                       ISI = dat$isi*1000,
                        Response_Type = dat$responseType,
                        Trial_Score = dat$trialScore,
                        Total_Score = dat$totalScore,
