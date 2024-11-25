@@ -15,7 +15,7 @@ editor_options:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, results = "show")
 
-source("0_preprocessing.R")
+# source("0_preprocessing.R")
 ```
 
 
@@ -67,7 +67,7 @@ df_dog <- read.csv("../data/rawdata_doggonogo.csv") |>
 dnf_df <- df |> dplyr::filter(is.na(DoggoNogo_ID))
 dnf_ppts <- dnf_df$Participant
 ```
-The initial sample of complete data consisted of `r report::report_participants(df |> dplyr::select(Age, Gender, Education), age="Age", gender="Gender", education="Education")`, for a total trial number of `r nrow(df)`. <!-- Only works with dplyr::select due to POSIXct-->
+The initial sample of complete data consisted of `r report::report_participants(df |> dplyr::select(Age, Gender, Education), age="Age", gender="Gender", education="Education")`, for a total trial number of `r nrow(df_dog)+nrow(df_simpleRT)`.
 
 Incomplete data was collected for `r paste(nrow(dnf_df), ifelse(nrow(dnf_df) < 2, "participant", "participants"))` - `r ifelse(nrow(dnf_df) < 2, "this participant", "these participants")` quit the gamified task prematurely and returned to the main experiment screen to complete the procedure. Details of `r ifelse(nrow(dnf_df) < 2, "this participants'", "these participants average")` enjoyment of the experiment and of each task, task duration estimates, and willingness to repeat each task are shown below. Incomplete data is subsequently excluded.
 
@@ -424,7 +424,6 @@ RT_dat |>
           legend.position = "none") +
     facet_wrap(~Participant, nrow=10) +
     labs(y = "", x = "Reaction Time (ms)")
-
 ```
 
 We excluded `r length(outliers)` participants who missed more than one-third of trials in the simple RT task.
@@ -447,16 +446,6 @@ df_dog <- df_dog |> dplyr::filter(!(Participant %in% outliers))
 
 
 # Final Sample
-### Gender
-```{r}
-#| code-fold: true
-
-df |> 
-  ggplot2::ggplot(aes(x = Gender)) +
-  ggplot2::geom_bar(aes(fill = Gender)) +
-  scale_fill_viridis_d() +
-  cowplot::theme_cowplot()
-```
 
 ### Age
 ```{r}
@@ -483,125 +472,73 @@ estimate_density(df$Age) |>
   )
 ```
 
-### Handedness
-
-```{r}
+```{r, results='asis'}
 #| code-fold: true
 
-df |>
-  ggplot(aes(x = Handedness)) +
-  geom_bar(aes(fill = Handedness)) +
-  scale_y_continuous(expand = c(0, 0), breaks= scales::pretty_breaks()) +
-  scale_fill_viridis_d(guide = "none") +
-  labs(title = "Handedness", y = "Number of Participants", subtitle = "Participants per handedness") +
-  theme_modern(axis.title.space = 15) +
-  theme(
+for (i in c("Gender", "Handedness")){
+  cat("\n\n###", i, "\n")
+  print(df |> 
+    ggplot2::ggplot(aes(x = !!sym(i))) +
+    ggplot2::geom_bar(aes(fill = !!sym(i))) +
+    scale_y_continuous(expand = c(0, 0), breaks = scales::pretty_breaks()) +
+    scale_fill_viridis_d(guide = "none") +
+    labs(title = i, y = "Number of Participants", subtitle = ifelse(i == "Gender", "Participants per gender", "Participants per handedness")) +
+    theme_modern(axis.title.space = 15) +
+    theme(
+      plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
+      plot.subtitle = element_text(size = rel(1.2), vjust = 7),
+      axis.text.y = element_text(size = rel(1.1)),
+      axis.text.x = element_text(size = rel(1.1)),
+      axis.title.x = element_blank()))
+}
+```
+
+```{r, results='asis'}
+#| code-fold: true
+
+for (i in c("Education", "Student")){
+  cat("\n\n###", i, "\n")
+  
+  print(df |> 
+    mutate(Education = fct_relevel(Education, "Other", "High School", "Bachelor", "Master", "Doctorate"),
+           Student = ifelse(is.na(Student), "Non-Student", "Student")) |> 
+    ggplot(aes(x = !!sym(i))) +
+    geom_bar(aes(fill = !!sym(i))) +
+    scale_y_continuous(expand = c(0, 0), breaks= scales::pretty_breaks()) +
+    scale_fill_viridis_d(guide = "none") +
+    labs(title = i, y = "Number of Participants", subtitle = ifelse(i == "Education", "Participants per achieved education level", "Participants student status")) +
+    theme_modern(axis.title.space = 15) +
+    theme(
     plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
     plot.subtitle = element_text(size = rel(1.2), vjust = 7),
     axis.text.y = element_text(size = rel(1.1)),
     axis.text.x = element_text(size = rel(1.1)),
-    axis.title.x = element_blank()
-  )
+    axis.title.x = element_blank()))
+}
 ```
 
-### Education 
 
-```{r}
+```{r, results='asis'}
 #| code-fold: true
 
-df |>
-  mutate(Education = fct_relevel(Education, "Other", "High School", "Bachelor", "Master", "Doctorate")) |>
-  ggplot(aes(x = Education)) +
-  geom_bar(aes(fill = Education)) +
-  scale_y_continuous(expand = c(0, 0), breaks= scales::pretty_breaks()) +
-  scale_fill_viridis_d(guide = "none") +
-  labs(title = "Education", y = "Number of Participants", subtitle = "Participants per achieved education level") +
-  theme_modern(axis.title.space = 15) +
-  theme(
-    plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
-    plot.subtitle = element_text(size = rel(1.2), vjust = 7),
-    axis.text.y = element_text(size = rel(1.1)),
-    axis.text.x = element_text(size = rel(1.1)),
-    axis.title.x = element_blank()
-  )
-```
-
-### Student
-
-```{r}
-#| code-fold: true
-
-df |>
-  dplyr::mutate(Student = ifelse(is.na(Student), "Non-Student", "Student")) |>
-  ggplot(aes(x = Student)) +
-  geom_bar(aes(fill = Student)) +
-  scale_y_continuous(expand = c(0, 0), breaks= scales::pretty_breaks()) +
-  scale_fill_viridis_d(guide = "none") +
-  labs(title = "Student", y = "Number of Participants", subtitle = "Participants student status") +
-  theme_modern(axis.title.space = 15) +
-  theme(
-    plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
-    plot.subtitle = element_text(size = rel(1.2), vjust = 7),
-    axis.text.y = element_text(size = rel(1.1)),
-    axis.text.x = element_text(size = rel(1.1)),
-    axis.title.x = element_blank()
-  )
-```
-
-### Discipline
-
-```{r}
-#| code-fold: true
-
-ggwaffle::waffle_iron(df, ggwaffle::aes_d(group = Discipline), rows=10) |> 
-  ggplot(aes(x, y, fill = group)) + 
-  ggwaffle::geom_waffle() + 
-  coord_equal() + 
-  scale_fill_flat_d() + 
-  ggwaffle::theme_waffle() +
-  labs(title = "Discipline", subtitle = "Each square represents a participant", fill="")  +
-  theme(
+for (i in c("Discipline", "Ethnicity", "Country")){
+  cat("\n\n###", i, "\n")
+  
+  x <- df |> dplyr::rename("group" = i)
+  
+  print(ggwaffle::waffle_iron(x, ggwaffle::aes_d(group = group), rows=10) |> 
+    ggplot(aes(x, y, fill = group)) +
+    ggwaffle::geom_waffle() +
+    coord_equal() +
+    scale_fill_flat_d() +
+    ggwaffle::theme_waffle() +
+    labs(title = ifelse(i == "Country", "Country of residence", i), subtitle = "Each square represents a participant", fill = "") +
+    theme(
     plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
     plot.subtitle = element_text(size = rel(1.2)),
     axis.title.x = element_blank(),
-    axis.title.y = element_blank()
-  )
-```
-
-### Ethnicity
-
-```{r}
-ggwaffle::waffle_iron(df, ggwaffle::aes_d(group = Ethnicity), rows=10) |> 
-  ggplot(aes(x, y, fill = group)) + 
-  ggwaffle::geom_waffle() + 
-  coord_equal() + 
-  scale_fill_flat_d() + 
-  ggwaffle::theme_waffle() +
-  labs(title = "Self-reported Ethnicity", subtitle = "Each square represents a participant", fill="")  +
-  theme(
-    plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
-    plot.subtitle = element_text(size = rel(1.2)),
-    axis.title.x = element_blank(),
-    axis.title.y = element_blank()
-  )
-```
-
-### Country
-
-```{r}
-ggwaffle::waffle_iron(df, ggwaffle::aes_d(group = Country), rows=10) |> 
-  ggplot(aes(x, y, fill = group)) + 
-  ggwaffle::geom_waffle() + 
-  coord_equal() + 
-  scale_fill_flat_d() + 
-  ggwaffle::theme_waffle() +
-  labs(title = "Country of residence", subtitle = "Each square represents a participant", fill="")  +
-  theme(
-    plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
-    plot.subtitle = element_text(size = rel(1.2)),
-    axis.title.x = element_blank(),
-    axis.title.y = element_blank()
-  )
+    axis.title.y = element_blank()))
+}
 ```
 
 # Summary
