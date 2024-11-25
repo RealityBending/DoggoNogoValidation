@@ -39,8 +39,6 @@ for (file in files) {
                          Screen_Height = dat$screen_height,
                          Refresh_Rate = dat$vsync_rate)
 
-
-
   # Demographics
   demog <- unlist(lapply(
     jsonlite::fromJSON(rawdata[rawdata$screen == "demographic_questions",]$response, simplifyDataFrame = FALSE),
@@ -120,8 +118,8 @@ for (file in files) {
 
   dat <- do.call(rbind, lapply(dog$level1, as.data.frame))
   dog_l1 <- data.frame(Participant = dog_ppt$Participant,
-                       RT = dat$rt*1000,
-                       ISI = dat$isi*1000,
+                       RT = dat$rt,
+                       ISI = dat$isi,
                        Response_Type = dat$responseType,
                        Trial_Score = dat$trialScore,
                        Total_Score = dat$totalScore,
@@ -139,6 +137,10 @@ for (file in files) {
   alldata_dogRT <- rbind(alldata_dogRT, dog_l1)
 
 }
+
+dnf_dog <- setdiff(alldata_rt$Participant, alldata_dog$Participant)
+dnf_dat <- alldata |> dplyr::filter(Participant %in% dnf_dog)
+
 alldata <- merge(alldata, alldata_dog, by="Participant")
 setdiff(alldata$Participant, alldata_dog$Participant)
 
@@ -148,13 +150,19 @@ setdiff(alldata$Participant, alldata_dog$Participant)
 
 # Anonymize ---------------------------------------------------------------
 # Generate IDs
-ids <- paste0("S", format(sprintf("%03d", 1:nrow(alldata))))
+ids <- paste0("S", format(sprintf("%03d", 1:(nrow(alldata)+length(dnf_dog)))))
 # Sort Participant according to date and assign new IDs
-names(ids) <- alldata$Participant[order(alldata$Experiment_StartDate)]
+names(ids) <- c(alldata$Participant[order(alldata$Experiment_StartDate)], dnf_dog)
 # Replace IDs
+dnf_dat$Participant <- ids[dnf_dat$Participant]
 alldata$Participant <- ids[alldata$Participant]
 alldata_rt$Participant <- ids[alldata_rt$Participant]
 alldata_dogRT$Participant <- ids[alldata_dogRT$Participant]
+
+for (i in setdiff(names(alldata), names(dnf_dat))){
+  dnf_dat[[i]] <- NA
+}
+alldata <- rbind(alldata, dnf_dat)
 
 # Save --------------------------------------------------------------------
 
