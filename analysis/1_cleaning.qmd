@@ -551,6 +551,6 @@ The final sample includes `r report::report_participants(df |> dplyr::select(Age
 #| code-fold: false
 
 write.csv(df, "../data/data_participants.csv", row.names = FALSE)
-write.csv(df, "../data/data_dog.csv", row.names = FALSE)
-write.csv(df, "../data/data_simple.csv", row.names = FALSE)
+write.csv(df_dog, "../data/data_dog.csv", row.names = FALSE)
+write.csv(df_simpleRT, "../data/data_simple.csv", row.names = FALSE)
 ```
