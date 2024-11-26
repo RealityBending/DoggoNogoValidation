@@ -1,5 +1,5 @@
 ---
-title: "Doggo Nogo Validation - Data Cleaning"
+title: "DoggoNogoValidation - Data Cleaning"
 editor: source
 # editor_options: 
   # chunk_output_type: console
@@ -31,66 +31,38 @@ library(easystats)
 library(patchwork)
 library(ggside)
 library(gghalves)
-library(ggwaffle)
 library(ggdist)
 ```
 
 ```{r}
-#| code-fold: true
+#| code-fold: false
 
-df <- read.csv("../data/rawdata_participants.csv")
-
-df <- df |> 
+df <- read.csv("../data/rawdata_participants.csv") |>
   dplyr::mutate(across(c(Experiment_StartDate, DoggoNogo_Start, DoggoNogo_End, DoggoNogo_L1_Start, DoggoNogo_L1_End), as.POSIXct)) |>
-  dplyr::mutate(DoggoNogo_Duration = as.numeric(DoggoNogo_L1_End-DoggoNogo_L1_Start),
-                SimpleRT_Duration = ((SimpleRT_end-SimpleRT_start)/1000)/60,
-                Gender = stringr::str_to_title(Gender), #ifelse(Gender == "other", "Other", Gender),
-                Education = stringr::str_to_title(Education)) |> #ifelse(Education == "other", "Other", Education)) |>
-  dplyr::mutate(Assessment_DurationDifference_DoggoNogo = as.numeric(Assessment_Duration_DoggoNogo)-DoggoNogo_Duration,
-                Assessment_DurationDifference_Simple = as.numeric(Assessment_Duration_Simple)-SimpleRT_Duration,
-                ActualDurationDifference = DoggoNogo_Duration-SimpleRT_Duration)
+  dplyr::mutate(
+    DoggoNogo_Duration = DoggoNogo_L1_End - DoggoNogo_L1_Start,
+    SimpleRT_Duration = ((SimpleRT_end - SimpleRT_start) / 1000) / 60, 
+    Assessment_DurationDifference_DoggoNogo = Assessment_Duration_DoggoNogo - DoggoNogo_Duration,
+    Assessment_DurationDifference_Simple = Assessment_Duration_Simple - SimpleRT_Duration,
+    ActualDurationDifference = DoggoNogo_Duration - SimpleRT_Duration
+  )
 
-df_simpleRT <- read.csv("../data/rawdata_simpleRT.csv") |> 
+df_simpleRT <- read.csv("../data/rawdata_simpleRT.csv") |>
   full_join(
     df,
     by = join_by(Participant)
-    ) |> 
-  dplyr::mutate(RT = ifelse(RT == "null", NA_integer_, as.numeric(RT))) # NA or ISI value?
+  ) 
 
-df_dog <- read.csv("../data/rawdata_doggonogo.csv") |> 
+df_dog <- read.csv("../data/rawdata_doggonogo.csv") |>
   full_join(
     df,
     by = join_by(Participant)
-    )
-
-# Incomplete data
-dnf_df <- df |> dplyr::filter(is.na(DoggoNogo_ID))
-dnf_ppts <- dnf_df$Participant
+  )
 ```
-The initial sample of complete data consisted of `r report::report_participants(df |> dplyr::select(Age, Gender, Education), age="Age", gender="Gender", education="Education")`, for a total trial number of `r nrow(df_dog)+nrow(df_simpleRT)`.
 
-Incomplete data was collected for `r paste(nrow(dnf_df), ifelse(nrow(dnf_df) < 2, "participant", "participants"))` - `r ifelse(nrow(dnf_df) < 2, "this participant", "these participants")` quit the gamified task prematurely and returned to the main experiment screen to complete the procedure. Details of `r ifelse(nrow(dnf_df) < 2, "this participants'", "these participants average")` enjoyment of the experiment and of each task, task duration estimates, and willingness to repeat each task are shown below. Incomplete data is subsequently excluded.
 
-```{r}
-#| code-fold: true
+The initial sample of complete data consisted of `r report::report_participants(dplyr::select(df, Age, Gender, Education), age="Age", gender="Gender", education="Education")`, for a total trial number of `r nrow(df_dog)+nrow(df_simpleRT)`.
 
-dnf_df |> 
-  dplyr::summarise(N = n(),
-                   Experiment_Enjoyment = mean(Experiment_Enjoyment, na.rm = T),
-                   Doggo_Enjoyment = mean(Assessment_Enjoyment_DoggoNogo, na.rm = T),
-                   SRT_Enjoyment = mean(Assessment_Enjoyment_Simple, na.rm =T),
-                   Dog_Duration = mean(Assessment_Duration_DoggoNogo, na.rm = T), 
-                   SRT_Duration = mean(Assessment_Duration_Simple),
-                   Dog_Repeat = mean(Assessment_Repeat_DoggoNogo),
-                   SRT_Repeat = mean(Assessment_Repeat_Simple)
-                   ) |> 
-  kableExtra::kable() |> 
-  kableExtra::kable_classic()
-
-df <- df |> dplyr::filter(!Participant %in% dnf_ppts)
-df_simpleRT <- df_simpleRT |> dplyr::filter(!Participant %in% dnf_ppts)
-df_dog <- df_dog |> dplyr::filter(!Participant %in% dnf_ppts)
-```
 
 ### Recruitment History
 
