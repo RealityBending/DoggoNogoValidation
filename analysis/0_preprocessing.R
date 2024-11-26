@@ -14,6 +14,7 @@ files <- list.files(path, pattern = "*.csv")
 alldata <- data.frame()
 alldata_rt <- data.frame()
 for (file in files) {
+  cat(".")
   rawdata <- read.csv(paste0(path, "/", file))
   # unique(rawdata$screen)
 
@@ -42,9 +43,11 @@ for (file in files) {
   # Demographics
   demog <- unlist(lapply(
     jsonlite::fromJSON(rawdata[rawdata$screen == "demographic_questions",]$response, simplifyDataFrame = FALSE),
-    function(x) if (is.null(x)) NA else x)) 
+    function(x) if (is.null(x)) NA else x))
   demog <- as.data.frame(t(demog))
   demog$GenderOther <- NULL
+  demog$Gender <- ifelse(demog$Gender == "other", "Other", demog$Gender)
+  demog$Education <- ifelse(demog$Education == "other", "Other", demog$Education)
   data_ppt <- cbind(data_ppt, demog)
 
   # Feedback
@@ -75,11 +78,12 @@ for (file in files) {
 
   data_rt <- data.frame(Participant=data_ppt$Participant,
                         Trial = 1:nrow(dat),
-                        RT = dat$rt,
+                        RT = as.numeric(ifelse(dat$rt == "null", NA, dat$rt)) / 1000,
                         ISI = rawdata[as.numeric(rownames(dat))-2, "trial_duration"],
                         Stimulus_Size = as.numeric(gsub(".*width: (.*)px; opa.*", "\\1", dat$stimulus)),
                         Stimulus_X = as.numeric(gsub(".*left: (.*)px; top.*", "\\1", dat$stimulus)),
                         Stimulus_Y = as.numeric(gsub(".*top: (.*)px; width.*", "\\1", dat$stimulus)))
+
 
   # Merge everything
   if (!(nrow(alldata) == 0)){
@@ -98,12 +102,11 @@ files <- list.files(path, pattern = "*.json")
 alldata_dog <- data.frame()
 alldata_dogRT <- data.frame()
 for (file in files) {
-
+  cat(".")
   dog <- jsonlite::read_json(paste0(path, "/", file))
   if (!dog$metadata$participantName %in% alldata$Participant) {
     next
   }
-
 
   dog_ppt <- data.frame(Participant = dog$metadata$participantName,
                         DoggoNogo_ID = dog$metadata$sessionID, # UNCOMMENT
@@ -138,11 +141,15 @@ for (file in files) {
 
 }
 
-dnf_dog <- setdiff(alldata_rt$Participant, alldata_dog$Participant)
-dnf_dat <- alldata |> dplyr::filter(Participant %in% dnf_dog)
 
+
+# Remove incomplete -------------------------------------------------------
+
+incomplete <- setdiff(alldata$Participant, alldata_dog$Participant)
+
+alldata <- alldata[!alldata$Participant %in% incomplete,]
+alldata_rt <- alldata_rt[!alldata_rt$Participant %in% incomplete,]
 alldata <- merge(alldata, alldata_dog, by="Participant")
-setdiff(alldata$Participant, alldata_dog$Participant)
 
 # Award -------------------------------------------------------------------
 # alldata[, c("Participant", "Gender", "Age", "Experiment_StartDate", "Experiment_Duration")]
@@ -150,19 +157,14 @@ setdiff(alldata$Participant, alldata_dog$Participant)
 
 # Anonymize ---------------------------------------------------------------
 # Generate IDs
-ids <- paste0("S", format(sprintf("%03d", 1:(nrow(alldata)+length(dnf_dog)))))
+ids <- paste0("S", format(sprintf("%03d", 1:(nrow(alldata)))))
 # Sort Participant according to date and assign new IDs
-names(ids) <- c(alldata$Participant[order(alldata$Experiment_StartDate)], dnf_dog)
+names(ids) <- alldata$Participant[order(alldata$Experiment_StartDate)]
 # Replace IDs
-dnf_dat$Participant <- ids[dnf_dat$Participant]
 alldata$Participant <- ids[alldata$Participant]
 alldata_rt$Participant <- ids[alldata_rt$Participant]
 alldata_dogRT$Participant <- ids[alldata_dogRT$Participant]
 
-for (i in setdiff(names(alldata), names(dnf_dat))){
-  dnf_dat[[i]] <- NA
-}
-alldata <- rbind(alldata, dnf_dat)
 
 # Save --------------------------------------------------------------------
 
