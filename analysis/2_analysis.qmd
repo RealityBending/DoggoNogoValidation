@@ -25,9 +25,10 @@ srt_rt <- df_srt |> dplyr::filter(!is.na(RT))
 dog_rt <- df_dog |> dplyr::filter(Response_Type != "early" & Response_Type != "missed")
 
 # T0
+T0_results <- list()
 for (i in c("RT", "Enjoyment", "Duration", "Repeat")){
-  print(paste("T0:", i))
-  print("x = SRT, y = DoggoNogo")
+  # print(paste("T0:", i))
+  # print("x = SRT, y = DoggoNogo")
   if (i %in% c("Enjoyment", "Duration", "Repeat")){
     s <- srt_rt[srt_rt$Condition=="SimpleFirst",][[paste0("Assessment_", i, "_Simple")]]
     d <- dog_rt[dog_rt$Condition=="DoggoFirst",][[paste0("Assessment_", i, "_DoggoNogo")]]
@@ -35,15 +36,14 @@ for (i in c("RT", "Enjoyment", "Duration", "Repeat")){
     s <- srt_rt[srt_rt$Condition=="SimpleFirst",][[i]]
     d <- dog_rt[dog_rt$Condition=="DoggoFirst",][[i]]*1000
   }
-  print(BayesFactor::ttestBF(x = s, y = d))
+  T0_results[[i]] <- as.data.frame(BayesFactor::ttestBF(x = s, y = d)) |> dplyr::mutate(Time = "T0", x = "SRT", y = "DoggoNogo", .before = "bf")
 }
 
-
-
 # T1
+T1_results <- list()
 for (i in c("RT", "Enjoyment", "Duration", "Repeat")){
-  print(paste("T1:", i))
-  print("x = SRT, y = DoggoNogo")
+  # print(paste("T1:", i))
+  # print("x = SRT, y = DoggoNogo")
   if (i %in% c("Enjoyment", "Duration", "Repeat")){
     s <- srt_rt[srt_rt$Condition=="DoggoFirst",][[paste0("Assessment_", i, "_Simple")]]
     d <- dog_rt[dog_rt$Condition=="SimpleFirst",][[paste0("Assessment_", i, "_DoggoNogo")]]
@@ -51,7 +51,9 @@ for (i in c("RT", "Enjoyment", "Duration", "Repeat")){
     s <- srt_rt[srt_rt$Condition=="DoggoFirst",][[i]]
     d <- dog_rt[dog_rt$Condition=="SimpleFirst",][[i]]*1000
   }
-  print(BayesFactor::ttestBF(x = s, y = d))
+  T1_results[[i]] <- as.data.frame(BayesFactor::ttestBF(x = s, y = d)) |> dplyr::mutate(Time = "T1", x = "SRT", y = "DoggoNogo", .before = "bf")
 }
+
+do.call(rbind, c(T0_results, T1_results))
 ```
 
