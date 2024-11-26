@@ -1,0 +1,57 @@
+---
+title: "Doggo Nogo Validation - Analysis"
+format: html
+editor: visual
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, results = "show")
+# source("0_preprocessing.R")
+# source("1_cleaning.qmd")
+```
+
+```{r}
+library(BayesFactor)
+```
+
+```{r}
+df <- read.csv("../data/data_participants.csv")
+df_srt <- read.csv("../data/data_simple.csv")
+df_dog <- read.csv("../data/data_dog.csv")
+```
+ 
+```{r}
+srt_rt <- df_srt |> dplyr::filter(!is.na(RT))
+dog_rt <- df_dog |> dplyr::filter(Response_Type != "early" & Response_Type != "missed")
+
+# T0
+for (i in c("RT", "Enjoyment", "Duration", "Repeat")){
+  print(paste("T0:", i))
+  print("x = SRT, y = DoggoNogo")
+  if (i %in% c("Enjoyment", "Duration", "Repeat")){
+    s <- srt_rt[srt_rt$Condition=="SimpleFirst",][[paste0("Assessment_", i, "_Simple")]]
+    d <- dog_rt[dog_rt$Condition=="DoggoFirst",][[paste0("Assessment_", i, "_DoggoNogo")]]
+  } else if (i == "RT") {
+    s <- srt_rt[srt_rt$Condition=="SimpleFirst",][[i]]
+    d <- dog_rt[dog_rt$Condition=="DoggoFirst",][[i]]*1000
+  }
+  print(BayesFactor::ttestBF(x = s, y = d))
+}
+
+
+
+# T1
+for (i in c("RT", "Enjoyment", "Duration", "Repeat")){
+  print(paste("T1:", i))
+  print("x = SRT, y = DoggoNogo")
+  if (i %in% c("Enjoyment", "Duration", "Repeat")){
+    s <- srt_rt[srt_rt$Condition=="DoggoFirst",][[paste0("Assessment_", i, "_Simple")]]
+    d <- dog_rt[dog_rt$Condition=="SimpleFirst",][[paste0("Assessment_", i, "_DoggoNogo")]]
+  } else if (i == "RT") {
+    s <- srt_rt[srt_rt$Condition=="DoggoFirst",][[i]]
+    d <- dog_rt[dog_rt$Condition=="SimpleFirst",][[i]]*1000
+  }
+  print(BayesFactor::ttestBF(x = s, y = d))
+}
+```
+
