@@ -1,22 +1,16 @@
 ---
 title: "DoggoNogoValidation - Data Cleaning"
 editor: source
-# editor_options: 
-  # chunk_output_type: console
+editor_options: 
+  chunk_output_type: console
 format:
   html:
     code-fold: true
-    self-contained: true
+    self-contained: false
     toc: true
-editor_options: 
-  chunk_output_type: inline
+execute: 
+  cache: false
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, results = "show")
-
-# source("0_preprocessing.R")
-```
 
 
 ## Data Preparation
@@ -24,13 +18,11 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, results = "
 ```{r}
 #| message: false
 #| warning: false
-#| code-fold: true
 
 library(tidyverse)
 library(easystats)
 library(patchwork)
 library(ggside)
-library(gghalves)
 library(ggdist)
 ```
 
@@ -40,35 +32,22 @@ library(ggdist)
 df <- read.csv("../data/rawdata_participants.csv") |>
   dplyr::mutate(across(c(Experiment_StartDate, DoggoNogo_Start, DoggoNogo_End, DoggoNogo_L1_Start, DoggoNogo_L1_End), as.POSIXct)) |>
   dplyr::mutate(
-    DoggoNogo_Duration = DoggoNogo_L1_End - DoggoNogo_L1_Start,
-    SimpleRT_Duration = ((SimpleRT_end - SimpleRT_start) / 1000) / 60, 
-    Assessment_DurationDifference_DoggoNogo = Assessment_Duration_DoggoNogo - DoggoNogo_Duration,
-    Assessment_DurationDifference_Simple = Assessment_Duration_Simple - SimpleRT_Duration,
-    ActualDurationDifference = DoggoNogo_Duration - SimpleRT_Duration
+    DoggoNogo_Duration = as.numeric(DoggoNogo_End - DoggoNogo_Start),
+    SimpleRT_Duration = ((SimpleRT_end - SimpleRT_start) / 1000) / 60
   )
 
-df_simpleRT <- read.csv("../data/rawdata_simpleRT.csv") |>
-  full_join(
-    df,
-    by = join_by(Participant)
-  ) 
-
-df_dog <- read.csv("../data/rawdata_doggonogo.csv") |>
-  full_join(
-    df,
-    by = join_by(Participant)
-  )
+df_simpleRT <- read.csv("../data/rawdata_simpleRT.csv")
+df_doggo <- read.csv("../data/rawdata_doggonogo.csv")
 ```
 
 
-The initial sample of complete data consisted of `r report::report_participants(dplyr::select(df, Age, Gender, Education), age="Age", gender="Gender", education="Education")`, for a total trial number of `r nrow(df_dog)+nrow(df_simpleRT)`.
+The initial sample of complete data consisted of `r report::report_participants(dplyr::select(df, Age, Gender, Education), age="Age", gender="Gender", education="Education")`, for a total trial number of `r nrow(df_doggo)+nrow(df_simpleRT)`.
 
 
 ### Recruitment History
 
 ```{r}
 #| message: false
-#| code-fold: true
 
 # Consecutive count of participants per day (as area)
 df |>
@@ -97,14 +76,12 @@ The median duration of DoggoNogo was `r insight::format_value(median(df$DoggoNog
 
 
 ```{r}
-#| code-fold: true
-
 ### Do outliers here matter that much? For overall time? Guessing more important might be duration of individual tasks?
 
 df |>
   mutate(Participant = fct_reorder(Participant, Experiment_Duration),
-         Category = ifelse(Experiment_Duration > 50, "extra", "ok"),
-         Duration = ifelse(Experiment_Duration > 50, 50, Experiment_Duration)) |>
+         Category = ifelse(Experiment_Duration > 35, "extra", "ok"),
+         Duration = ifelse(Experiment_Duration > 35, 35, Experiment_Duration)) |>
   ggplot(aes(y = Participant, x = Duration)) +
   geom_point(aes(color = Category, shape = Category)) +
   geom_vline(xintercept = median(df$Experiment_Duration), color = "red", linetype = "dashed") +
@@ -123,306 +100,111 @@ df |>
   theme(ggside.panel.scale = .3, 
         axis.text.y = element_blank()) 
 
-
+#TODO: potentially filter out extra slow as it biases the reg line
 df |>
-  dplyr::select(Participant, DoggoNogo_Duration, SimpleRT_Duration) |> 
-  tidyr::pivot_longer(cols = c(DoggoNogo_Duration, SimpleRT_Duration), names_to = "Task", values_to = "Duration") |> 
-  dplyr::group_by(Task) |> 
-  dplyr::mutate(PT = paste0(Participant, "_", Task)) |> 
-  dplyr::select(PT, Duration) |> 
-  dplyr::mutate(PT = fct_reorder(PT, Duration),
-         Category = ifelse(Duration > 20, "extra", "ok"),
-         Duration = ifelse(Duration > 20, 20, Duration)) |>
-  ggplot(aes(group = Task, y = PT, x = Duration)) +
-  geom_point(aes(color = Task, shape = Category), alpha = 0.3) +
-  geom_vline(xintercept = median(df$DoggoNogo_Duration), color = "orange", linetype = "dashed", linewidth = 0.65) +
-  geom_vline(xintercept = median(df$SimpleRT_Duration), color = "blue", linetype = "dashed", linewidth = 0.65) +
+  mutate(Participant = fct_reorder(Participant, DoggoNogo_Duration),
+         Category = ifelse(DoggoNogo_Duration > 20, "extra", "ok"),
+         DoggoNogo_Duration = ifelse(DoggoNogo_Duration > 20, 20, DoggoNogo_Duration),
+         SimpleRT_Duration = ifelse(SimpleRT_Duration > 20, 20, SimpleRT_Duration),
+         Category = ifelse(SimpleRT_Duration > 20, "extra", Category)) |>
+  ggplot(aes(x=DoggoNogo_Duration, y=SimpleRT_Duration)) +
+  geom_point(aes(color = Category, shape = Category), alpha = 0.3) +
+  geom_abline(intercept = 0, slope = 1, linetype = "dashed") +
+  geom_smooth(method = "lm", formula = 'y ~ x', color = "orange", fill="orange", alpha=0.1) +
   scale_shape_manual(values = c("extra" = 3, ok = 19)) +
-  scale_color_manual(values = c("DoggoNogo_Duration" = "orange", "SimpleRT_Duration" = "blue")) +
-  scale_fill_manual(values = c("DoggoNogo_Duration" = "orange", "SimpleRT_Duration" = "blue")) +
-  guides(color = "none", shape = "none") +
-  ggside::geom_xsidedensity(aes(group = Task, fill = Task), color=NA, alpha = 0.4) +
-  ggside::scale_xsidey_continuous(expand = c(0, 0)) +
+  scale_color_manual(values = c("extra" = "red", ok = "black")) +
   labs(
-    title = "Task Completion Time",
-    x = "Duration (in minutes)",
-    y = "Participants"
-  )  +
+    title = "Tasks Duration",
+    x = "DoggoNogo Duration (in minutes)",
+    y = "SimpleRT Duration (in minutes)"
+  ) +
   see::theme_modern() +
-  ggside::theme_ggside_void() +
-  # ggplot2::facet_wrap(~Task) +
-  theme(ggside.panel.scale = .3, 
-        axis.text.y = element_blank()) 
-```
-
-### Behavioural comparisons
-
-```{r}
-#| code-fold: true
-
-get_df <- function(df, y_var1, y_var2){
-  varName1 <- stringr::str_extract(y_var1, "(?<=_)[^_]+(?=_)")
-  varName2 <- stringr::str_extract(y_var2, "(?<=_)[^_]+(?=_)")
-  
-  if (varName1 != varName2){
-    stop("Variable types do not match")
-  }
-  
- new_df <- df |> 
-  dplyr::select(Participant, Condition, y_var1, y_var2) |> 
-  dplyr::mutate(T1 = ifelse(Condition == "SimpleFirst", "Simple", "DoggoNogo"),
-                T2 = ifelse(Condition == "SimpleFirst", "DoggoNogo", "Simple")) |> 
-  tidyr::pivot_longer(cols = c(T1, T2), names_to = "Time", values_to = "Task") |> 
-  tidyr::pivot_longer(cols = c(y_var1, y_var2), names_to = "TaskA", values_to = "Score") |> 
-  dplyr::mutate(TaskA = stringr::str_replace(TaskA, ".*_(.*)", "\\1")) |> 
-  dplyr::filter(Task == TaskA) |> 
-  dplyr::select(-c(TaskA)) |> 
-  dplyr::rename(!!varName1 := Score)
- 
- return(new_df)
-}
-
-# # Function from https://stackoverflow.com/questions/70977700/creating-completely-customized-legends-in-ggplot2
-# dummy_guide <- function(
-#     labels = NULL,  
-#     ..., 
-#     title = NULL, 
-#     key   = draw_key_point,
-#     guide_args = list()
-# ) {
-#   # Capture arguments
-#   aesthetics <- list(...)
-#   n <- max(lengths(aesthetics), 0)
-#   labels <- labels %||%  seq_len(n)
-#   
-#   # Overrule the alpha = 0 that we use to hide the points
-#   aesthetics$alpha <- aesthetics$alpha %||% rep(1, n)
-#   
-#   # Construct guide
-#   guide_args$override.aes <- guide_args$override.aes %||% aesthetics
-#   guide <- do.call(guide_legend, guide_args)
-#   
-#   # Allow dummy aesthetic
-#   update_geom_defaults("point", list(dummy = "x"))
-#   
-#   dummy_geom <- geom_point(
-#     data = data.frame(x = rep(Inf, n), y = rep(Inf, n), 
-#                       dummy = factor(labels)),
-#     aes(x, y, dummy = dummy), alpha = 0, key_glyph = key
-#   )
-#   dummy_scale <- discrete_scale(
-#     "dummy", "dummy_scale", palette = scales::identity_pal(), name = title,
-#     guide = guide
-#   )
-#   list(dummy_geom, dummy_scale)
-# }
-
-for (i in c("Duration", "Enjoyment", "Repeat", "DurationDifference")){
-  plot_df <- get_df(df = df, y_var1 = paste0("Assessment_", i, "_Simple"), y_var2 = paste0("Assessment_", i, "_DoggoNogo"))
-  jitter_vals <- tapply(plot_df[[i]], plot_df$Participant, function(x) {
-    max_jitter <- (range(plot_df[[i]])[2]-range(plot_df[[i]])[1])/25
-    ppt_jitter <- runif(1, min = -(max_jitter), max = max_jitter)
-    return(ppt_jitter)
-  })
-  plot_df[[i]] <- mapply(function(x, participant) {
-    x + jitter_vals[participant]
-  }, plot_df[[i]], plot_df$Participant)
-  
-  plot_df <- plot_df |> 
-    dplyr::group_by(Participant) |> 
-    dplyr::mutate(dodgeT1 = sample(seq(0, 0.25, 0.01), 1, replace = T)) |> 
-    dplyr::mutate(dodgeT2 = 0.25-dodgeT1) |> 
-    dplyr::ungroup() |> 
-    dplyr::mutate(Q1 = quantile(!!sym(i), .25, na.rm=T),
-                  Q3 = quantile(!!sym(i), .75, na.rm =T),
-                  IQR = Q3-Q1,
-                  outlier = !!sym(i) < (Q1 - 1.5*IQR) | !!sym(i) > (Q3 + 1.5*IQR),
-                  outlier_lab = ifelse(outlier, Participant, NA))
-  
-  plot <- plot_df|> 
-    ggplot2::ggplot(aes(x = Time, y = !!sym(i), color = Task, fill = Task)) +
-    ggdist::stat_halfeye(data = plot_df[plot_df$Time == "T1", ], alpha = 0.5, adjust = .33, width = .6, alpha=0.3, position = position_nudge(x=-0.25), side = "left") +
-    ggdist::stat_halfeye(data = plot_df[plot_df$Time == "T2", ], alpha = 0.5, adjust = .33, width = .6, alpha=0.3, position = position_nudge(x=0.25), side = "right")
-  
-  for (j in c("DoggoFirst", "SimpleFirst")){
-    width <- ifelse(j == "DoggoFirst", .1, -.1)
-    
-    for (k in unique(plot_df$Participant)){
-      pd <- position_nudge(x = width+sample(seq(-0.03, 0.03, 0.001), 1, replace = T))
-      ptdat <- plot_df[plot_df$Participant == k, ]
-      plot <- plot + ggplot2::geom_point(data = ptdat[ptdat$Time == "T1" & ptdat$Condition == j, ], aes(group = Participant), position = pd, alpha = 0.4) +
-    ggplot2::geom_point(data = ptdat[ptdat$Time == "T2" & ptdat$Condition == j, ], aes(group = Participant), position = pd, alpha = 0.3) +
-      ggplot2::geom_line(data = ptdat[ptdat$Condition == j, ], aes(group = Participant), position = pd, alpha = 0.3)
-    }
-  }
-    plot <- plot +
-      ggplot2::geom_text(data = plot_df[plot_df$outlier, ],
-                         aes(label = outlier_lab), nudge_y = (max(plot_df[[i]])-min(plot_df[[i]]))/50, size = 3) +
-      ggplot2::scale_color_manual(values = c("DoggoNogo" = "orange", "Simple" = "blue")) +
-      ggplot2::scale_fill_manual(values = c("DoggoNogo" = "orange", "Simple" = "blue")) +
-      cowplot::theme_cowplot()
-  
-  print(plot)
-}
-```
-
-
-# Exclusions
-
-### Task performance
-
-```{r}
-#| code-fold: true
-
-# Checking for participants who had lower than 2/3 trial response rate
-RTPlot_SRT <- df_simpleRT |> 
-  dplyr::group_by(Participant) |> 
-  dplyr::filter(!is.na(RT) & !is.na(Participant)) |>
-  dplyr::mutate(NTrials = sum(!is.na(Trial))) |> 
-  dplyr::select(Participant, NTrials) |> 
-  unique() |> 
-  ungroup() |>  
-  dplyr::mutate(Participant = as.factor(Participant)) |> 
-  dplyr::mutate(Participant = fct_reorder(Participant, NTrials),
-                Category = ifelse(NTrials > 100, "ok", "poor")) 
-
-RTPlot_SRT |>
-  ggplot2::ggplot(aes(y = Participant, x = NTrials)) +
-  geom_point(aes(color = Category, shape = Category)) +
-  scale_shape_manual(values = c("poor" = 3, "ok" = 19)) +
-  scale_color_manual(values = c("poor" = "red", "ok" = "black")) +
-  guides(color = "none", shape = "none") +
-  ggside::geom_xsidedensity(fill = "grey", color = NA) +
-  ggside::scale_xsidey_continuous(expand = c(0, 0)) +
-  labs(
-    title = "Trial completion: Simple RT",
-    x = "Trials successfully responded to (of 150)",
-    y = "Participants"
-  )  +
-  see::theme_modern() +
-  ggside::theme_ggside_void() +
-  theme(ggside.panel.scale = .3, 
-        axis.text.y = element_blank()) +
-  geom_text(data = subset(RTPlot_SRT, Category == "poor"), 
-            aes(label = Participant), nudge_y = 4, size = 3, color = "black", hjust = 0.5)
-
-RTPlot_dog <- df_dog |> 
-  dplyr::group_by(Participant) |> 
-  dplyr::filter(Response_Type != "early" & Response_Type != "missed") |>
-  dplyr::mutate(NTrials = sum(Valid_Trial)) |> 
-  dplyr::select(Participant, NTrials) |> unique() |> ungroup() |>  
-  dplyr::mutate(Participant = as.factor(Participant)) |> 
-  dplyr::mutate(Participant = fct_reorder(Participant, NTrials),
-                Category = ifelse(NTrials > 150, "poor", "ok"))
-
-RTPlot_dog |> ggplot2::ggplot(aes(y = Participant, x = NTrials)) +
-  geom_point(aes(color = Category, shape = Category)) +
-  scale_shape_manual(values = c("poor" = 3, "ok" = 19)) +
-  scale_color_manual(values = c("poor" = "red", "ok" = "black")) +
-  guides(color = "none", shape = "none") +
   ggside::geom_xsidedensity(fill = "grey", color=NA) +
-  ggside::scale_xsidey_continuous(expand = c(0, 0)) +
-  labs(
-    title = "Task Performance: DoggoNogo",
-    x = "Valid trials necessary before task completion",
-    y = "Participants"
-  )  +
-  see::theme_modern() +
-  ggside::theme_ggside_void() +
-  theme(ggside.panel.scale = .3, 
-        axis.text.y = element_blank())  +
-  geom_text(data = subset(RTPlot_dog, Category == "poor"), 
-            aes(label = Participant), nudge_y = -4, size = 3, color = "black", hjust = 0.5)
+  ggside::geom_ysidedensity(fill = "grey", color=NA) +
+  ggside::theme_ggside_void() 
 ```
 
-### Reaction Time
-
-```{r}
-#| code-fold: true
-#| fig-width: 15
-#| fig-height: 15
-outliers <- c("S031", "S011", "S036") 
-# These are just those who missed >1/3 trials on the SRT (i.e., fewer than 100 catches)
-# Haven't excluded any from Doggo results given adjustment of trail number according to performance
-
-
-d_all_SRT <- estimate_density(filter(df_simpleRT, RT < 1000)$RT)
-d_all_dog <- estimate_density(filter(df_dog |> dplyr::mutate(RT = RT*1000), RT < 1000 & Response_Type != "early")$RT)
-
-df_simpleRT_RTs <- df_simpleRT |> 
-  dplyr::filter(RT < 1000) |> 
-  estimate_density(select = "RT", at = "Participant") |> 
-  dplyr::group_by(Participant) |> 
-  normalize(select = "y") |> 
-  ungroup() |> 
-  dplyr::mutate(Participant = fct_relevel(Participant, sort(unique(df$Participant))),
-                color = case_when(Participant %in% df[df$Condition == "DoggoFirst",]$Participant & !Participant %in% outliers ~ "orange",
-                                  Participant %in% df[df$Condition == "SimpleFirst",]$Participant & !Participant %in% outliers ~ "blue",
-                                  Participant %in% outliers ~ "red")) 
-
-df_dog_RTs <- df_dog |> 
-  dplyr::filter(RT < 1 & Response_Type != "early") |> 
-  dplyr::mutate(RT = RT*1000) |> 
-  estimate_density(select = "RT", at = "Participant") |> 
-  dplyr::group_by(Participant) |> 
-  normalize(select = "y") |> 
-  ungroup() |> 
-  dplyr::mutate(Participant = fct_relevel(Participant, sort(unique(df$Participant))),
-                color = case_when(Participant %in% df[df$Condition == "DoggoFirst",]$Participant & !Participant %in% outliers ~ "orange",
-                                  Participant %in% df[df$Condition == "SimpleFirst",]$Participant & !Participant %in% outliers ~ "blue",
-                                  Participant %in% outliers ~ "red")) 
-
-df_dog_RTs$Task <- "DoggoNogo"
-df_simpleRT_RTs$Task <- "SimpleRT"
-
-RT_dat <- rbind(df_dog_RTs, df_simpleRT_RTs)
-
-RT_dat <- RT_dat |> 
-  dplyr::mutate(TaskOrder = 
-                  case_when(Participant %in% df[df$Condition == "DoggoFirst",]$Participant ~ "DoggoFirst",
-                            Participant %in% df[df$Condition == "SimpleFirst",]$Participant ~ "SimpleFirst",)) |>
-  dplyr::mutate(Participant = paste0(TaskOrder, ": ", Participant))
-
-RT_dat |>
-  ggplot2::ggplot(aes(x = x, y = y)) +
-  geom_area(data = normalize(d_all_SRT, select = "y"), alpha = 0.3, fill = "orange") +
-  geom_area(data = normalize(d_all_dog, select = "y"), alpha = 0.2, fill = "blue") +
-  geom_line(aes(group = interaction(Participant, Task), color = interaction(color, Task)), linewidth = 0.8) +
-  scale_color_manual(values = c("orange.DoggoNogo" = "orange", "blue.DoggoNogo" = "orange", "red.DoggoNogo" = "darkred", "blue.SimpleRT" = "blue", "orange.SimpleRT" = "blue", "red.SimpleRT" = "black")) +
-    theme_modern() +
-    theme(axis.text.y = element_blank(),
-          axis.line.y = element_blank(),
-          strip.text.x = element_text(size = rel(1.5)),
-          legend.position = "none") +
-    facet_wrap(~Participant, nrow=10) +
-    labs(y = "", x = "Reaction Time (ms)")
-```
-
-We excluded `r length(outliers)` participants who missed more than one-third of trials in the simple RT task.
 
 ### Experiment Feedback
 
 ```{r}
-#| code-fold: true
-
-data.frame(Feedback = df[!is.na(df$Experiment_Feedback),]$Experiment_Feedback) |> DT::datatable()
+data.frame(Feedback = df$Experiment_Feedback) |> 
+  filter(!is.na(Feedback) & !Feedback %in% c("no", "N\\A")) |>
+  gt::gt() |> 
+  gt::opt_interactive() 
 ```
 
+
+## Exclusions
 
 ```{r}
-#| code-fold: true
-df <- df |> dplyr::filter(!(Participant %in% outliers))
-df_simpleRT <- df_simpleRT |> dplyr::filter(!(Participant %in% outliers))
-df_dog <- df_dog |> dplyr::filter(!(Participant %in% outliers))
+exclusions <- list()
+```
+
+### Task performance
+
+```{r}
+data_nvalid <- rbind(
+  summarize(df_doggo, n_valid=sum((Response_Type != "early") & (Response_Type != "missed")), .by="Participant") |> 
+    mutate(Task = "DoggoNogo") |> 
+    mutate(Participant = fct_reorder(Participant, n_valid)),
+  summarize(df_simpleRT, n_valid=sum(!is.na(RT)), .by="Participant") |> 
+    mutate(Task = "SimpleRT")
+) 
+
+data_nvalid |> 
+  ggplot(aes(x=Participant, y = n_valid, fill = Task)) +
+  geom_bar(position = "dodge", stat = "identity") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  ggside::geom_ysidedensity(alpha=0.5, color=NA) +
+  ggside::theme_ggside_void() 
+```
+
+```{r}
+exclusions$n_valid <- as.character(filter(data_nvalid, Task=="SimpleRT" & data_nvalid$n_valid < 100)$Participant)
+```
+
+We removed `r length(exclusions$n_valid)` participants  who missed more than one-third of trials in the simple RT task.
+
+```{r}
+df <- filter(df, !Participant %in% exclusions$n_valid)
+df_doggo <- filter(df_doggo, !Participant %in% exclusions$n_valid)
+df_simpleRT <- filter(df_simpleRT, !Participant %in% exclusions$n_valid)
 ```
 
 
-# Final Sample
+### Reaction Time
+
+```{r}
+#| fig-width: 15
+#| fig-height: 15
+
+data_rtdist <- rbind(
+  df_doggo |> 
+    filter(Response_Type != "early" & Response_Type != "missed") |>
+    select(Participant, RT) |>
+    mutate(Task = "DoggoNogo"),
+  df_simpleRT |>
+    filter(!is.na(RT)) |>
+    select(Participant, RT) |>
+    mutate(Task = "SimpleRT"))
+
+data_rtdist |>
+  ggplot(aes(x=RT, color=Task)) +
+  geom_density() +
+  theme_minimal() +
+  facet_wrap(~Participant) +
+  theme_minimal() +
+  theme(axis.text.y = element_blank())
+```
+
+
+## Final Sample
 
 ### Age
-```{r}
-#| code-fold: true
 
+```{r}
 estimate_density(df$Age) |>
   normalize(select = y) |>
   mutate(y = y * max(df$Age)-min(df$Age)) |>  # To match the binwidth
@@ -444,76 +226,89 @@ estimate_density(df$Age) |>
   )
 ```
 
+### Gender
+
 ```{r, results='asis'}
 #| code-fold: true
 
-for (i in c("Gender", "Handedness")){
-  cat("\n\n###", i, "\n")
-  print(df |> 
-    ggplot2::ggplot(aes(x = !!sym(i))) +
-    ggplot2::geom_bar(aes(fill = !!sym(i))) +
+make_barplot <- function(df, var="Gender") {
+  df |> 
+    ggplot2::ggplot(aes(x = !!sym(var))) +
+    ggplot2::geom_bar(aes(fill = !!sym(var))) +
     scale_y_continuous(expand = c(0, 0), breaks = scales::pretty_breaks()) +
     scale_fill_viridis_d(guide = "none") +
-    labs(title = i, y = "Number of Participants", subtitle = ifelse(i == "Gender", "Participants per gender", "Participants per handedness")) +
+    labs(title = var, y = "Number of Participants", subtitle = ifelse(var == "Gender", "Participants per gender", "Participants per handedness")) +
     theme_modern(axis.title.space = 15) +
     theme(
       plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
       plot.subtitle = element_text(size = rel(1.2), vjust = 7),
       axis.text.y = element_text(size = rel(1.1)),
       axis.text.x = element_text(size = rel(1.1)),
-      axis.title.x = element_blank()))
+      axis.title.x = element_blank())
 }
+
+make_barplot(df, var="Gender")
 ```
 
-```{r, results='asis'}
-#| code-fold: true
+### Handedness
 
-for (i in c("Education", "Student")){
-  cat("\n\n###", i, "\n")
-  
-  print(df |> 
-    mutate(Education = fct_relevel(Education, "Other", "High School", "Bachelor", "Master", "Doctorate"),
-           Student = ifelse(is.na(Student), "Non-Student", "Student")) |> 
-    ggplot(aes(x = !!sym(i))) +
-    geom_bar(aes(fill = !!sym(i))) +
-    scale_y_continuous(expand = c(0, 0), breaks= scales::pretty_breaks()) +
-    scale_fill_viridis_d(guide = "none") +
-    labs(title = i, y = "Number of Participants", subtitle = ifelse(i == "Education", "Participants per achieved education level", "Participants student status")) +
-    theme_modern(axis.title.space = 15) +
-    theme(
-    plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
-    plot.subtitle = element_text(size = rel(1.2), vjust = 7),
-    axis.text.y = element_text(size = rel(1.1)),
-    axis.text.x = element_text(size = rel(1.1)),
-    axis.title.x = element_blank()))
-}
+```{r}
+make_barplot(df, var="Handedness")
 ```
 
 
-```{r, results='asis'}
-#| code-fold: true
+### Education
 
-for (i in c("Discipline", "Ethnicity", "Country")){
-  cat("\n\n###", i, "\n")
-  
-  x <- df |> dplyr::rename("group" = i)
-  
-  print(ggwaffle::waffle_iron(x, ggwaffle::aes_d(group = group), rows=10) |> 
-    ggplot(aes(x, y, fill = group)) +
-    ggwaffle::geom_waffle() +
-    coord_equal() +
-    scale_fill_flat_d() +
-    ggwaffle::theme_waffle() +
-    labs(title = ifelse(i == "Country", "Country of residence", i), subtitle = "Each square represents a participant", fill = "") +
-    theme(
-    plot.title = element_text(size = rel(1.2), face = "bold", hjust = 0),
-    plot.subtitle = element_text(size = rel(1.2)),
+```{r}
+df |> 
+  mutate(
+    Student = ifelse(is.na(Student), FALSE, Student),
+    Education = fct_relevel(Education, "Other", "High school", "Bachelor", "Master", "Doctorate")) |>
+  ggplot2::ggplot(aes(x = Education)) +
+  ggplot2::geom_bar(aes(fill = Student)) +
+  theme_minimal()
+```
+
+### Discipline
+
+
+```{r}
+df |> 
+  filter(!is.na(Discipline)) |> 
+  ggplot(aes(x = "", fill = Discipline)) +
+  geom_bar() +
+  coord_polar("y") +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_blank(),
     axis.title.x = element_blank(),
-    axis.title.y = element_blank()))
-}
+    axis.text.y = element_blank(),
+    axis.title.y = element_blank()
+  )
 ```
 
-# Summary
+### Ethnicity
+
+```{r}
+df |> 
+  filter(!is.na(Ethnicity)) |> 
+  ggplot(aes(x = "", fill = Ethnicity)) +
+  geom_bar() +
+  coord_polar("y") +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_blank(),
+    axis.title.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.title.y = element_blank()
+  )
+```
+
+### Country
+
+**TODO: add country map plot**
+
+## Summary
 
 The final sample includes `r report::report_participants(df |> dplyr::select(Age, Gender, Education), age="Age", gender="Gender", education="Education")`.
 
@@ -523,6 +318,6 @@ The final sample includes `r report::report_participants(df |> dplyr::select(Age
 #| code-fold: false
 
 write.csv(df, "../data/data_participants.csv", row.names = FALSE)
-write.csv(df_dog, "../data/data_dog.csv", row.names = FALSE)
-write.csv(df_simpleRT, "../data/data_simple.csv", row.names = FALSE)
+write.csv(df_doggo, "../data/data_doggonogo.csv", row.names = FALSE)
+write.csv(df_simpleRT, "../data/data_simpleRT.csv", row.names = FALSE)
 ```
