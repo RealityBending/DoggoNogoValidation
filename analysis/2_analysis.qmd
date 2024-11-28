@@ -1,59 +1,155 @@
 ---
-title: "Doggo Nogo Validation - Analysis"
-format: html
-editor: visual
+title: "DoggoNogoValidation - Data Cleaning"
+editor: source
+editor_options: 
+  chunk_output_type: console
+format:
+  html:
+    code-fold: true
+    self-contained: false
+    toc: true
+execute: 
+  cache: false
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, results = "show")
-# source("0_preprocessing.R")
-# source("1_cleaning.qmd")
+
+## Data Preparation
+
+```{r}
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(easystats)
+library(patchwork)
+library(ggside)
+library(ggdist)
+library(patchwork)
 ```
 
 ```{r}
-library(BayesFactor)
+#| code-fold: false
+
+df <- read.csv("../data/data_participants.csv") |>
+  mutate(across(c(Experiment_StartDate, DoggoNogo_Start, DoggoNogo_End, DoggoNogo_L1_Start, DoggoNogo_L1_End), as.POSIXct)) |>
+  mutate(
+    DoggoNogo_Duration = as.numeric(DoggoNogo_End - DoggoNogo_Start),
+    SimpleRT_Duration = ((SimpleRT_end - SimpleRT_start) / 1000) / 60, 
+    Assessment_DurationDiff_DoggoNogo = Assessment_Duration_DoggoNogo - DoggoNogo_Duration,
+    Assessment_DurationDiff_Simple = Assessment_Duration_Simple - SimpleRT_Duration
+  ) |> 
+  mutate(
+    Assessment_DurationDiff_DoggoNogo = ifelse(abs(Assessment_DurationDiff_DoggoNogo) > 15, NA, Assessment_DurationDiff_DoggoNogo),
+    Assessment_DurationDiff_Simple = ifelse(abs(Assessment_DurationDiff_Simple) > 15, NA, Assessment_DurationDiff_Simple)
+  )
+
+df_simpleRT <- read.csv("../data/data_simpleRT.csv")
+df_dog <- read.csv("../data/data_doggonogo.csv")
 ```
 
-```{r}
-df <- read.csv("../data/data_participants.csv")
-df_srt <- read.csv("../data/data_simple.csv")
-df_dog <- read.csv("../data/data_dog.csv")
-```
- 
-```{r}
-srt_rt <- df_srt |> dplyr::filter(!is.na(RT))
-dog_rt <- df_dog |> dplyr::filter(Response_Type != "early" & Response_Type != "missed")
 
-# T0
-T0_results <- list()
-for (i in c("RT", "Enjoyment", "Duration", "Repeat")){
-  # print(paste("T0:", i))
-  # print("x = SRT, y = DoggoNogo")
-  if (i %in% c("Enjoyment", "Duration", "Repeat")){
-    s <- srt_rt[srt_rt$Condition=="SimpleFirst",][[paste0("Assessment_", i, "_Simple")]]
-    d <- dog_rt[dog_rt$Condition=="DoggoFirst",][[paste0("Assessment_", i, "_DoggoNogo")]]
-  } else if (i == "RT") {
-    s <- srt_rt[srt_rt$Condition=="SimpleFirst",][[i]]
-    d <- dog_rt[dog_rt$Condition=="DoggoFirst",][[i]]*1000
-  }
-  T0_results[[i]] <- as.data.frame(BayesFactor::ttestBF(x = s, y = d)) |> dplyr::mutate(Time = "T0", x = "SRT", y = "DoggoNogo", .before = "bf")
+```{r}
+dflong <- df |>
+  select(Participant, Condition, starts_with("Assessment_")) |> 
+  mutate(jitter_x = runif(nrow(df), 0.02, 0.08),
+         jitter_y = runif(nrow(df), -0.2, 0.2)) |> 
+  pivot_longer(cols = starts_with("Assessment_"), names_to = "Question", values_to = "Score") |>
+  separate(col = Question, into = c("Assessment", "Question", "Task"), sep = "_") |>
+  filter(Question != "Duration") |> 
+  mutate(
+    TaskOrder = case_when(
+      Condition == "DoggoFirst" & Task == "DoggoNogo" ~ "First task", 
+      Condition == "SimpleFirst" & Task == "Simple" ~ "First task",
+     .default = "Second task"),
+    side = case_when(
+      Condition == "DoggoFirst" & Task == "DoggoNogo" ~ "left", 
+      Condition == "DoggoFirst" & Task == "Simple" ~ "left",
+      Condition == "SimpleFirst" & Task == "DoggoNogo" ~ "right",
+     .default = "right"),
+    position = case_when(
+      side == "left" & TaskOrder == "First task" ~ 0.9,
+      side == "right" & TaskOrder == "First task" ~ 1.1,
+      side == "left" & TaskOrder == "Second task" ~ 1.9,
+      .default = 2.1),
+    jitter_x = case_when(
+      side == "left" & TaskOrder == "First task" ~ 0.9 + jitter_x,
+      side == "right" & TaskOrder == "First task" ~ 1.1 - jitter_x,
+      side == "left" & TaskOrder == "Second task" ~ 1.9 + jitter_x,
+      .default = 2.1 - jitter_x),
+    jitter_y = ifelse(Question == "DurationDiff", Score, jitter_y + Score),
+    linecolor = case_when(
+      side == "left" & TaskOrder == "First task" ~ "DoggoNogo",
+      side == "right" & TaskOrder == "First task" ~ "Simple",
+      side == "left" & TaskOrder == "Second task" ~ "DoggoNogo",
+      .default = "Simple"))
+
+
+get_bf <- function(dflong, outcome="Enjoyment", y=5) {
+  if(outcome=="Repeat") dflong$Score <- dflong$Score + 4
+  dat <- filter(dflong, TaskOrder=="First task", Question==outcome) 
+  rez1 <- BayesFactor::ttestBF(formula=Score ~ Task, data=dat) |> 
+    parameters::parameters() |> 
+    mutate(Mean_Doggo = mean(dat$Score[dat$Task=="DoggoNogo"]),
+           Mean_Simple = mean(dat$Score[dat$Task=="Simple"]),
+           Ratio = Mean_Doggo / Mean_Simple,
+           x=1, y=y)
+  
+  dat <- filter(dflong, Condition=="DoggoFirst", Question==outcome) |> 
+    select(Participant, Task, Score) |>
+    pivot_wider(names_from = Task, values_from = Score) |> 
+    filter(!is.na(DoggoNogo) & !is.na(Simple))
+  rez2 <- BayesFactor::ttestBF(dat$DoggoNogo, dat$Simple) |> 
+    parameters::parameters() |> 
+    mutate(Mean_Doggo = mean(dat$DoggoNogo),
+           Mean_Simple = mean(dat$Simple),
+           Ratio = Mean_Doggo / Mean_Simple,
+           x=1.85, y=y)
+  
+  dat <- filter(dflong, Condition=="SimpleFirst", Question==outcome) |> 
+    select(Participant, Task, Score) |>
+    pivot_wider(names_from = Task, values_from = Score) |> 
+    filter(!is.na(DoggoNogo) & !is.na(Simple))
+  rez3 <- BayesFactor::ttestBF(dat$DoggoNogo, dat$Simple) |> 
+    parameters::parameters() |> 
+    mutate(Mean_Doggo = mean(dat$DoggoNogo),
+           Mean_Simple = mean(dat$Simple),
+           Ratio = Mean_Doggo / Mean_Simple,
+           x=2.15, y=y)
+  
+  rez <- rbind(rez1, rez2, rez3)
+  if(outcome=="DurationDiff") rez$Ratio <- rez$Median
+  
+  rez |> 
+    select(Median, Ratio, BF, x, y) |> 
+    mutate(Question = outcome,
+           Label = paste0(insight::format_value(Ratio),
+                          insight::format_bf(BF, stars_only =TRUE)))
 }
 
-# T1
-T1_results <- list()
-for (i in c("RT", "Enjoyment", "Duration", "Repeat")){
-  # print(paste("T1:", i))
-  # print("x = SRT, y = DoggoNogo")
-  if (i %in% c("Enjoyment", "Duration", "Repeat")){
-    s <- srt_rt[srt_rt$Condition=="DoggoFirst",][[paste0("Assessment_", i, "_Simple")]]
-    d <- dog_rt[dog_rt$Condition=="SimpleFirst",][[paste0("Assessment_", i, "_DoggoNogo")]]
-  } else if (i == "RT") {
-    s <- srt_rt[srt_rt$Condition=="DoggoFirst",][[i]]
-    d <- dog_rt[dog_rt$Condition=="SimpleFirst",][[i]]*1000
-  }
-  T1_results[[i]] <- as.data.frame(BayesFactor::ttestBF(x = s, y = d)) |> dplyr::mutate(Time = "T1", x = "SRT", y = "DoggoNogo", .before = "bf")
-}
-
-do.call(rbind, c(T0_results, T1_results))
+rez <- rbind(get_bf(dflong, "Enjoyment", y=3.5), get_bf(dflong, "Repeat", y=-0.5), get_bf(dflong, "DurationDiff", y=0))
 ```
 
+```{r}
+#| fig-width: 10
+#| fig-height: 12
+
+p1 <- dflong  |>
+  ggplot(aes(y=Score, x=TaskOrder)) +
+  geom_line(aes(group=Participant, x=jitter_x, y=jitter_y, color=linecolor), alpha=0.1) +
+  geom_point2(aes(color=Task, x=jitter_x, y=jitter_y), alpha=0.3, size=3) +
+  ggdist::stat_halfeye(aes(x=position, fill=Task, side=side), alpha=0.5, scale=3) +
+  geom_text(data=rez, aes(x=x, y=y, label=Label), size=3) +
+  facet_wrap(~Question, scales = "free_y", ncol=3) +
+  scale_x_continuous(breaks = c(1, 2), labels = c("First task", "Second task")) +
+  theme_minimal() +
+  theme(strip.background = element_rect(fill = "lightgrey", color=NA),
+        axis.title.y = element_blank(),
+        legend.position = "top") +
+  labs(color="Task")
+
+p2 <- png::readPNG("../documents/illustration_feedback.png") |> 
+  grid::rasterGrob() |> 
+  patchwork::wrap_elements() 
+
+(p2 / p1)
+```
