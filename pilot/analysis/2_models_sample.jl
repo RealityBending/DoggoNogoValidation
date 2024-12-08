@@ -2,6 +2,7 @@
 using Random
 using DataFrames, CSV
 using Serialization
+using Mooncake
 
 include("1_models_definition.jl")
 include(Downloads.download("https://raw.githubusercontent.com/RealityBending/scripts/main/data_poly.jl"))
@@ -23,24 +24,22 @@ function sample_and_save(m, df, name="name"; pt=false, optim=false)
     println(name)
     t0 = time()
     if any([occursin(x, name) for x in ["LBA", "LNR", "RDM"]])  # Needs choice variable
-        fit = m([(choice=1, rt=df.RT[i]) for i in 1:length(df.RT)], min_rt=minimum(df.RT), isi=df.ISI)
-    elseif name ∈ ["Linear", "Gaussian", "ExGaussian"]
-        fit = m(df.RT, df.ISI, df.Participant; min_rt=minimum(df.RT))
+        fitted = m([(choice=1, rt=df.RT[i]) for i in 1:length(df.RT)], df.ISI, df.Participant; min_rt=minimum(df.RT))
     else
-        fit = m(df.RT, min_rt=minimum(df.RT), isi=df.ISI)
+        fitted = m(df.RT, df.ISI, df.Participant; min_rt=minimum(df.RT))
     end
 
     # Optimization
     if optim == true
         # MAP
-        estim = maximum_a_posteriori(fit)
+        estim = maximum_a_posteriori(fitted)
         # estim = maximum_likelihood(fit)
         map = StatsModels.coeftable(estim)
         initial_params = estim.values.array
     else
         map = false
-        initial_params = nothing
-        # initial_params = mean(hcat([rand(Vector, fit) for _ in 1:100]...), dims=2)
+        # initial_params = nothing
+        initial_params = mapreduce(DynamicPPL.tovec ∘ mean, vcat, values(Turing.extract_priors(fitted)))
     end
 
     if pt == false
@@ -51,12 +50,11 @@ function sample_and_save(m, df, name="name"; pt=false, optim=false)
 
         # MCMC
         # posteriors = sample(fit, NUTS(), MCMCThreads(), 200, 8)
-        # posteriors = sample(fit, NUTS(; init_ϵ=0.0001, adtype=AutoMooncake(; config=nothing)), 400; initial_params=initial_params)
-        posteriors = sample(fit, NUTS(), 400; initial_params=initial_params)
-        # posteriors = sample(fit, NUTS(; init_ϵ=0.0001), 400; initial_params=initial_params)
+        posteriors = sample(fitted, NUTS(; adtype=AutoMooncake(; config=nothing)), 400; initial_params=initial_params)
+        # posteriors = sample(fitted, NUTS(), 400; initial_params=initial_params)
         # posteriors = sample(fit, externalsampler(MCHMC(200, 0.01; adaptive=true)), 200)
     else
-        pt = pigeons(target=TuringLogPotential(fit);
+        pt = pigeons(target=TuringLogPotential(fitted);
             record=[Pigeons.traces],
             n_rounds=8,
             # n_chains=10,
@@ -68,7 +66,7 @@ function sample_and_save(m, df, name="name"; pt=false, optim=false)
     end
     duration = (time() - t0) / 60
     # See https://github.com/TuringLang/Turing.jl/issues/2309
-    out = Dict("fit" => fit, "model" => "model_" * name, "pt" => pt, "posteriors" => posteriors, "duration" => duration)
+    out = Dict("fit" => fitted, "model" => "model_" * name, "pt" => pt, "posteriors" => posteriors, "duration" => duration)
     Serialization.serialize("models/" * name * ".turing", out)
     return out
 end
@@ -86,14 +84,14 @@ gaussian = sample_and_save(model_Gaussian, df, "Gaussian"; pt=false, optim=false
 exgaussian = sample_and_save(model_ExGaussian, df, "ExGaussian"; pt=false)
 lognormal = sample_and_save(model_LogNormal, df, "LogNormal"; pt=false)
 inversegaussian = sample_and_save(model_InverseGaussian, df, "InverseGaussian"; pt=false)
-weibull = sample_and_save(model_Weilbull, df, "models/Weilbull"; pt=false)
-logweibull = sample_and_save(model_LogWeibull, df, "models/LogWeibull"; pt=false)
-inverseweibull = sample_and_save(model_InverseWeibull, df, "models/InverseWeibull"; pt=false)
-gamma = sample_and_save(model_Gamma, df, "models/Gamma"; pt=false)
-inversegamma = sample_and_save(model_InverseGamma, df, "models/InverseGamma"; pt=false)
-lnr = sample_and_save(model_LNR, df, "models/LNR"; pt=false)
-lba = sample_and_save(model_LBA, df, "models/LBA"; pt=false)
-rdm = sample_and_save(model_RDM, df, "models/RDM"; pt=false)
+weibull = sample_and_save(model_Weilbull, df, "Weilbull"; pt=false)
+logweibull = sample_and_save(model_LogWeibull, df, "LogWeibull"; pt=false)
+inverseweibull = sample_and_save(model_InverseWeibull, df, "InverseWeibull"; pt=false)
+gamma = sample_and_save(model_Gamma, df, "Gamma"; pt=false)
+inversegamma = sample_and_save(model_InverseGamma, df, "InverseGamma"; pt=false)
+lnr = sample_and_save(model_LNR, df, "LNR"; pt=false)
+lba = sample_and_save(model_LBA, df, "LBA"; pt=false)
+rdm = sample_and_save(model_RDM, df, "RDM"; pt=false)
 
 
 # Test
