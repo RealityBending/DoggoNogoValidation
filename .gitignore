@@ -49,3 +49,5 @@ po/*~
 rsconnect/
 
 pilot/game/
+data/df_stability.rds
+pilot/analysis/models/*.turing

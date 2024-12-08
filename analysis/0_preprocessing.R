@@ -84,7 +84,7 @@ for (file in files) {
   data_rt <- data.frame(Participant=data_ppt$Participant,
                         Trial = 1:nrow(dat),
                         RT = as.numeric(ifelse(dat$rt == "null", NA, dat$rt)) / 1000,
-                        ISI = rawdata[as.numeric(rownames(dat))-2, "trial_duration"],
+                        ISI = rawdata[as.numeric(rownames(dat))-2, "trial_duration"] / 1000,
                         Stimulus_Size = as.numeric(gsub(".*width: (.*)px; opa.*", "\\1", dat$stimulus)),
                         Stimulus_X = as.numeric(gsub(".*left: (.*)px; top.*", "\\1", dat$stimulus)),
                         Stimulus_Y = as.numeric(gsub(".*top: (.*)px; width.*", "\\1", dat$stimulus)))

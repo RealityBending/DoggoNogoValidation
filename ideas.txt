@@ -1,0 +1,9 @@
+- To what extent do you feel like you gave your best (in terms of attention and performance)
+- How *challenging* / *boring* was the game?
+- Add Raven's progressive matrices
+- Add Conscientiousness
+- Add PHQ4
+- Change ISI (2-4)
+- TODO
+  - Remove time
+  - Increase trials for doggo
