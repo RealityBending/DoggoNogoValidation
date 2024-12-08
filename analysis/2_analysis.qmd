@@ -25,6 +25,8 @@ library(patchwork)
 library(ggside)
 library(ggdist)
 library(patchwork)
+
+colors <- c("DoggoNogo" = "#FF9800", "Simple" = "#795548")
 ```
 
 ```{r}
@@ -49,6 +51,8 @@ df_dog <- read.csv("../data/data_doggonogo.csv")
 
 
 ```{r}
+#| warning: false
+
 dflong <- df |>
   select(Participant, Condition, starts_with("Assessment_")) |> 
   mutate(jitter_x = runif(nrow(df), 0.02, 0.08),
@@ -57,6 +61,7 @@ dflong <- df |>
   separate(col = Question, into = c("Assessment", "Question", "Task"), sep = "_") |>
   filter(Question != "Duration") |> 
   mutate(
+    Question = ifelse(Question=="DurationDiff", "Duration Δ", Question),
     TaskOrder = case_when(
       Condition == "DoggoFirst" & Task == "DoggoNogo" ~ "First task", 
       Condition == "SimpleFirst" & Task == "Simple" ~ "First task",
@@ -76,7 +81,7 @@ dflong <- df |>
       side == "right" & TaskOrder == "First task" ~ 1.1 - jitter_x,
       side == "left" & TaskOrder == "Second task" ~ 1.9 + jitter_x,
       .default = 2.1 - jitter_x),
-    jitter_y = ifelse(Question == "DurationDiff", Score, jitter_y + Score),
+    jitter_y = ifelse(Question == "Duration Δ", Score, jitter_y + Score),
     linecolor = case_when(
       side == "left" & TaskOrder == "First task" ~ "DoggoNogo",
       side == "right" & TaskOrder == "First task" ~ "Simple",
@@ -84,15 +89,16 @@ dflong <- df |>
       .default = "Simple"))
 
 
-get_bf <- function(dflong, outcome="Enjoyment", y=5) {
+get_bf <- function(dflong, outcome="Enjoyment", y=5, y1=y, y2=y) {
   if(outcome=="Repeat") dflong$Score <- dflong$Score + 4
-  dat <- filter(dflong, TaskOrder=="First task", Question==outcome) 
+  dat <- filter(dflong, TaskOrder=="First task", Question==outcome) |> 
+    filter(!is.na(Score))
   rez1 <- BayesFactor::ttestBF(formula=Score ~ Task, data=dat) |> 
     parameters::parameters() |> 
     mutate(Mean_Doggo = mean(dat$Score[dat$Task=="DoggoNogo"]),
            Mean_Simple = mean(dat$Score[dat$Task=="Simple"]),
            Ratio = Mean_Doggo / Mean_Simple,
-           x=1, y=y)
+           x=1, y=y, color="DoggoNogo")
   
   dat <- filter(dflong, Condition=="DoggoFirst", Question==outcome) |> 
     select(Participant, Task, Score) |>
@@ -102,8 +108,8 @@ get_bf <- function(dflong, outcome="Enjoyment", y=5) {
     parameters::parameters() |> 
     mutate(Mean_Doggo = mean(dat$DoggoNogo),
            Mean_Simple = mean(dat$Simple),
-           Ratio = Mean_Doggo / Mean_Simple,
-           x=1.85, y=y)
+           Ratio = Mean_Simple / Mean_Doggo,
+           x=1.75, y=y1, color="Simple")
   
   dat <- filter(dflong, Condition=="SimpleFirst", Question==outcome) |> 
     select(Participant, Task, Score) |>
@@ -114,42 +120,62 @@ get_bf <- function(dflong, outcome="Enjoyment", y=5) {
     mutate(Mean_Doggo = mean(dat$DoggoNogo),
            Mean_Simple = mean(dat$Simple),
            Ratio = Mean_Doggo / Mean_Simple,
-           x=2.15, y=y)
+           x=2.25, y=y2, color="DoggoNogo")
   
   rez <- rbind(rez1, rez2, rez3)
-  if(outcome=="DurationDiff") rez$Ratio <- rez$Median
+  if(outcome=="Duration Δ") {
+    rez$Ratio <- ifelse(sign(rez$Median) %in% c(1, 0),
+                        paste0("+", insight::format_value(rez$Median, zap_small=TRUE)),
+                        insight::format_value(rez$Median, zap_small=TRUE))
+  } else {
+    rez$Ratio <- ifelse(sign(rez$Ratio - 1) %in% c(1, 0),
+                        paste0("+", insight::format_percent(rez$Ratio - 1, digits=0)),
+                        paste0("-", insight::format_percent(1 - rez$Ratio, digits=0)))
+  }
   
   rez |> 
-    select(Median, Ratio, BF, x, y) |> 
+    select(Mean_Doggo, Mean_Simple, Median, Ratio, BF, x, y, color) |> 
     mutate(Question = outcome,
            Label = paste0(insight::format_value(Ratio),
                           insight::format_bf(BF, stars_only =TRUE)))
 }
 
-rez <- rbind(get_bf(dflong, "Enjoyment", y=3.5), get_bf(dflong, "Repeat", y=-0.5), get_bf(dflong, "DurationDiff", y=0))
+rez <- rbind(
+  get_bf(dflong, "Enjoyment", y=3.5, y1=1, y2=3), 
+  get_bf(dflong, "Repeat", y=-0.5, y1=-2, y2=-1), 
+  get_bf(dflong, "Duration Δ", y=2.5, y1=0, y2=0))
 ```
 
 ```{r}
 #| fig-width: 10
-#| fig-height: 12
+#| fig-height: 14
+#| fig-cap: "TODO."
 
 p1 <- dflong  |>
+  filter(!is.na(Score)) |> 
+  mutate(Question = fct_relevel(Question, "Enjoyment", "Duration Δ", "Repeat")) |>
   ggplot(aes(y=Score, x=TaskOrder)) +
   geom_line(aes(group=Participant, x=jitter_x, y=jitter_y, color=linecolor), alpha=0.1) +
   geom_point2(aes(color=Task, x=jitter_x, y=jitter_y), alpha=0.3, size=3) +
-  ggdist::stat_halfeye(aes(x=position, fill=Task, side=side), alpha=0.5, scale=3) +
-  geom_text(data=rez, aes(x=x, y=y, label=Label), size=3) +
+  ggdist::stat_halfeye(aes(x=position, fill=Task, side=side), alpha=0.5, scale=3,
+                       key_glyph = "rect") +
+  geom_label(data=mutate(rez, Question = fct_relevel(Question, "Enjoyment", "Duration Δ", "Repeat")),
+            aes(x=x, y=y, label=Label, color=color), size=3) +
   facet_wrap(~Question, scales = "free_y", ncol=3) +
   scale_x_continuous(breaks = c(1, 2), labels = c("First task", "Second task")) +
+  scale_color_manual(values=colors, guide="none") +
+  scale_fill_manual(values=colors) +
+  guides(fill = guide_legend(override.aes = list(alpha = 1))) +
   theme_minimal() +
   theme(strip.background = element_rect(fill = "lightgrey", color=NA),
         axis.title.y = element_blank(),
-        legend.position = "top") +
-  labs(color="Task")
+        axis.title.x = element_blank(),
+        legend.position = "top") 
 
 p2 <- png::readPNG("../documents/illustration_feedback.png") |> 
   grid::rasterGrob() |> 
   patchwork::wrap_elements() 
 
-(p2 / p1)
+(p2 / p1) + plot_annotation(title="Task Assessments", 
+                            theme=theme(plot.title = element_text(face="bold", size=20)))
 ```

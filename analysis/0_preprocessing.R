@@ -1,8 +1,9 @@
 library(jsonlite)
+library(progress)
 
 # path <- "C:/Users/dmm56/Box/Data/DoggoNogoValidation"
-# path <- "C:/Users/domma/Box/Data/DoggoNogoValidation"
-path <- "C:/Users/Benjamin Tribe/Box/DoggoNogoValidation"
+path <- "C:/Users/domma/Box/Data/DoggoNogoValidation"
+# path <- "C:/Users/Benjamin Tribe/Box/DoggoNogoValidation"
 
 
 
@@ -11,10 +12,14 @@ path <- "C:/Users/Benjamin Tribe/Box/DoggoNogoValidation"
 files <- list.files(path, pattern = "*.csv")
 # files <- files[!files %in% "Experiment_zg2w0dwcv7.csv"] # temporary fix for dodgy pilot - DELETE
 
+# Progress bar
+progbar <- progress_bar$new(total = length(files))
+
 alldata <- data.frame()
 alldata_rt <- data.frame()
 for (file in files) {
-  cat(".")
+  progbar$tick()
+
   rawdata <- read.csv(paste0(path, "/", file))
   # unique(rawdata$screen)
 
@@ -99,10 +104,14 @@ for (file in files) {
 # DoggoNogo Data ----------------------------------------------------------
 files <- list.files(path, pattern = "*.json")
 
+# Progress bar
+progbar <- progress_bar$new(total = length(files))
+
 alldata_dog <- data.frame()
 alldata_dogRT <- data.frame()
 for (file in files) {
-  cat(".")
+  progbar$tick()
+
   dog <- jsonlite::read_json(paste0(path, "/", file))
   if (!dog$metadata$participantName %in% alldata$Participant) {
     next

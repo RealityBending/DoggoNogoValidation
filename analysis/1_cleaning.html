@@ -142,8 +142,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(easystats)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggside)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gghalves)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggdist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggdist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
@@ -157,7 +156,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>df_simpleRT <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"../data/rawdata_simpleRT.csv"</span>)</span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>df_doggo <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"../data/rawdata_doggonogo.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The initial sample of complete data consisted of 96 participants (Mean age = 20.0, SD = 4.3, range: [18, 53]; Gender: 85.4% women, 13.5% men, 1.04% non-binary; Education: Bachelor, 18.75%; Doctorate, 1.04%; High school, 78.12%; Master, 1.04%; Other, 1.04%), for a total trial number of 26503.</p>
+<p>The initial sample of complete data consisted of 160 participants (Mean age = 19.8, SD = 3.4, range: [18, 53]; Gender: 83.1% women, 15.6% men, 1.25% non-binary; Education: Bachelor, 16.88%; Doctorate, 1.25%; High school, 80.00%; Master, 0.62%; Other, 1.25%), for a total trial number of 43910.</p>
 <section id="recruitment-history" class="level3">
 <h3 class="anchored" data-anchor-id="recruitment-history">Recruitment History</h3>
 <div class="cell">
@@ -193,7 +192,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="experiment-duration" class="level3">
 <h3 class="anchored" data-anchor-id="experiment-duration">Experiment Duration</h3>
-<p>The experiment’s median duration is 20.99 min (50% HDI [17.95, 21.29]). The median duration of DoggoNogo was 8.47 min (50% HDI [7.22, 8.75]) and the median duration of the simple RT task was 8.14 min (50% HDI [7.21, 8.20]).</p>
+<p>The experiment’s median duration is 20.51 min (50% HDI [18.82, 21.77]). The median duration of DoggoNogo was 8.35 min (50% HDI [7.17, 8.68]) and the median duration of the simple RT task was 8.18 min (50% HDI [7.21, 8.20]).</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -273,23 +272,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  gt<span class="sc">::</span><span class="fu">opt_interactive</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="vemldzpbvu" class=".gt_table" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#vemldzpbvu table {
+<div id="raaouerszt" class=".gt_table" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#raaouerszt table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#vemldzpbvu thead, #vemldzpbvu tbody, #vemldzpbvu tfoot, #vemldzpbvu tr, #vemldzpbvu td, #vemldzpbvu th {
+#raaouerszt thead, #raaouerszt tbody, #raaouerszt tfoot, #raaouerszt tr, #raaouerszt td, #raaouerszt th {
   border-style: none;
 }
 
-#vemldzpbvu p {
+#raaouerszt p {
   margin: 0;
   padding: 0;
 }
 
-#vemldzpbvu .gt_table {
+#raaouerszt .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -315,12 +314,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-left-color: #D3D3D3;
 }
 
-#vemldzpbvu .gt_caption {
+#raaouerszt .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#vemldzpbvu .gt_title {
+#raaouerszt .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -332,7 +331,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-width: 0;
 }
 
-#vemldzpbvu .gt_subtitle {
+#raaouerszt .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -344,7 +343,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-top-width: 0;
 }
 
-#vemldzpbvu .gt_heading {
+#raaouerszt .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -356,13 +355,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#vemldzpbvu .gt_bottom_border {
+#raaouerszt .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#vemldzpbvu .gt_col_headings {
+#raaouerszt .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -377,7 +376,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#vemldzpbvu .gt_col_heading {
+#raaouerszt .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -397,7 +396,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   overflow-x: hidden;
 }
 
-#vemldzpbvu .gt_column_spanner_outer {
+#raaouerszt .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -409,15 +408,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 4px;
 }
 
-#vemldzpbvu .gt_column_spanner_outer:first-child {
+#raaouerszt .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#vemldzpbvu .gt_column_spanner_outer:last-child {
+#raaouerszt .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#vemldzpbvu .gt_column_spanner {
+#raaouerszt .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -429,11 +428,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   width: 100%;
 }
 
-#vemldzpbvu .gt_spanner_row {
+#raaouerszt .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#vemldzpbvu .gt_group_heading {
+#raaouerszt .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -459,7 +458,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   text-align: left;
 }
 
-#vemldzpbvu .gt_empty_group_heading {
+#raaouerszt .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -474,15 +473,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   vertical-align: middle;
 }
 
-#vemldzpbvu .gt_from_md > :first-child {
+#raaouerszt .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#vemldzpbvu .gt_from_md > :last-child {
+#raaouerszt .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#vemldzpbvu .gt_row {
+#raaouerszt .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -501,7 +500,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   overflow-x: hidden;
 }
 
-#vemldzpbvu .gt_stub {
+#raaouerszt .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -514,7 +513,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#vemldzpbvu .gt_stub_row_group {
+#raaouerszt .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -528,15 +527,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   vertical-align: top;
 }
 
-#vemldzpbvu .gt_row_group_first td {
+#raaouerszt .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#vemldzpbvu .gt_row_group_first th {
+#raaouerszt .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#vemldzpbvu .gt_summary_row {
+#raaouerszt .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -546,16 +545,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#vemldzpbvu .gt_first_summary_row {
+#raaouerszt .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#vemldzpbvu .gt_first_summary_row.thick {
+#raaouerszt .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#vemldzpbvu .gt_last_summary_row {
+#raaouerszt .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -565,7 +564,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#vemldzpbvu .gt_grand_summary_row {
+#raaouerszt .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -575,7 +574,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#vemldzpbvu .gt_first_grand_summary_row {
+#raaouerszt .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -585,7 +584,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-top-color: #D3D3D3;
 }
 
-#vemldzpbvu .gt_last_grand_summary_row_top {
+#raaouerszt .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -595,11 +594,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#vemldzpbvu .gt_striped {
+#raaouerszt .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#vemldzpbvu .gt_table_body {
+#raaouerszt .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -608,7 +607,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#vemldzpbvu .gt_footnotes {
+#raaouerszt .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -622,7 +621,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#vemldzpbvu .gt_footnote {
+#raaouerszt .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -631,7 +630,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#vemldzpbvu .gt_sourcenotes {
+#raaouerszt .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -645,7 +644,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#vemldzpbvu .gt_sourcenote {
+#raaouerszt .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -653,68 +652,68 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#vemldzpbvu .gt_left {
+#raaouerszt .gt_left {
   text-align: left;
 }
 
-#vemldzpbvu .gt_center {
+#raaouerszt .gt_center {
   text-align: center;
 }
 
-#vemldzpbvu .gt_right {
+#raaouerszt .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#vemldzpbvu .gt_font_normal {
+#raaouerszt .gt_font_normal {
   font-weight: normal;
 }
 
-#vemldzpbvu .gt_font_bold {
+#raaouerszt .gt_font_bold {
   font-weight: bold;
 }
 
-#vemldzpbvu .gt_font_italic {
+#raaouerszt .gt_font_italic {
   font-style: italic;
 }
 
-#vemldzpbvu .gt_super {
+#raaouerszt .gt_super {
   font-size: 65%;
 }
 
-#vemldzpbvu .gt_footnote_marks {
+#raaouerszt .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#vemldzpbvu .gt_asterisk {
+#raaouerszt .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#vemldzpbvu .gt_indent_1 {
+#raaouerszt .gt_indent_1 {
   text-indent: 5px;
 }
 
-#vemldzpbvu .gt_indent_2 {
+#raaouerszt .gt_indent_2 {
   text-indent: 10px;
 }
 
-#vemldzpbvu .gt_indent_3 {
+#raaouerszt .gt_indent_3 {
   text-indent: 15px;
 }
 
-#vemldzpbvu .gt_indent_4 {
+#raaouerszt .gt_indent_4 {
   text-indent: 20px;
 }
 
-#vemldzpbvu .gt_indent_5 {
+#raaouerszt .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
-<div id="vemldzpbvu" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="vemldzpbvu">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Feedback":["One of the issues with Psychological research today is the vast majority of it is people carrying out studies simply because they found a 'gap' in the literature. In actuality, some things are simply not worth studying. Unfortunately, this study appears to fall into this camp.","i enjoyed the dog part most. in part 1, it could have other coloured boxes as well for more attention focuses reactions","my hand went numb whilst participating in the study, which I think impacted my reaction time ","definitely something different the first task was fun I enjoyed doing it compared to the second one , for me at least the first time having something interactive and fun in a study.  ","i dont like ai art","loved it","the first task felt easier as the background was plain but more boring. The second task felt harder as the background was distracting and it meant i kept missing it so got bored quicker","I was distracted by the thought that dogs do not eat bones to gain weight.","Cute dog :)","Don't use the down arrow as it forces the participant to put their hand in a weird position for too long, use the enter key or left click instead because it is more comfortable and therefore should better represent reaction time","Initially in both tasks I was unsure whether the *only* objects would be bones, or red squares and I was worried I might click when a different kind of object would appear :)","it gets rather repeative ","No comments","didnt like the doggy one ","woof","the background of the first task made it difficult to see some of the bones appearing"]},"columns":[{"id":"Feedback","name":"Feedback","type":"character","style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["One of the issues with Psychological research today is the vast majority of it is people carrying out studies simply because they found a 'gap' in the literature. In actuality, some things are simply not worth studying. Unfortunately, this study appears to fall into this camp.","i enjoyed the dog part most. in part 1, it could have other coloured boxes as well for more attention focuses reactions","my hand went numb whilst participating in the study, which I think impacted my reaction time ","definitely something different the first task was fun I enjoyed doing it compared to the second one , for me at least the first time having something interactive and fun in a study.  ","i dont like ai art","loved it","the first task felt easier as the background was plain but more boring. The second task felt harder as the background was distracting and it meant i kept missing it so got bored quicker","I was distracted by the thought that dogs do not eat bones to gain weight.","Cute dog :)","Don't use the down arrow as it forces the participant to put their hand in a weird position for too long, use the enter key or left click instead because it is more comfortable and therefore should better represent reaction time","Initially in both tasks I was unsure whether the *only* objects would be bones, or red squares and I was worried I might click when a different kind of object would appear :)","it gets rather repeative ","No comments","didnt like the doggy one ","woof","the background of the first task made it difficult to see some of the bones appearing"],"html":true,"align":"left","headerStyle":{"font-weight":"normal"}}],"defaultPageSize":10,"showPageSizeOptions":false,"pageSizeOptions":[10,25,50,100],"paginationType":"numbers","showPagination":true,"showPageInfo":true,"minRows":1,"showSortable":true,"height":"auto","theme":{"color":"#333333","backgroundColor":"#FFFFFF","stripedColor":"rgba(128,128,128,0.05)","style":{"fontFamily":"system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"},"headerStyle":{"borderTopStyle":"solid","borderTopWidth":"2px","borderTopColor":"#D3D3D3","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"}},"elementId":"vemldzpbvu","dataKey":"ad23d66b6c092530664c48afb3eacd58"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.columns.0.style"],"jsHooks":[]}</script>
+<div id="raaouerszt" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="raaouerszt">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Feedback":["Interesting study. However, was frustrating when i would click so fast that i registered as a double click at times.","One of the issues with Psychological research today is the vast majority of it is people carrying out studies simply because they found a 'gap' in the literature. In actuality, some things are simply not worth studying. Unfortunately, this study appears to fall into this camp.","i enjoyed the dog part most. in part 1, it could have other coloured boxes as well for more attention focuses reactions","my hand went numb whilst participating in the study, which I think impacted my reaction time ","definitely something different the first task was fun I enjoyed doing it compared to the second one , for me at least the first time having something interactive and fun in a study.  ","i dont like ai art","loved it","the first task felt easier as the background was plain but more boring. The second task felt harder as the background was distracting and it meant i kept missing it so got bored quicker","I was distracted by the thought that dogs do not eat bones to gain weight.","Cute dog :)","doggo game kept saying almost which was infuriating","Don't use the down arrow as it forces the participant to put their hand in a weird position for too long, use the enter key or left click instead because it is more comfortable and therefore should better represent reaction time","Initially in both tasks I was unsure whether the *only* objects would be bones, or red squares and I was worried I might click when a different kind of object would appear :)","it gets rather repeative ","No comments","For the second task, you can see the navigator on the screen. That might be a subconscious distractor ","didnt like the doggy one ","woof","the background of the first task made it difficult to see some of the bones appearing","no nothing cheers","the puppy experiment was so fun!"]},"columns":[{"id":"Feedback","name":"Feedback","type":"character","style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["Interesting study. However, was frustrating when i would click so fast that i registered as a double click at times.","One of the issues with Psychological research today is the vast majority of it is people carrying out studies simply because they found a 'gap' in the literature. In actuality, some things are simply not worth studying. Unfortunately, this study appears to fall into this camp.","i enjoyed the dog part most. in part 1, it could have other coloured boxes as well for more attention focuses reactions","my hand went numb whilst participating in the study, which I think impacted my reaction time ","definitely something different the first task was fun I enjoyed doing it compared to the second one , for me at least the first time having something interactive and fun in a study.  ","i dont like ai art","loved it","the first task felt easier as the background was plain but more boring. The second task felt harder as the background was distracting and it meant i kept missing it so got bored quicker","I was distracted by the thought that dogs do not eat bones to gain weight.","Cute dog :)","doggo game kept saying almost which was infuriating","Don't use the down arrow as it forces the participant to put their hand in a weird position for too long, use the enter key or left click instead because it is more comfortable and therefore should better represent reaction time","Initially in both tasks I was unsure whether the *only* objects would be bones, or red squares and I was worried I might click when a different kind of object would appear :)","it gets rather repeative ","No comments","For the second task, you can see the navigator on the screen. That might be a subconscious distractor ","didnt like the doggy one ","woof","the background of the first task made it difficult to see some of the bones appearing","no nothing cheers","the puppy experiment was so fun!"],"html":true,"align":"left","headerStyle":{"font-weight":"normal"}}],"defaultPageSize":10,"showPageSizeOptions":false,"pageSizeOptions":[10,25,50,100],"paginationType":"numbers","showPagination":true,"showPageInfo":true,"minRows":1,"showSortable":true,"height":"auto","theme":{"color":"#333333","backgroundColor":"#FFFFFF","stripedColor":"rgba(128,128,128,0.05)","style":{"fontFamily":"system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"},"headerStyle":{"borderTopStyle":"solid","borderTopWidth":"2px","borderTopColor":"#D3D3D3","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"}},"elementId":"raaouerszt","dataKey":"4fa596189596e159fa625d3819a6e2bc"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.columns.0.style"],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -763,7 +762,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>exclusions<span class="sc">$</span>n_valid <span class="ot">&lt;-</span> <span class="fu">as.character</span>(<span class="fu">filter</span>(data_nvalid, Task<span class="sc">==</span><span class="st">"SimpleRT"</span> <span class="sc">&amp;</span> data_nvalid<span class="sc">$</span>n_valid <span class="sc">&lt;</span> <span class="dv">100</span>)<span class="sc">$</span>Participant)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>We removed 3 participants who missed more than one-third of trials in the simple RT task.</p>
+<p>We removed 6 participants who missed more than one-third of trials in the simple RT task.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -965,7 +964,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<p>The final sample includes 93 participants (Mean age = 19.6, SD = 2.6, range: [18, 40]; Gender: 84.9% women, 14.0% men, 1.08% non-binary; Education: Bachelor, 19.35%; Doctorate, 1.08%; High school, 77.42%; Master, 1.08%; Other, 1.08%).</p>
+<p>The final sample includes 154 participants (Mean age = 19.6, SD = 2.1, range: [18, 40]; Gender: 82.5% women, 16.2% men, 1.30% non-binary; Education: Bachelor, 16.88%; Doctorate, 0.65%; High school, 80.52%; Master, 0.65%; Other, 1.30%).</p>
 </section>
 <section id="save" class="level2">
 <h2 class="anchored" data-anchor-id="save">Save</h2>
