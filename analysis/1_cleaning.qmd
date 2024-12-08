@@ -156,7 +156,7 @@ data_nvalid |>
   ggplot(aes(x=Participant, y = n_valid, fill = Task)) +
   geom_bar(position = "dodge", stat = "identity") +
   theme_minimal() +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  theme(axis.text.x = element_blank()) +
   ggside::geom_ysidedensity(alpha=0.5, color=NA) +
   ggside::theme_ggside_void() 
 ```
@@ -165,7 +165,7 @@ data_nvalid |>
 exclusions$n_valid <- as.character(filter(data_nvalid, Task=="SimpleRT" & data_nvalid$n_valid < 100)$Participant)
 ```
 
-We removed `r length(exclusions$n_valid)` participants  who missed more than one-third of trials in the simple RT task.
+We removed `r length(exclusions$n_valid)` (`r length(exclusions$n_valid) / nrow(df)`) participants who missed more than one-third of trials in the simple RT task.
 
 ```{r}
 df <- filter(df, !Participant %in% exclusions$n_valid)
@@ -176,10 +176,8 @@ df_simpleRT <- filter(df_simpleRT, !Participant %in% exclusions$n_valid)
 
 ### Reaction Time
 
-```{r}
-#| fig-width: 15
-#| fig-height: 15
 
+```{r}
 data_rtdist <- rbind(
   df_doggo |> 
     filter(Response_Type != "early" & Response_Type != "missed") |>
@@ -190,17 +188,62 @@ data_rtdist <- rbind(
     select(Participant, RT) |>
     mutate(Task = "SimpleRT"))
 
-data_rtdist |>
-  ggplot(aes(x=RT, color=Task)) +
-  geom_density() +
+data_shape <- data_rtdist |> 
+  summarize(Kurtosis = kurtosis(RT)$Kurtosis, 
+            Skewness = skewness(RT)$Skewness, 
+            .by=c("Participant", "Task")) |> 
+  mutate(Outlier = ifelse(Skewness < 0.5 & Kurtosis < 0.5, "Outlier", "Normal"))
+
+p_shape1 <- data_shape |> 
+  mutate(Participant = fct_reorder(Participant, Skewness, .fun=mean)) |>
+  ggplot(aes(x=Participant, y = Skewness, fill = Task)) +
+  geom_bar(position = "dodge", stat = "identity") +
   theme_minimal() +
-  facet_wrap(~Participant) +
+  theme(axis.text.x = element_blank()) +
+  ggside::geom_ysidedensity(alpha=0.5, color=NA) 
+
+p_shape2 <- data_shape |> 
+  ggplot(aes(x=Skewness, y=Kurtosis)) +
+  geom_rect(ymin=-Inf, ymax=0.5, xmin=-Inf, xmax=0.5, alpha=0.2, fill="#FFCDD2") +
+  geom_point(aes(color=Task)) +
+  geom_smooth(aes(color=Task, fill=Task), method = "loess", formula = 'y ~ x') +
+  ggside::geom_ysidedensity(aes(fill=Task), alpha=0.5, color=NA) +
+  ggside::geom_xsidedensity(aes(fill=Task), alpha=0.5, color=NA) +
+  theme_minimal() 
+
+p_shape2 | p_shape1
+
+exclusions$shape <- unique(as.character(filter(data_shape, Outlier == "Outlier")$Participant))
+```
+
+
+```{r}
+#| fig-width: 15
+#| fig-height: 15
+
+data_rtdist |>
+  merge(data_shape, by=c("Participant", "Task")) |>
+  ggplot(aes(x=RT, color=Outlier)) +
+  geom_density(aes(group=interaction(Participant, Task, Outlier)), alpha=0.3) +
+  theme_minimal() +
+  scale_color_manual(values = c("Normal" = "black", "Outlier" = "red")) +
+  facet_grid(Task~Outlier) +
   theme_minimal() +
   theme(axis.text.y = element_blank())
 ```
 
+We removed `r length(exclusions$shape)` (`r length(exclusions$shape) / nrow(df)`) participants who had an outlying joint-score of skewness and kurtosis.
+
+```{r}
+df <- filter(df, !Participant %in% exclusions$shape)
+df_doggo <- filter(df_doggo, !Participant %in% exclusions$shape)
+df_simpleRT <- filter(df_simpleRT, !Participant %in% exclusions$shape)
+```
+
 
 ## Final Sample
+
+The final sample includes `r report::report_participants(df |> dplyr::select(Age, Gender, Education), age="Age", gender="Gender", education="Education")`.
 
 ### Age
 
@@ -308,9 +351,7 @@ df |>
 
 **TODO: add country map plot**
 
-## Summary
 
-The final sample includes `r report::report_participants(df |> dplyr::select(Age, Gender, Education), age="Age", gender="Gender", education="Education")`.
 
 ## Save
 
