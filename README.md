@@ -7,7 +7,7 @@
 - [Data](https://github.com/RealityBending/DoggoNogoValidation/tree/main/data)
 - [Data Analysis](https://realitybending.github.io/DoggoNogoValidation/analysis/2_analysis.html)
 
-https://realitybending.github.io/DoggoNogoValidation/documents/media/DoggoDemo.mp4
+https://github.com/user-attachments/assets/5f4cd368-b77f-47a0-95ca-1c5196360b0a
 
 ## Pilot Study
 
