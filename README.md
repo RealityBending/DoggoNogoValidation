@@ -1,11 +1,13 @@
 # Validation of a Gamified Measure of Processing Speed
 
+## Study 1
 
-## Content
+- [Experiment](https://realitybending.github.io/DoggoNogoValidation/experiment/index?exp=README)
+- [Ethics approval](https://realitybending.github.io/DoggoNogoValidation/documents/ethics/fullSubmission.pdf)
+- [Data](https://github.com/RealityBending/DoggoNogoValidation/tree/main/data)
+- [Data Analysis](https://realitybending.github.io/DoggoNogoValidation/analysis/2_analysis.html)
 
-- Ethics approval
-- Data
-- Data Analyis
+https://realitybending.github.io/DoggoNogoValidation/documents/media/DoggoDemo.mp4
 
 ## Pilot Study
 
@@ -15,7 +17,3 @@ https://github.com/RealityBending/DoggoNogo/assets/8875533/68245fcf-f237-4458-b6
 
 - [Data cleaning](https://realitybending.github.io/DoggoNogoValidation/pilot/analysis/1_cleaning.html)
 - [Data analysis](https://realitybending.github.io/DoggoNogoValidation/pilot/analysis/2_optimization.html)
-
-## Study 1
-
-- [Experiment](https://realitybending.github.io/DoggoNogoValidation/experiment/index?exp=README)
