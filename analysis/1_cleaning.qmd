@@ -24,6 +24,7 @@ library(easystats)
 library(patchwork)
 library(ggside)
 library(ggdist)
+library(rworldmap)
 ```
 
 ```{r}
@@ -349,8 +350,26 @@ df |>
 
 ### Country
 
-**TODO: add country map plot**
+```{r}
+#| message: false
+#| warning: false
 
+world_map <- df |> dplyr::group_by(Participant) |> 
+  dplyr::mutate(ISO3 = rworldmap::rwmGetISO3(Country)) |> 
+  dplyr::group_by(ISO3) |> 
+  dplyr::summarise(Country = Country, 
+                   `Participant Country of Residence` = n()) |> 
+  unique() |> 
+  joinCountryData2Map(joinCode = "ISO3", nameJoinColumn = "ISO3") |> 
+  mapCountryData(nameColumnToPlot = "Participant Country of Residence",
+                 colourPalette = viridis::turbo(n = 100, begin = 0.1, end = 0.9),
+                 catMethod = "fixedWidth",
+                 missingCountryCol = "darkgrey")#,
+                 # addLegend = F, 
+                 # ylim = c(-10,60),
+                 # aspect = 1.1)
+# do.call(addMapLegend, c(world_map, legendWidth = 0.5, legendMar = 4))
+```
 
 
 ## Save

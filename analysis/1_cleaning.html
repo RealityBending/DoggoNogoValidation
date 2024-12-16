@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.549">
+<meta name="generator" content="quarto-1.4.555">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -68,12 +68,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="1_cleaning_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="1_cleaning_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script src="1_cleaning_files/libs/core-js-2.5.3/shim.min.js"></script>
+
 <script src="1_cleaning_files/libs/react-18.2.0/react.min.js"></script>
+
 <script src="1_cleaning_files/libs/react-18.2.0/react-dom.min.js"></script>
+
 <script src="1_cleaning_files/libs/reactwidget-1.0.0/react-tools.js"></script>
+
 <script src="1_cleaning_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+
 <link href="1_cleaning_files/libs/reactable-0.4.4/reactable.css" rel="stylesheet">
+
 <script src="1_cleaning_files/libs/reactable-binding-0.4.4/reactable.js"></script>
+
 
 
 </head>
@@ -141,7 +148,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(easystats)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggside)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggdist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggdist)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rworldmap)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
@@ -271,23 +279,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  gt<span class="sc">::</span><span class="fu">opt_interactive</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="aohzllphry" class=".gt_table" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#aohzllphry table {
+<div id="zsdwpoxzkk" class=".gt_table" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#zsdwpoxzkk table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#aohzllphry thead, #aohzllphry tbody, #aohzllphry tfoot, #aohzllphry tr, #aohzllphry td, #aohzllphry th {
+#zsdwpoxzkk thead, #zsdwpoxzkk tbody, #zsdwpoxzkk tfoot, #zsdwpoxzkk tr, #zsdwpoxzkk td, #zsdwpoxzkk th {
   border-style: none;
 }
 
-#aohzllphry p {
+#zsdwpoxzkk p {
   margin: 0;
   padding: 0;
 }
 
-#aohzllphry .gt_table {
+#zsdwpoxzkk .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -313,12 +321,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-left-color: #D3D3D3;
 }
 
-#aohzllphry .gt_caption {
+#zsdwpoxzkk .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#aohzllphry .gt_title {
+#zsdwpoxzkk .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -330,7 +338,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-width: 0;
 }
 
-#aohzllphry .gt_subtitle {
+#zsdwpoxzkk .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -342,7 +350,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-top-width: 0;
 }
 
-#aohzllphry .gt_heading {
+#zsdwpoxzkk .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -354,13 +362,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#aohzllphry .gt_bottom_border {
+#zsdwpoxzkk .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#aohzllphry .gt_col_headings {
+#zsdwpoxzkk .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -375,7 +383,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#aohzllphry .gt_col_heading {
+#zsdwpoxzkk .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -395,7 +403,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   overflow-x: hidden;
 }
 
-#aohzllphry .gt_column_spanner_outer {
+#zsdwpoxzkk .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -407,15 +415,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 4px;
 }
 
-#aohzllphry .gt_column_spanner_outer:first-child {
+#zsdwpoxzkk .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#aohzllphry .gt_column_spanner_outer:last-child {
+#zsdwpoxzkk .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#aohzllphry .gt_column_spanner {
+#zsdwpoxzkk .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -427,11 +435,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   width: 100%;
 }
 
-#aohzllphry .gt_spanner_row {
+#zsdwpoxzkk .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#aohzllphry .gt_group_heading {
+#zsdwpoxzkk .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -457,7 +465,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   text-align: left;
 }
 
-#aohzllphry .gt_empty_group_heading {
+#zsdwpoxzkk .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -472,15 +480,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   vertical-align: middle;
 }
 
-#aohzllphry .gt_from_md > :first-child {
+#zsdwpoxzkk .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#aohzllphry .gt_from_md > :last-child {
+#zsdwpoxzkk .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#aohzllphry .gt_row {
+#zsdwpoxzkk .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -499,7 +507,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   overflow-x: hidden;
 }
 
-#aohzllphry .gt_stub {
+#zsdwpoxzkk .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -512,7 +520,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#aohzllphry .gt_stub_row_group {
+#zsdwpoxzkk .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -526,15 +534,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   vertical-align: top;
 }
 
-#aohzllphry .gt_row_group_first td {
+#zsdwpoxzkk .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#aohzllphry .gt_row_group_first th {
+#zsdwpoxzkk .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#aohzllphry .gt_summary_row {
+#zsdwpoxzkk .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -544,16 +552,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#aohzllphry .gt_first_summary_row {
+#zsdwpoxzkk .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#aohzllphry .gt_first_summary_row.thick {
+#zsdwpoxzkk .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#aohzllphry .gt_last_summary_row {
+#zsdwpoxzkk .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -563,7 +571,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#aohzllphry .gt_grand_summary_row {
+#zsdwpoxzkk .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -573,7 +581,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#aohzllphry .gt_first_grand_summary_row {
+#zsdwpoxzkk .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -583,7 +591,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-top-color: #D3D3D3;
 }
 
-#aohzllphry .gt_last_grand_summary_row_top {
+#zsdwpoxzkk .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -593,11 +601,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#aohzllphry .gt_striped {
+#zsdwpoxzkk .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#aohzllphry .gt_table_body {
+#zsdwpoxzkk .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -606,7 +614,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#aohzllphry .gt_footnotes {
+#zsdwpoxzkk .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -620,7 +628,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#aohzllphry .gt_footnote {
+#zsdwpoxzkk .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -629,7 +637,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#aohzllphry .gt_sourcenotes {
+#zsdwpoxzkk .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -643,7 +651,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#aohzllphry .gt_sourcenote {
+#zsdwpoxzkk .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -651,68 +659,77 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#aohzllphry .gt_left {
+#zsdwpoxzkk .gt_left {
   text-align: left;
 }
 
-#aohzllphry .gt_center {
+#zsdwpoxzkk .gt_center {
   text-align: center;
 }
 
-#aohzllphry .gt_right {
+#zsdwpoxzkk .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#aohzllphry .gt_font_normal {
+#zsdwpoxzkk .gt_font_normal {
   font-weight: normal;
 }
 
-#aohzllphry .gt_font_bold {
+#zsdwpoxzkk .gt_font_bold {
   font-weight: bold;
 }
 
-#aohzllphry .gt_font_italic {
+#zsdwpoxzkk .gt_font_italic {
   font-style: italic;
 }
 
-#aohzllphry .gt_super {
+#zsdwpoxzkk .gt_super {
   font-size: 65%;
 }
 
-#aohzllphry .gt_footnote_marks {
+#zsdwpoxzkk .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#aohzllphry .gt_asterisk {
+#zsdwpoxzkk .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#aohzllphry .gt_indent_1 {
+#zsdwpoxzkk .gt_indent_1 {
   text-indent: 5px;
 }
 
-#aohzllphry .gt_indent_2 {
+#zsdwpoxzkk .gt_indent_2 {
   text-indent: 10px;
 }
 
-#aohzllphry .gt_indent_3 {
+#zsdwpoxzkk .gt_indent_3 {
   text-indent: 15px;
 }
 
-#aohzllphry .gt_indent_4 {
+#zsdwpoxzkk .gt_indent_4 {
   text-indent: 20px;
 }
 
-#aohzllphry .gt_indent_5 {
+#zsdwpoxzkk .gt_indent_5 {
   text-indent: 25px;
 }
+
+#zsdwpoxzkk .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#zsdwpoxzkk div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
 </style>
-<div id="aohzllphry" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="aohzllphry">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Feedback":["Interesting study. However, was frustrating when i would click so fast that i registered as a double click at times.","One of the issues with Psychological research today is the vast majority of it is people carrying out studies simply because they found a 'gap' in the literature. In actuality, some things are simply not worth studying. Unfortunately, this study appears to fall into this camp.","i enjoyed the dog part most. in part 1, it could have other coloured boxes as well for more attention focuses reactions","my hand went numb whilst participating in the study, which I think impacted my reaction time ","definitely something different the first task was fun I enjoyed doing it compared to the second one , for me at least the first time having something interactive and fun in a study.  ","i dont like ai art","loved it","the first task felt easier as the background was plain but more boring. The second task felt harder as the background was distracting and it meant i kept missing it so got bored quicker","I was distracted by the thought that dogs do not eat bones to gain weight.","Cute dog :)","doggo game kept saying almost which was infuriating","Don't use the down arrow as it forces the participant to put their hand in a weird position for too long, use the enter key or left click instead because it is more comfortable and therefore should better represent reaction time","Initially in both tasks I was unsure whether the *only* objects would be bones, or red squares and I was worried I might click when a different kind of object would appear :)","it gets rather repeative ","No comments","For the second task, you can see the navigator on the screen. That might be a subconscious distractor ","didnt like the doggy one ","woof","the background of the first task made it difficult to see some of the bones appearing","no nothing cheers","the puppy experiment was so fun!"]},"columns":[{"id":"Feedback","name":"Feedback","type":"character","style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["Interesting study. However, was frustrating when i would click so fast that i registered as a double click at times.","One of the issues with Psychological research today is the vast majority of it is people carrying out studies simply because they found a 'gap' in the literature. In actuality, some things are simply not worth studying. Unfortunately, this study appears to fall into this camp.","i enjoyed the dog part most. in part 1, it could have other coloured boxes as well for more attention focuses reactions","my hand went numb whilst participating in the study, which I think impacted my reaction time ","definitely something different the first task was fun I enjoyed doing it compared to the second one , for me at least the first time having something interactive and fun in a study.  ","i dont like ai art","loved it","the first task felt easier as the background was plain but more boring. The second task felt harder as the background was distracting and it meant i kept missing it so got bored quicker","I was distracted by the thought that dogs do not eat bones to gain weight.","Cute dog :)","doggo game kept saying almost which was infuriating","Don't use the down arrow as it forces the participant to put their hand in a weird position for too long, use the enter key or left click instead because it is more comfortable and therefore should better represent reaction time","Initially in both tasks I was unsure whether the *only* objects would be bones, or red squares and I was worried I might click when a different kind of object would appear :)","it gets rather repeative ","No comments","For the second task, you can see the navigator on the screen. That might be a subconscious distractor ","didnt like the doggy one ","woof","the background of the first task made it difficult to see some of the bones appearing","no nothing cheers","the puppy experiment was so fun!"],"html":true,"align":"left","headerStyle":{"font-weight":"normal"}}],"defaultPageSize":10,"showPageSizeOptions":false,"pageSizeOptions":[10,25,50,100],"paginationType":"numbers","showPagination":true,"showPageInfo":true,"minRows":1,"showSortable":true,"height":"auto","theme":{"color":"#333333","backgroundColor":"#FFFFFF","stripedColor":"rgba(128,128,128,0.05)","style":{"fontFamily":"system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"},"headerStyle":{"borderTopStyle":"solid","borderTopWidth":"2px","borderTopColor":"#D3D3D3","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"}},"elementId":"aohzllphry","dataKey":"4fa596189596e159fa625d3819a6e2bc"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.columns.0.style"],"jsHooks":[]}</script>
+<div id="zsdwpoxzkk" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="zsdwpoxzkk">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Feedback":["Interesting study. However, was frustrating when i would click so fast that i registered as a double click at times.","One of the issues with Psychological research today is the vast majority of it is people carrying out studies simply because they found a 'gap' in the literature. In actuality, some things are simply not worth studying. Unfortunately, this study appears to fall into this camp.","i enjoyed the dog part most. in part 1, it could have other coloured boxes as well for more attention focuses reactions","my hand went numb whilst participating in the study, which I think impacted my reaction time ","definitely something different the first task was fun I enjoyed doing it compared to the second one , for me at least the first time having something interactive and fun in a study.  ","i dont like ai art","loved it","the first task felt easier as the background was plain but more boring. The second task felt harder as the background was distracting and it meant i kept missing it so got bored quicker","I was distracted by the thought that dogs do not eat bones to gain weight.","Cute dog :)","doggo game kept saying almost which was infuriating","Don't use the down arrow as it forces the participant to put their hand in a weird position for too long, use the enter key or left click instead because it is more comfortable and therefore should better represent reaction time","Initially in both tasks I was unsure whether the *only* objects would be bones, or red squares and I was worried I might click when a different kind of object would appear :)","it gets rather repeative ","No comments","For the second task, you can see the navigator on the screen. That might be a subconscious distractor ","didnt like the doggy one ","woof","the background of the first task made it difficult to see some of the bones appearing","no nothing cheers","the puppy experiment was so fun!"]},"columns":[{"id":"Feedback","name":"Feedback","type":"character","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","html":true,"align":"left"}],"defaultPageSize":10,"showPageSizeOptions":false,"pageSizeOptions":[10,25,50,100],"paginationType":"numbers","showPagination":true,"showPageInfo":true,"minRows":1,"height":"auto","theme":{"color":"#333333","backgroundColor":"#FFFFFF","stripedColor":"rgba(128,128,128,0.05)","style":{"font-family":"system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif","fontSize":"16px"},"tableStyle":{"borderTopStyle":"solid","borderTopWidth":"2px","borderTopColor":"#D3D3D3"},"headerStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"groupHeaderStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"cellStyle":{"fontWeight":"normal"}},"elementId":"zsdwpoxzkk","dataKey":"6519cbd1ef12d456832afb5d56ae1181"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.columns.0.style"],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -1010,15 +1027,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="country" class="level3">
 <h3 class="anchored" data-anchor-id="country">Country</h3>
-<p><strong>TODO: add country map plot</strong></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>world_map <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">group_by</span>(Participant) <span class="sc">|&gt;</span> </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">ISO3 =</span> rworldmap<span class="sc">::</span><span class="fu">rwmGetISO3</span>(Country)) <span class="sc">|&gt;</span> </span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(ISO3) <span class="sc">|&gt;</span> </span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">Country =</span> Country, </span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>                   <span class="st">`</span><span class="at">Participant Country of Residence</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unique</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">joinCountryData2Map</span>(<span class="at">joinCode =</span> <span class="st">"ISO3"</span>, <span class="at">nameJoinColumn =</span> <span class="st">"ISO3"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mapCountryData</span>(<span class="at">nameColumnToPlot =</span> <span class="st">"Participant Country of Residence"</span>,</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>                 <span class="at">colourPalette =</span> viridis<span class="sc">::</span><span class="fu">turbo</span>(<span class="at">n =</span> <span class="dv">100</span>, <span class="at">begin =</span> <span class="fl">0.1</span>, <span class="at">end =</span> <span class="fl">0.9</span>),</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>                 <span class="at">catMethod =</span> <span class="st">"fixedWidth"</span>,</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>                 <span class="at">missingCountryCol =</span> <span class="st">"darkgrey"</span>)<span class="co">#,</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>4 codes from your data successfully matched countries in the map
+0 codes from your data failed to match with a country code in the map
+239 codes from the map weren't represented in your data</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="1_cleaning_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>                 <span class="co"># addLegend = F, </span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>                 <span class="co"># ylim = c(-10,60),</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>                 <span class="co"># aspect = 1.1)</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># do.call(addMapLegend, c(world_map, legendWidth = 0.5, legendMar = 4))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 </section>
 </section>
 <section id="save" class="level2">
 <h2 class="anchored" data-anchor-id="save">Save</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(df, <span class="st">"../data/data_participants.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(df_doggo, <span class="st">"../data/data_doggonogo.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(df_simpleRT, <span class="st">"../data/data_simpleRT.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(df, <span class="st">"../data/data_participants.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(df_doggo, <span class="st">"../data/data_doggonogo.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(df_simpleRT, <span class="st">"../data/data_simpleRT.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 
@@ -1103,6 +1154,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -1137,7 +1206,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');
