@@ -70,53 +70,60 @@ format:
 ## Introduction
 
 -   [ ] Processing speed
-    - [ ] SRT
+    - [ ] Relevance
+    - [ ] Measurement --> SRT
 -   [ ] Gamification
+
+Processing speed - poorly defined/operationalised **[explain/examples]**.
+
+Here we define processing speed as **[define]**. 
+
 
 ## Methods
 
 ### Participants
 
--   [ ] Recruitment
--   [ ] Exclusions
+-   [X] Recruitment
+-   [ ] Exclusions (?)
 -   [ ] Demographics
--   [ ] Consent
--   [ ] Approval
+-   [X] Consent
+-   [X] Approval
 
-Participants were recruited online via the University of Sussex participant pool in ___ for credits. [inclusion criteria/consent]. N participants were originally ___ [exclusions] the final sample consisted of **N** participants aged **lower** to **upper** (*M* = **X**, *SD* = **X**). [demographics]. Participants provided informed consent at the beginning of the experiment, and could leave the experiment at any time - data was saved at the end of the study after debrief.
+Participants were recruited from the University of Sussex participant pool online via SONA (*ref*) and were ____ with course credits. Fluency in English was the only requirement for participation. *[consent]*. Data from N participants was originally obtained, however *[exclusions - other than incomplete data?]*. The final sample consisted of **N** participants aged **lower** to **upper** (*M* = **X**, *SD* = **X**). *[demographics]*. Participants provided informed consent at the beginning of the experiment, and could leave the experiment at any time. The SRT data and questionnaire responses were saved at the end of the study, after debrief, however, because it was hosted ____y, DoggoNogo data was saved on completion of the game. Therefore, any participants for whom we obtained incomplete data were deleted, with the assumption that ____ indicated a withdrawal of consent.
+
+Ethical approval was obtained from a Psychology School Research Ethics Officer at the University of Sussex (ER/BMT26/5) 
 
 ### Measures
 
 -   [ ] RT, accuracy
--   [ ] post-task questions
+-   [X] post-task questions
 
 Participants completed two computer-based simple reaction time tasks: a gamified version (DoggoNogo) and a non-gamified version (SRT). The order of tasks was counterbalanced across participants. Both tasks involved three blocks with opportunities for breaks in-between. Participants responded using the down arrow on their keyboard.
 
-After each of the tasks participants responded to the following short questions about their experience:
+After each of the tasks participants responded to three short questions about their experience. To assess task enjoyment, participants rated the statement "How much did you enjoy the previous task?" on an 8-point likert scale from 0 = "boring" to 7 = "fun". They then provided an estimation (in minutes) of task duration, "Without checking the time, how long do you think you spent doing the previous task?", and finally indicated the ____ of the task by rating the statement: "How would you feel if you had to do the same task again one more time?" on a 9-point likert scale from -4 = "very annoyed" to 4 "very happy".
 
-"How much did you enjoy the previous task?" (8-point scale from 'boring' to 'fun') "Without checking the time, how long do you think you spent doing the previous task?" (minutes) "How would you feel if you had to do the same task again one more time?" (9-point scale from 'Very annoyed' to 'Very happy')
-
-Once they had completed both tasks, participants were given an opportunity to provide feedback and rated their overall enjoyment of the experiment.
+After completing both tasks, participants were given an opportunity to provide written feedback and rated their overall enjoyment of the experiment from 0 to 4 stars.
 
 ### DoggoNogo
 
 -   [ ] Development
 -   [ ] Layout
 -   [ ] Procedure - blocks, trials
--   [ ] Dynamic ISI
--   [ ] Dynamic RT threshold - points system
+-   [X] Dynamic ISI
+-   [X] Dynamic RT threshold - points system
 
 DoggoNogo was written in Unity (*ref*)
+Introduction to the game - narrative, saving Doggo. Doggo malnourished --> game performance ____ Doggos health, shown by changes in character appearance on each level. 
+Instructions
+Garden background, Doggo centered relatively static small jump when respnonse key pressed (**relative size on screen**). 
+Bone size varied (**details**)  as did position on the screen (**details**) and image rotation.
+Health bars and performance feedback
 
 The number of trials per block was dependent on participant performance; participants had to obtain **2000?** points in each block before proceeding to the next/finishing.
 
-Dynamic point system - explain
+Bones appear following interstimulus intervals (ISIs) of durations randomly obtained on each trial from a uniform distribution between 1000ms and 4000ms. 
 
--   The cumulative median RT serves as a dynamic threshold. If the
-
-
-
-Points were obtained by catching bones, and both success and points scored depend on participant RT relative to their cumulative median RT. Premature responses received -100 points (but total never ____ zero), RTs longer than participant maximums were 'missed' and yielded 0 points and RTs longer than participant cumulative medians were 'slow' and obtained 0 points. RTs shorter than participant cumulative medians were fast and yielded a score based on the following: RT is clamped to the range between 150ms and double the participants cumulative median RT ($2\text{RT}_{\text{Median}}$), normalised and subtracted from 1. The result is multiplied by the score range (i.e., $200-100 = 100$) and added to the minimum score ($100$). This is the participants final score, unless it exceeds 200, in which case the participant obtains 200 points. 
+Points were obtained by catching bones by pressing the down arrow on the keyboard, and both success and number of points depend on participant RT relative to their cumulative median RT. Premature responses received -100 points (but minimum total score is limited to zero), RTs longer than double the participants cumulative medium were 'missed' and yielded 0 points and RTs longer than participant cumulative medians were 'slow' and obtained 0 points. RTs shorter than participant cumulative medians were fast and yielded a score based on the following: RT is clamped to the range between 150ms and double the participants cumulative median RT ($2\text{RT}_{\text{Median}}$), normalised and subtracted from 1. The result is multiplied by the score range (i.e., $200-100 = 100$) and added to the minimum score ($100$). This is the participants final score, unless it exceeds 200, in which case the participant obtains 200 points. 
 
 
 $\text{Score} = \text{Score}_{\text{min}} + (1-\frac{\text{RT}_{\text{Clamped}} - \text{RT}_{\text{min}}}{2\text{RT}_{\text{Median}}-\text{RT}_{\text{min}}}) \times (\text{Score}_{\text{min}}-\text{Score}_{\text{max}})$
@@ -127,7 +134,7 @@ $\therefore \text{Score} = 100 + (1-\frac{\text{RT}_{\text{clamped}} - 150}{2\te
 
 For example, taking the initial RT bounds that were set to $\text{RT}_{\text{min}} = 150$ and $2\text{RT}_{\text{Median}} = 600$, with score limits set to $[100,200]$:
 
-| RT (ms)        | Clamped RT | Score |
+| RT (ms)        | Clamped RT    | Score |
 |----------------|---------------|-------|
 | 120            | 150           | 200   |
 | 150            | 150           | 200   |
@@ -145,10 +152,17 @@ DoggoNogo was completed after between **lower - set to min 10 trials per level**
 -   [ ] Dynamic ISI
 -   [ ] Responding - premature consequences, late, ...
 
-The SRT was written using JSPsych (*ref*) There were a total of 150 trials (50 per block)
+The SRT was written using JSPsych (*ref*) 
 
-For each trial, the interstimulus interval (ISI) was a value randomly selected from a uniform distribution ranging 1000-4000(ms). Premature responses ____ a message and reset the trial with a new ISI value - thus preventing participants from skipping through the experiment. If participants did not respond within 600ms, the ____ was marked as ___ aand they progressed to the next trial.
+Participants were informed that during the task they would see a fixation cross (+) followed by a red square. They were instructed to press the down arrow on their keyboard as fast as possible when the red square appears. The display background was white and fixation cross appeared as a black plus (+) symbol in the middle of the screen. The fixation cross was ____ the the interstimulus interval (ISI) which was a value randomly selected from a uniform distribution ranging 1000-4000(ms). Premature responses ____ a message and reset the trial with a new ISI value - thus preventing participants from skipping through the experiment. 
+At the end of the ISI, the fixation cross was replaced with a red square (target stimulus) which appeared in a random location (vertical and horizontal offsets from centre each randomly selected within $\pm90\%$ of the screen width and height) and size (randomly selected from a discrete uniform distribution from 50px to 200px, in steps of 10px) on the screen. If participants did not respond to the target stimulus within 600ms, the ____ was marked as ___ aand they progressed to the next trial. There were three blocks of 50 trials each (150 trials in total), separated by breaks of choice duration.
+
 
 ## Results
 
+
+
 ## Discussion
+
+
+
