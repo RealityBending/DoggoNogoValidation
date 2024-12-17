@@ -1,0 +1,61 @@
+---
+title: "**Validation of a Gamified Measure of Processing Speed**"
+shorttitle: "TO DO"
+author:
+  - name: Dominique Makowski
+    corresponding: true
+    orcid: 0000-0001-5375-9967
+    email: D.Makowski@sussex.ac.uk
+    url: https://realitybending.github.io/
+    roles:
+      - TO DO
+    affiliations:
+      - id: "id1"
+        name: "University of Sussex"
+        department: "School of Psychology"
+        city: "Brighton"
+        country: "UK"
+        postal-code: "BN1 9RH"
+      - name: "University of Sussex"
+        department:  "Sussex Centre for Consciousness Science"
+  - name: Ana Neves
+    orcid: 0009-0006-0020-7599
+    role:
+      - TO DO
+    affiliations:
+      - ref: "id1"
+  - name: Benjamin Tribe
+    orcid: 	0000-0002-9652-599X
+    role:
+      - TO DO
+    affiliations:
+      - ref: "id1"
+  - name: Max Lovell
+    orcid: TO DO 
+    role:
+      - TO DO
+    affiliations:
+      - ref: "id1"
+author-note:
+  status-changes: 
+    affiliation-change: ~
+    deceased: ~
+  disclosures:
+    gratitude: ~
+    study-registration: ~
+    data-sharing: ~
+    related-report: ~
+    conflict-of-interest: ~
+    financial-support: ~
+    authorship-agreements: ~
+abstract: ""
+keywords: "Gamification, Processing Speed, Cognitive Control, Reaction Time"
+numbered-lines: true
+floatsintext: true
+bibliography: bibliography.bib
+format:
+  apaquarto-docx: default
+  apaquarto-html: default
+  apaquarto-pdf:
+    documentmode: man
+---

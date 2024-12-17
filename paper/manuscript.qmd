@@ -1,0 +1,144 @@
+---
+title: "**Validation of a Gamified Measure of Processing Speed**"
+shorttitle: "TO DO"
+author:
+  - name: Dominique Makowski
+    corresponding: true
+    orcid: 0000-0001-5375-9967
+    email: D.Makowski@sussex.ac.uk
+    url: https://realitybending.github.io/
+    roles:
+      - TO DO
+    affiliations:
+      - id: "id1"
+        name: "University of Sussex"
+        department: "School of Psychology"
+        city: "Brighton"
+        country: "UK"
+        postal-code: "BN1 9RH"
+      - name: "University of Sussex"
+        department:  "Sussex Centre for Consciousness Science"
+  - name: Ana Neves
+    orcid: 0009-0006-0020-7599
+    role:
+      - TO DO
+    affiliations:
+      - ref: "id1"
+  - name: Benjamin Tribe
+    orcid: 	0000-0002-9652-599X
+    role:
+      - TO DO
+    affiliations:
+      - ref: "id1"
+  - name: Max Lovell
+    orcid: TO DO 
+    role:
+      - TO DO
+    affiliations:
+      - ref: "id1"
+author-note:
+  status-changes: 
+    affiliation-change: ~
+    deceased: ~
+  disclosures:
+    gratitude: |
+      ::: {.callout-note icon=false appearance="simple"}
+      This preprint is a non-peer-reviewed work from the [**Reality Bending Lab**](https://realitybending.github.io/).
+      ![](https://realitybending.github.io/media/ReBeL_LogoOnly_hu11484441381606756729.png){width=20% fig-align="center"}
+      :::
+    study-registration: ~
+    data-sharing: ~
+    related-report: ~
+    conflict-of-interest: ~
+    financial-support: ~
+    authorship-agreements: ~
+abstract: |
+  TO DO
+#   **Significance Statement**. TO DO
+keywords: "Gamification, Processing Speed, Cognitive Control, Reaction Time"
+numbered-lines: true
+floatsintext: true
+bibliography: bibliography.bib
+format:
+  apaquarto-docx: default
+  apaquarto-html: default
+  apaquarto-pdf:
+    documentmode: jou
+    keep-tex: true
+---
+
+## Introduction
+
+- [ ] Processing speed
+  - [ ] SRT
+- [ ] Gamification
+
+
+## Methods
+
+
+### Participants
+
+- [ ] Recruitment
+- [ ] Exclusions
+- [ ] Demographics
+- [ ] Consent
+- [ ] Approval 
+
+Participants were recruited online via the University of Sussex participant pool in ___ for credits. [inclusion criteria/consent]. N participants were originally ____ [exclusions] the final sample consisted of **N** participants aged **lower** to **upper** (*M* = **X**, *SD* = **X**). [demographics]. Participants provided informed consent at the beginning of the experiment, and could leave the experiment at any time - data was saved at the end of the study after debrief.
+
+
+### Measures
+
+- [ ] RT, accuracy
+- [ ] post-task questions
+
+Participants completed two computer-based simple reaction time tasks: a gamified version (DoggoNogo) and a non-gamified version (SRT). The order of tasks was counterbalanced across participants. Both tasks involved three blocks with opportunities for breaks in-between. Participants responded using the down arrow on their keyboard.
+
+After each of the tasks participants responded to the following short questions about their experience:
+
+"How much did you enjoy the previous task?" (8-point scale from 'boring' to 'fun')
+"Without checking the time, how long do you think you spent doing the previous task?" (minutes)
+"How would you feel if you had to do the same task again one more time?" (9-point scale from 'Very annoyed' to 'Very happy')
+
+Once they had completed both tasks, participants were given an opportunity to provide feedback and rated their overall enjoyment of the experiment. 
+
+
+### DoggoNogo
+
+- [ ] Development
+- [ ] Layout
+- [ ] Procedure - blocks, trials
+- [ ] Dynamic ISI
+- [ ] Dynamic RT threshold - points system
+
+DoggoNogo was written in Unity (*ref*)
+
+The number of trials per block was dependent on participant performance; participants had to obtain **X** points in each block before proceeding to the next/finishing.
+
+Dynamic point system - explain
+
+Points were obtained by catching bones: if the participant pressed the down arrow quickly enough *[maths?]* they would obtain *[maths?]* points, if they pressed down *[maths???]* they would obtain 0 points, and if they took *[maths??????]* or responded prematurely they lost *[mAThS?!]* points. 
+DoggoNogo was completed after between **lower** and **upper** trials (*M* = **X**, *SD* = **X**).
+
+### SRT
+
+- [ ] Development
+- [ ] Layout
+- [ ] Procedure - blocks, trials
+- [ ] Dynamic ISI
+- [ ] Responding - premature consequences, late, ...
+
+The SRT was written using JSPsych (*ref*)
+There were a total of 150 trials (50 per block)
+
+For each trial, the interstimulus interval (ISI) was a value randomly selected from a uniform distribution ranging 1000-4000(ms).
+Premature responses ____ a message and reset the trial with a new ISI value - thus preventing participants from skipping through the experiment. If participants did not respond within 600ms, the ___ was marked as ___ aand they progressed to the next trial.
+
+
+## Results
+
+
+## Discussion
+
+
