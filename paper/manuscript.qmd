@@ -18,24 +18,24 @@ author:
         postal-code: "BN1 9RH"
       - name: "University of Sussex"
         department:  "Sussex Centre for Consciousness Science"
-  - name: Ana Neves
-    orcid: 0009-0006-0020-7599
-    role:
-      - TO DO
-    affiliations:
-      - ref: "id1"
-  - name: Benjamin Tribe
-    orcid: 	0000-0002-9652-599X
-    role:
-      - TO DO
-    affiliations:
-      - ref: "id1"
-  - name: Max Lovell
-    orcid: TO DO 
-    role:
-      - TO DO
-    affiliations:
-      - ref: "id1"
+  # - name: Ana Neves
+  #   orcid: 0009-0006-0020-7599
+  #   role:
+  #     - TO DO
+  #   affiliations:
+  #     - ref: "id1"
+  # - name: Benjamin Tribe
+  #   orcid: 	0000-0002-9652-599X
+  #   role:
+  #     - TO DO
+  #   affiliations:
+  #     - ref: "id1"
+  # - name: Max Lovell
+  #   orcid: TO DO
+  #   role:
+  #     - TO DO
+  #   affiliations:
+  #     - ref: "id1"
 author-note:
   status-changes: 
     affiliation-change: ~
@@ -54,8 +54,8 @@ author-note:
     authorship-agreements: ~
 abstract: |
   TO DO
-#   **Significance Statement**. TO DO
-keywords: "Gamification, Processing Speed, Cognitive Control, Reaction Time"
+  **Significance Statement**. TO DO
+# keywords: "Gamification, Processing Speed, Cognitive Control, Reaction Time"
 numbered-lines: true
 floatsintext: true
 bibliography: bibliography.bib
@@ -69,76 +69,86 @@ format:
 
 ## Introduction
 
-- [ ] Processing speed
-  - [ ] SRT
-- [ ] Gamification
-
+-   [ ] Processing speed
+    - [ ] SRT
+-   [ ] Gamification
 
 ## Methods
 
-
 ### Participants
 
-- [ ] Recruitment
-- [ ] Exclusions
-- [ ] Demographics
-- [ ] Consent
-- [ ] Approval 
+-   [ ] Recruitment
+-   [ ] Exclusions
+-   [ ] Demographics
+-   [ ] Consent
+-   [ ] Approval
 
-Participants were recruited online via the University of Sussex participant pool in ___ for credits. [inclusion criteria/consent]. N participants were originally ____ [exclusions] the final sample consisted of **N** participants aged **lower** to **upper** (*M* = **X**, *SD* = **X**). [demographics]. Participants provided informed consent at the beginning of the experiment, and could leave the experiment at any time - data was saved at the end of the study after debrief.
-
+Participants were recruited online via the University of Sussex participant pool in ___ for credits. [inclusion criteria/consent]. N participants were originally ___ [exclusions] the final sample consisted of **N** participants aged **lower** to **upper** (*M* = **X**, *SD* = **X**). [demographics]. Participants provided informed consent at the beginning of the experiment, and could leave the experiment at any time - data was saved at the end of the study after debrief.
 
 ### Measures
 
-- [ ] RT, accuracy
-- [ ] post-task questions
+-   [ ] RT, accuracy
+-   [ ] post-task questions
 
 Participants completed two computer-based simple reaction time tasks: a gamified version (DoggoNogo) and a non-gamified version (SRT). The order of tasks was counterbalanced across participants. Both tasks involved three blocks with opportunities for breaks in-between. Participants responded using the down arrow on their keyboard.
 
 After each of the tasks participants responded to the following short questions about their experience:
 
-"How much did you enjoy the previous task?" (8-point scale from 'boring' to 'fun')
-"Without checking the time, how long do you think you spent doing the previous task?" (minutes)
-"How would you feel if you had to do the same task again one more time?" (9-point scale from 'Very annoyed' to 'Very happy')
+"How much did you enjoy the previous task?" (8-point scale from 'boring' to 'fun') "Without checking the time, how long do you think you spent doing the previous task?" (minutes) "How would you feel if you had to do the same task again one more time?" (9-point scale from 'Very annoyed' to 'Very happy')
 
-Once they had completed both tasks, participants were given an opportunity to provide feedback and rated their overall enjoyment of the experiment. 
-
+Once they had completed both tasks, participants were given an opportunity to provide feedback and rated their overall enjoyment of the experiment.
 
 ### DoggoNogo
 
-- [ ] Development
-- [ ] Layout
-- [ ] Procedure - blocks, trials
-- [ ] Dynamic ISI
-- [ ] Dynamic RT threshold - points system
+-   [ ] Development
+-   [ ] Layout
+-   [ ] Procedure - blocks, trials
+-   [ ] Dynamic ISI
+-   [ ] Dynamic RT threshold - points system
 
 DoggoNogo was written in Unity (*ref*)
 
-The number of trials per block was dependent on participant performance; participants had to obtain **X** points in each block before proceeding to the next/finishing.
+The number of trials per block was dependent on participant performance; participants had to obtain **2000?** points in each block before proceeding to the next/finishing.
 
 Dynamic point system - explain
 
-Points were obtained by catching bones: if the participant pressed the down arrow quickly enough *[maths?]* they would obtain *[maths?]* points, if they pressed down *[maths???]* they would obtain 0 points, and if they took *[maths??????]* or responded prematurely they lost *[mAThS?!]* points. 
-DoggoNogo was completed after between **lower** and **upper** trials (*M* = **X**, *SD* = **X**).
+-   The cumulative median RT serves as a dynamic threshold. If the
+
+
+
+Points were obtained by catching bones, and both success and points scored depend on participant RT relative to their cumulative median RT. Premature responses received -100 points (but total never ____ zero), RTs longer than participant maximums were 'missed' and yielded 0 points and RTs longer than participant cumulative medians were 'slow' and obtained 0 points. RTs shorter than participant cumulative medians were fast and yielded a score based on the following: RT is clamped to the range between 150ms and double the participants cumulative median RT ($2\text{RT}_{\text{Median}}$), normalised and subtracted from 1. The result is multiplied by the score range (i.e., $200-100 = 100$) and added to the minimum score ($100$). This is the participants final score, unless it exceeds 200, in which case the participant obtains 200 points. 
+
+
+$\text{Score} = \text{Score}_{\text{min}} + (1-\frac{\text{RT}_{\text{Clamped}} - \text{RT}_{\text{min}}}{2\text{RT}_{\text{Median}}-\text{RT}_{\text{min}}}) \times (\text{Score}_{\text{min}}-\text{Score}_{\text{max}})$
+
+
+$\therefore \text{Score} = 100 + (1-\frac{\text{RT}_{\text{clamped}} - 150}{2\text{RT}_{\text{Median}}-150}) \times 100$
+
+
+For example, taking the initial RT bounds that were set to $\text{RT}_{\text{min}} = 150$ and $2\text{RT}_{\text{Median}} = 600$, with score limits set to $[100,200]$:
+
+| RT (ms)        | Clamped RT | Score |
+|----------------|---------------|-------|
+| 120            | 150           | 200   |
+| 150            | 150           | 200   |
+| 500            | 500           | 122   |
+| 700            | 600           | 100   |
+
+
+DoggoNogo was completed after between **lower - set to min 10 trials per level** and **upper** trials (*M* = **X**, *SD* = **X**).
 
 ### SRT
 
-- [ ] Development
-- [ ] Layout
-- [ ] Procedure - blocks, trials
-- [ ] Dynamic ISI
-- [ ] Responding - premature consequences, late, ...
+-   [ ] Development
+-   [ ] Layout
+-   [ ] Procedure - blocks, trials
+-   [ ] Dynamic ISI
+-   [ ] Responding - premature consequences, late, ...
 
-The SRT was written using JSPsych (*ref*)
-There were a total of 150 trials (50 per block)
+The SRT was written using JSPsych (*ref*) There were a total of 150 trials (50 per block)
 
-For each trial, the interstimulus interval (ISI) was a value randomly selected from a uniform distribution ranging 1000-4000(ms).
-Premature responses ____ a message and reset the trial with a new ISI value - thus preventing participants from skipping through the experiment. If participants did not respond within 600ms, the ___ was marked as ___ aand they progressed to the next trial.
-
+For each trial, the interstimulus interval (ISI) was a value randomly selected from a uniform distribution ranging 1000-4000(ms). Premature responses ____ a message and reset the trial with a new ISI value - thus preventing participants from skipping through the experiment. If participants did not respond within 600ms, the ____ was marked as ___ aand they progressed to the next trial.
 
 ## Results
 
-
 ## Discussion
-
-
