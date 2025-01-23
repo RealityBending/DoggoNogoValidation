@@ -312,7 +312,7 @@ return {
       end
       
       local img
-      
+
       for i, a in ipairs(byauthor) do
         
         if a.orcid then
@@ -327,7 +327,7 @@ return {
           pp.content:extend({pandoc.Space(), img})
           pp.content:extend({pandoc.Space(), pandoc.Str("http://orcid.org/")})
           pp.content:extend(a.orcid)
-          
+
           if not mask and not meta["suppress-orcid"] and authornote then
             body:extend({pp})
           end

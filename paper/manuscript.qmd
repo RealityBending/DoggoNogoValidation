@@ -18,24 +18,24 @@ author:
         postal-code: "BN1 9RH"
       - name: "University of Sussex"
         department:  "Sussex Centre for Consciousness Science"
-  # - name: Ana Neves
-  #   orcid: 0009-0006-0020-7599
-  #   role:
-  #     - TO DO
-  #   affiliations:
-  #     - ref: "id1"
-  # - name: Benjamin Tribe
-  #   orcid: 	0000-0002-9652-599X
-  #   role:
-  #     - TO DO
-  #   affiliations:
-  #     - ref: "id1"
-  # - name: Max Lovell
-  #   orcid: TO DO
-  #   role:
-  #     - TO DO
-  #   affiliations:
-  #     - ref: "id1"
+  - name: Ana Neves
+    orcid: 0009-0006-0020-7599
+    role:
+      - TO DO
+    affiliations:
+      - ref: "id1"
+  - name: Benjamin Tribe
+    orcid: 	0000-0002-9652-599X
+    role:
+      - TO DO
+    affiliations:
+      - ref: "id1"
+  - name: Max Lovell
+    orcid: TO DO
+    role:
+      - TO DO
+    affiliations:
+      - ref: "id1"
 author-note:
   status-changes: 
     affiliation-change: ~
@@ -69,78 +69,96 @@ format:
 
 ## Introduction
 
--   [ ] Processing speed
-    - [ ] Relevance
-    - [ ] Measurement --> SRT
--   [ ] Gamification
+--\> Processing Speed relevance
 
-Processing speed - poorly defined/operationalised **[explain/examples]**.
+Processing speed is an element of cognitive control that can be described as the duration between being exposed to a stimulus and purposefully responding to it. Quick processing has been \_\_\_ to facilitate cognitive efficiency (e.g., being able to complete an exam in the allocated time) and personal safety; a driver breaks on seeing a car pull into the road ahead; medical staff move away from a patient on hearing 'clear'. Processing speed can be compromised temporarily, for example, from sleep deprivation [@basner2013; @bougard2015] (**refs**) or intoxication (**refs**). It can also be chronically impaired, for example, in demyelinating diseases such as multiple sclerosis [@sivakolundu2020] (**refs**), or psychiatric conditions such as schizophrenia [@panagiotaropoulou2019a] or bipolar disorder [@little2024]. When processing speed is compromised, response time (RT) increases; the student may not get through all the exam questions; the driver may crash; the staff member may receive a nasty shock.
 
-Here we define processing speed as **[define]**. 
+Investigations into individual differences in processing speed has yielded inconsistent results. For instance, some research suggests that females have longer processing speeds than males (**refs)** [@jakobsen2011] while others found no difference (*refs*). Likewise, there is evidence of slowing with age (*refs*), however @woods2015 \_\_\_\_ed that this was primarily due to motor demands rather than stimulus detection.
 
+Research into the correlates of processing speed have highlighted associations with academic achievement (*refs*), intelligence (*refs*), cognitive functions (*refs*)
+
+... and research suggests that processing speed is correlated with everyday functioning/instrumental activities of daily living [@jakobsen2011a; @wadley2021].
+
+From a neural standpoint, changes in processing speed may occur as a result of disruption in the broader cognitive control network, described by @cole2007 as comprising the anterior cingulate cortex/pre-supplementary motor area, dorsolateral prefrontal cortex, inferior frontal junction, anterior insular cortex, dorsal pre-motor cortex, and posterior parietal cortex. Specifically, processing speed has been associated with abnormal activity in the dorsolateral prefrontal cortex [@panagiotaropoulou2019a], and reduced fronto-parietal activation [@basner2013].
+
+Despite the identified associations, processing speed has been poorly defined and operationalized throughout the literature [@rommelse2020] ... casting doubt on the validity of these claims.
+
+For instance, the 'Coding' and 'Symbol search' sub-tests of the Wechsler Intelligence Scales are posited to assess processing speed (**ref**). These pen-and-paper tasks allow respondents 2 minutes to match as many symbols to numbers as possible according to a key (Coding), or to identify whether or not target symbols are present among a series of symbols (Symbol search). Each is multi-\_\_\_\_\_, involving short-term memory demands, incorporates motor-speed and visual scanning, and thus fail to isolate processing speed (**ref**).
+
+tech advances ... increase in the application and development of computerised tasks ...
+
+---\> gamification
+
+Gamification is being applied increasingly to cognitive tasks **(ref)**, with researchers \_\_\_\_ing with expectations of improvements in participant motivation, long-term engagement, ecological validity, and suitability for target age groups or disorders [@lumsden2016].
+
+In their review @lumsden2016 investigated gamified cognitive assessments, and found that studies were limited by targeting multiple domains. Furthermore, only two gamified tasks had been developed for the measure of processing speed [@mcpherson2007; @mcpherson2008], neither of which measured simple reaction time, and both failed to disentangle processing speed from working memory. @lumsden2016 asserted that gamification does not improve data quality despite improving participant experience, and recommended the development of single-domain gamified tasks and the incorporation of non-gamified versions for comparison. Following these recommendations, @robison2023 applied gamification to a simple RT task, investigating its effects on performance and vigilance decrement (i.e., the tendency for RTs to increase over time). Comparing their task to pre-existing data from a non-gamified psychomotor vigilance task (PVT), they found that gamification produced better performance and lower vigilance decrement when the game involved a competitive aspect, but only produced better performance and lower vigilance decrement in non-competitive games when there was a point-system.
+
+In addition to gamifying cognitive assessments, @suarez2021 developed MindPulse, which aims to disentangle the components of RT. While ... promising ... software developed for profit; need something more widely accessible (open source).
+
+@pedersen2023 included an additive procedure in their game *Rat Catch*, such that level 1 assessed simple reaction time, presenting the stimulus for decreasing durations, before proceeding to choice reaction time. Comparing gamified tasks to standard tasks, the authors assessed game reliability with Cronbach’s α which indicated good reliability across dimensions, and good convergent validity. However, parameters were static across participants. A disadvantage of this is that a brief distraction could yield unreliable game data for a participant. To avoid this issue, participant progression could be determined by a points system, with stimulus duration set dynamically to identify participants’ optimal ability.
+
+---\> measuring processing speed
+
+Simple reaction time tasks involve capturing the speed at which individuals respond to the occurrence of a stimulus, without any choice or inhibition demands when the stimulus occurs.
+
+@cepeda2013 assessed the validity of a range of processing speed tasks, and recommended use of simpler PS tasks as more complex tasks had stronger correlations with executive control ...
+
+Further research using stripped back SRT tasks ... verify whether previous findings of associations between processing speed and **cognitive functioning, QoL, academic performance, ...** may be confounded by the complexity of the PS task thus the associations attributable to other involved domains.
+
+---\> Current study
+
+Aim: The present study seeks to validate and optimize a simple reaction time task by (1) testing the impact of gamification on processing speed and task engagement and (2) assessing the optimal parameter values (number of trials and ISI range) for a robust yet efficient measure.
+
+-   Justification: moving target stimuli - more ecologically valid (e.g., driving, sports ... not so many circumstances where processing speed important for a precise visual frame in which the target will appear...)
+
+-   Justification: variation in target size - as before, more ecologically valid
+
+-   Here we define processing speed as **\[define\]**.
 
 ## Methods
 
 ### Participants
 
--   [X] Recruitment
--   [ ] Exclusions (?)
--   [ ] Demographics
--   [X] Consent
--   [X] Approval
+Participants were recruited from the University of Sussex participant pool online via SONA (*ref*) and were awarded with course credits. Fluency in English was the only requirement for participation. Participants provided informed consent at the beginning of the experiment, and reaffirm their consent after being debriefed when asked to continue to the next screen on which their data would be saved. Participants could stop the experiment at any time. However, because it was hosted \_\_\_\_y, DoggoNogo data was saved on completion of the game. Therefore, any participants for whom we obtained incomplete data were deleted, with the assumption that non-completion indicated a withdrawal of consent.
 
-Participants were recruited from the University of Sussex participant pool online via SONA (*ref*) and were ____ with course credits. Fluency in English was the only requirement for participation. *[consent]*. Data from N participants was originally obtained, however *[exclusions - other than incomplete data?]*. The final sample consisted of **N** participants aged **lower** to **upper** (*M* = **X**, *SD* = **X**). *[demographics]*. Participants provided informed consent at the beginning of the experiment, and could leave the experiment at any time. The SRT data and questionnaire responses were saved at the end of the study, after debrief, however, because it was hosted ____y, DoggoNogo data was saved on completion of the game. Therefore, any participants for whom we obtained incomplete data were deleted, with the assumption that ____ indicated a withdrawal of consent.
+Data from **N** participants was originally obtained, however ***\[any exclusions other than incomplete data?\]***. The final sample consisted of **N** participants (Mean age = **X**, SD = **X**, range: \[**X**,**X**\]; Gender: **X**% women, **X**% men, **X**% non-binary; Education: High school, **X**%; Bachelor, **X**%; Master, **X**%; Doctorate, **X**%; Other, **X**%).
 
-Ethical approval was obtained from a Psychology School Research Ethics Officer at the University of Sussex (ER/BMT26/5) 
+Ethical approval was obtained from a Psychology School Research Ethics Officer at the University of Sussex (ER/BMT26/6).
 
 ### Measures
 
--   [ ] RT, accuracy
--   [X] post-task questions
-
 Participants completed two computer-based simple reaction time tasks: a gamified version (DoggoNogo) and a non-gamified version (SRT). The order of tasks was counterbalanced across participants. Both tasks involved three blocks with opportunities for breaks in-between. Participants responded using the down arrow on their keyboard.
 
-After each of the tasks participants responded to three short questions about their experience. To assess task enjoyment, participants rated the statement "How much did you enjoy the previous task?" on an 8-point likert scale from 0 = "boring" to 7 = "fun". They then provided an estimation (in minutes) of task duration, "Without checking the time, how long do you think you spent doing the previous task?", and finally indicated the ____ of the task by rating the statement: "How would you feel if you had to do the same task again one more time?" on a 9-point likert scale from -4 = "very annoyed" to 4 "very happy".
+After each of the tasks participants responded to three short questions about their experience. To assess task enjoyment, participants rated the statement "How much did you enjoy the previous task?" on an 8-point likert scale from 0 = "boring" to 7 = "fun". They then provided an estimation of task duration in minutes, "Without checking the time, how long do you think you spent doing the previous task?", and finally indicated their tolerance of the task by rating the statement: "How would you feel if you had to do the same task again one more time?" on a 9-point likert scale from -4 = "very annoyed" to 4 "very happy".
 
-After completing both tasks, participants were given an opportunity to provide written feedback and rated their overall enjoyment of the experiment from 0 to 4 stars.
+After completing both tasks, participants had an opportunity to provide written feedback and rated their overall enjoyment of the experiment on a scale from 0 to 4.
 
 ### DoggoNogo
 
--   [ ] Development
--   [ ] Layout
--   [ ] Procedure - blocks, trials
--   [X] Dynamic ISI
--   [X] Dynamic RT threshold - points system
+-   [ ] Add indicated missing details
+-   [ ] Tidy up
 
-DoggoNogo was written in Unity (*ref*)
-Introduction to the game - narrative, saving Doggo. Doggo malnourished --> game performance ____ Doggos health, shown by changes in character appearance on each level. 
-Instructions
-Garden background, Doggo centered relatively static small jump when respnonse key pressed (**relative size on screen**). 
-Bone size varied (**details**)  as did position on the screen (**details**) and image rotation.
-Health bars and performance feedback
+DoggoNogo was written in Unity (*ref*). The game is preceded by a short visual narrative introducing Doggo's background and the aim of saving the malnourished dog. In the game, participants must catch bones for Doggo by pressing the down arrow as quickly as possible whenever a bone appears on screen. Game performance \_\_\_\_ Doggo's health, and this is reflected by changes in character appearance on each level.
+
+The game is set in a garden with Doggo centered. Doggo remains relatively static throughout, but makes a small 'jump' whenever the down arrow is pressed. The bone size varied (**details**) as did position on the screen (**details**) and rotation. Participants received performance feedback on each trial to indicate whether the bone was caught (earn points), missed (no change in points), or if a premature response was made (lose points); the cumulative performance is visible throughout as health bars and numeric score.
 
 The number of trials per block was dependent on participant performance; participants had to obtain **2000?** points in each block before proceeding to the next/finishing.
 
-Bones appear following interstimulus intervals (ISIs) of durations randomly obtained on each trial from a uniform distribution between 1000ms and 4000ms. 
+Bones appear following interstimulus intervals (ISIs) of durations randomly obtained on each trial from a uniform distribution between 1000ms and 4000ms.
 
-Points were obtained by catching bones by pressing the down arrow on the keyboard, and both success and number of points depend on participant RT relative to their cumulative median RT. Premature responses received -100 points (but minimum total score is limited to zero), RTs longer than double the participants cumulative medium were 'missed' and yielded 0 points and RTs longer than participant cumulative medians were 'slow' and obtained 0 points. RTs shorter than participant cumulative medians were fast and yielded a score based on the following: RT is clamped to the range between 150ms and double the participants cumulative median RT ($2\text{RT}_{\text{Median}}$), normalised and subtracted from 1. The result is multiplied by the score range (i.e., $200-100 = 100$) and added to the minimum score ($100$). This is the participants final score, unless it exceeds 200, in which case the participant obtains 200 points. 
-
+Points were obtained by catching bones by pressing the down arrow on the keyboard, and both success and number of points depend on participant RT relative to their cumulative median RT. Premature responses received -100 points (but minimum total score is limited to zero), RTs longer than double the participants cumulative medium were 'missed' and yielded 0 points and RTs longer than participant cumulative medians were 'slow' and obtained 0 points. RTs shorter than participant cumulative medians were fast and yielded a score based on the following: RT is clamped to the range between 150ms and double the participants cumulative median RT ($2\text{RT}_{\text{Median}}$), normalised and subtracted from 1. The result is multiplied by the score range (i.e., $200-100 = 100$) and added to the minimum score ($100$). This is the participants final score, unless it exceeds 200, in which case the participant obtains 200 points.
 
 $\text{Score} = \text{Score}_{\text{min}} + (1-\frac{\text{RT}_{\text{Clamped}} - \text{RT}_{\text{min}}}{2\text{RT}_{\text{Median}}-\text{RT}_{\text{min}}}) \times (\text{Score}_{\text{min}}-\text{Score}_{\text{max}})$
 
-
 $\therefore \text{Score} = 100 + (1-\frac{\text{RT}_{\text{clamped}} - 150}{2\text{RT}_{\text{Median}}-150}) \times 100$
-
 
 For example, taking the initial RT bounds that were set to $\text{RT}_{\text{min}} = 150$ and $2\text{RT}_{\text{Median}} = 600$, with score limits set to $[100,200]$:
 
-| RT (ms)        | Clamped RT    | Score |
-|----------------|---------------|-------|
-| 120            | 150           | 200   |
-| 150            | 150           | 200   |
-| 500            | 500           | 122   |
-| 700            | 600           | 100   |
-
+| RT (ms) | Clamped RT | Score |
+|---------|------------|-------|
+| 120     | 150        | 200   |
+| 500     | 500        | 122   |
+| 700     | 600        | 100   |
 
 DoggoNogo was completed after between **lower - set to min 10 trials per level** and **upper** trials (*M* = **X**, *SD* = **X**).
 
@@ -152,17 +170,14 @@ DoggoNogo was completed after between **lower - set to min 10 trials per level**
 -   [ ] Dynamic ISI
 -   [ ] Responding - premature consequences, late, ...
 
-The SRT was written using JSPsych (*ref*) 
+The SRT was written using JSPsych (*ref*)
 
-Participants were informed that during the task they would see a fixation cross (+) followed by a red square. They were instructed to press the down arrow on their keyboard as fast as possible when the red square appears. The display background was white and fixation cross appeared as a black plus (+) symbol in the middle of the screen. The fixation cross was ____ the the interstimulus interval (ISI) which was a value randomly selected from a uniform distribution ranging 1000-4000(ms). Premature responses ____ a message and reset the trial with a new ISI value - thus preventing participants from skipping through the experiment. 
-At the end of the ISI, the fixation cross was replaced with a red square (target stimulus) which appeared in a random location (vertical and horizontal offsets from centre each randomly selected within $\pm90\%$ of the screen width and height) and size (randomly selected from a discrete uniform distribution from 50px to 200px, in steps of 10px) on the screen. If participants did not respond to the target stimulus within 600ms, the ____ was marked as ___ aand they progressed to the next trial. There were three blocks of 50 trials each (150 trials in total), separated by breaks of choice duration.
+Participants were informed that during the task they would see a fixation cross (+) followed by a red square. They were instructed to press the down arrow on their keyboard as fast as possible when the red square appears. The display background was white and fixation cross appeared as a black plus (+) symbol in the middle of the screen. The fixation cross was \_\_\_\_ the the interstimulus interval (ISI) which was a value randomly selected from a uniform distribution ranging 1000-4000(ms). Premature responses \_\_\_\_ a message and reset the trial with a new ISI value - thus preventing participants from skipping through the experiment. At the end of the ISI, the fixation cross was replaced with a red square (target stimulus) which appeared in a random location (vertical and horizontal offsets from centre each randomly selected within $\pm90\%$ of the screen width and height) and size (randomly selected from a discrete uniform distribution from 50px to 200px, in steps of 10px) on the screen. If participants did not respond to the target stimulus within 600ms, the \_\_\_\_ was marked as \_\_\_ aand they progressed to the next trial. There were three blocks of 50 trials each (150 trials in total), separated by breaks of choice duration.
 
+## Analysis
 
 ## Results
 
-
-
 ## Discussion
 
-
-
+## References

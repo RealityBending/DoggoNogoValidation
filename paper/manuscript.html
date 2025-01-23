@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.555">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Dominique Makowski">
+<meta name="author" content="Ana Neves">
+<meta name="author" content="Benjamin Tribe">
+<meta name="author" content="Max Lovell">
+<meta name="description" content="TO DO">
+
+<title>Validation of a Gamified Measure of Processing Speed</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="manuscript_files/libs/clipboard/clipboard.min.js"></script>
+<script src="manuscript_files/libs/quarto-html/quarto.js"></script>
+<script src="manuscript_files/libs/quarto-html/popper.min.js"></script>
+<script src="manuscript_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="manuscript_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="manuscript_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="manuscript_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="manuscript_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="manuscript_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="_extensions/apaquarto/apa.css">
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="manuscript.docx"><i class="bi bi-file-word"></i>MS Word (apaquarto)</a></li><li><a href="manuscript.pdf"><i class="bi bi-file-pdf"></i>PDF (apaquarto)</a></li></ul></div></div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+</div>
+<main class="content" id="quarto-document-content">
+
+
+
+
+<br>
+
+<br>
+
+<section id="title" class="level1 title unnumbered unlisted">
+<h1 class="title unnumbered unlisted"><strong>Validation of a Gamified Measure of Processing Speed</strong></h1>
+<div class="Author">
+<br>
+
+<p>Dominique Makowski<sup>1,2</sup>, Ana Neves<sup>1</sup>, Benjamin Tribe<sup>1</sup>, and Max Lovell<sup>1</sup></p>
+<p><sup>1</sup>School of Psychology, University of Sussex</p>
+<p><sup>2</sup>Sussex Centre for Consciousness Science, University of Sussex</p>
+</div>
+</section>
+<section id="author-note" class="level1 unnumbered unlisted AuthorNote">
+<h1 class="unnumbered unlisted AuthorNote">Author Note</h1>
+<p>Dominique Makowski <img src="_extensions/apaquarto/ORCID-iD_icon-vector.svg" id="orchid" class="img-fluid" style="width:4.23mm" alt="Orcid ID Logo: A green circle with white letters ID"> http://orcid.org/0000-0001-5375-9967</p>
+<p>Ana Neves <img src="_extensions/apaquarto/ORCID-iD_icon-vector.svg" id="orchid" class="img-fluid" style="width:4.23mm" alt="Orcid ID Logo: A green circle with white letters ID"> http://orcid.org/0009-0006-0020-7599</p>
+<p>Benjamin Tribe <img src="_extensions/apaquarto/ORCID-iD_icon-vector.svg" id="orchid" class="img-fluid" style="width:4.23mm" alt="Orcid ID Logo: A green circle with white letters ID"> http://orcid.org/0000-0002-9652-599X</p>
+<p>Max Lovell <img src="_extensions/apaquarto/ORCID-iD_icon-vector.svg" id="orchid" class="img-fluid" style="width:4.23mm" alt="Orcid ID Logo: A green circle with white letters ID"> http://orcid.org/TO DO</p>
+<p>Author roles were classified using the Contributor Role Taxonomy (CRediT; https://credit.niso.org/) as follows: <em>Dominique Makowski</em><strong>: </strong>TO DO. <em>Ana Neves</em><strong>: </strong>TO DO. <em>Benjamin Tribe</em><strong>: </strong>TO DO. <em>Max Lovell</em><strong>: </strong>TO DO</p>
+<p>Correspondence concerning this article should be addressed to Dominique Makowski, School of Psychology, University of Sussex, Brighton BN1 9RH, UK, Email: D.Makowski@sussex.ac.uk</p>
+</section>
+<section id="abstract" class="level1 unnumbered unlisted AuthorNote">
+<h1 class="unnumbered unlisted AuthorNote">Abstract</h1>
+</section>
+<section id="firstheader" class="level1 title unnumbered unlisted">
+<h1 class="title unnumbered unlisted"><strong>Validation of a Gamified Measure of Processing Speed</strong></h1>
+<section id="introduction" class="level2">
+<h2 data-anchor-id="introduction">Introduction</h2>
+<p>–&gt; Processing Speed relevance</p>
+<p>Processing speed is an element of cognitive control that can be described as the duration between being exposed to a stimulus and purposefully responding to it. Quick processing has been ___ to facilitate cognitive efficiency (e.g., being able to complete an exam in the allocated time) and personal safety; a driver breaks on seeing a car pull into the road ahead; medical staff move away from a patient on hearing ‘clear’. Processing speed can be compromised temporarily, for example, from sleep deprivation <span class="citation" data-cites="basner2013 bougard2015">(<a href="#ref-basner2013" role="doc-biblioref">Basner et al., 2013</a>; <a href="#ref-bougard2015" role="doc-biblioref">Bougard et al., 2016</a>)</span> (<strong>refs</strong>) or intoxication (<strong>refs</strong>). It can also be chronically impaired, for example, in demyelinating diseases such as multiple sclerosis <span class="citation" data-cites="sivakolundu2020">(<a href="#ref-sivakolundu2020" role="doc-biblioref">Sivakolundu et al., 2020</a>)</span> (<strong>refs</strong>), or psychiatric conditions such as schizophrenia <span class="citation" data-cites="panagiotaropoulou2019a">(<a href="#ref-panagiotaropoulou2019a" role="doc-biblioref">Panagiotaropoulou et al., 2019</a>)</span> or bipolar disorder <span class="citation" data-cites="little2024">(<a href="#ref-little2024" role="doc-biblioref">Little et al., 2023</a>)</span>. When processing speed is compromised, response time (RT) increases; the student may not get through all the exam questions; the driver may crash; the staff member may receive a nasty shock.</p>
+<p>Investigations into individual differences in processing speed has yielded inconsistent results. For instance, some research suggests that females have longer processing speeds than males (<strong>refs)</strong> <span class="citation" data-cites="jakobsen2011">(<a href="#ref-jakobsen2011" role="doc-biblioref">Jakobsen et al., 2011a</a>)</span> while others found no difference (<em>refs</em>). Likewise, there is evidence of slowing with age (<em>refs</em>), however <span class="citation" data-cites="woods2015">Woods et al. (<a href="#ref-woods2015" role="doc-biblioref">2015</a>)</span> ____ed that this was primarily due to motor demands rather than stimulus detection.</p>
+<p>Research into the correlates of processing speed have highlighted associations with academic achievement (<em>refs</em>), intelligence (<em>refs</em>), cognitive functions (<em>refs</em>)</p>
+<p>… and research suggests that processing speed is correlated with everyday functioning/instrumental activities of daily living <span class="citation" data-cites="jakobsen2011a wadley2021">(<a href="#ref-jakobsen2011a" role="doc-biblioref">Jakobsen et al., 2011b</a>; <a href="#ref-wadley2021" role="doc-biblioref">Wadley et al., 2021</a>)</span>.</p>
+<p>From a neural standpoint, changes in processing speed may occur as a result of disruption in the broader cognitive control network, described by <span class="citation" data-cites="cole2007">Cole and Schneider (<a href="#ref-cole2007" role="doc-biblioref">2007</a>)</span> as comprising the anterior cingulate cortex/pre-supplementary motor area, dorsolateral prefrontal cortex, inferior frontal junction, anterior insular cortex, dorsal pre-motor cortex, and posterior parietal cortex. Specifically, processing speed has been associated with abnormal activity in the dorsolateral prefrontal cortex <span class="citation" data-cites="panagiotaropoulou2019a">(<a href="#ref-panagiotaropoulou2019a" role="doc-biblioref">Panagiotaropoulou et al., 2019</a>)</span>, and reduced fronto-parietal activation <span class="citation" data-cites="basner2013">(<a href="#ref-basner2013" role="doc-biblioref">Basner et al., 2013</a>)</span>.</p>
+<p>Despite the identified associations, processing speed has been poorly defined and operationalized throughout the literature <span class="citation" data-cites="rommelse2020">(<a href="#ref-rommelse2020" role="doc-biblioref">Rommelse et al., 2020</a>)</span> … casting doubt on the validity of these claims.</p>
+<p>For instance, the ‘Coding’ and ‘Symbol search’ sub-tests of the Wechsler Intelligence Scales are posited to assess processing speed (<strong>ref</strong>). These pen-and-paper tasks allow respondents 2 minutes to match as many symbols to numbers as possible according to a key (Coding), or to identify whether or not target symbols are present among a series of symbols (Symbol search). Each is multi-_____, involving short-term memory demands, incorporates motor-speed and visual scanning, and thus fail to isolate processing speed (<strong>ref</strong>).</p>
+<p>tech advances … increase in the application and development of computerised tasks …</p>
+<p>—&gt; gamification</p>
+<p>Gamification is being applied increasingly to cognitive tasks <strong>(ref)</strong>, with researchers ____ing with expectations of improvements in participant motivation, long-term engagement, ecological validity, and suitability for target age groups or disorders <span class="citation" data-cites="lumsden2016">(<a href="#ref-lumsden2016" role="doc-biblioref">Lumsden et al., 2016</a>)</span>.</p>
+<p>In their review <span class="citation" data-cites="lumsden2016">Lumsden et al. (<a href="#ref-lumsden2016" role="doc-biblioref">2016</a>)</span> investigated gamified cognitive assessments, and found that studies were limited by targeting multiple domains. Furthermore, only two gamified tasks had been developed for the measure of processing speed <span class="citation" data-cites="mcpherson2007 mcpherson2008">(<a href="#ref-mcpherson2007" role="doc-biblioref">McPherson &amp; Burns, 2007</a>, <a href="#ref-mcpherson2008" role="doc-biblioref">2008</a>)</span>, neither of which measured simple reaction time, and both failed to disentangle processing speed from working memory. <span class="citation" data-cites="lumsden2016">Lumsden et al. (<a href="#ref-lumsden2016" role="doc-biblioref">2016</a>)</span> asserted that gamification does not improve data quality despite improving participant experience, and recommended the development of single-domain gamified tasks and the incorporation of non-gamified versions for comparison. Following these recommendations, <span class="citation" data-cites="robison2023">Robison and Nguyen (<a href="#ref-robison2023" role="doc-biblioref">2023</a>)</span> applied gamification to a simple RT task, investigating its effects on performance and vigilance decrement (i.e., the tendency for RTs to increase over time). Comparing their task to pre-existing data from a non-gamified psychomotor vigilance task (PVT), they found that gamification produced better performance and lower vigilance decrement when the game involved a competitive aspect, but only produced better performance and lower vigilance decrement in non-competitive games when there was a point-system.</p>
+<p>In addition to gamifying cognitive assessments, <span class="citation" data-cites="suarez2021">Suarez et al. (<a href="#ref-suarez2021" role="doc-biblioref">2021</a>)</span> developed MindPulse, which aims to disentangle the components of RT. While … promising … software developed for profit; need something more widely accessible (open source).</p>
+<p><span class="citation" data-cites="pedersen2023">Pedersen et al. (<a href="#ref-pedersen2023" role="doc-biblioref">2023</a>)</span> included an additive procedure in their game <em>Rat Catch</em>, such that level 1 assessed simple reaction time, presenting the stimulus for decreasing durations, before proceeding to choice reaction time. Comparing gamified tasks to standard tasks, the authors assessed game reliability with Cronbach’s α which indicated good reliability across dimensions, and good convergent validity. However, parameters were static across participants. A disadvantage of this is that a brief distraction could yield unreliable game data for a participant. To avoid this issue, participant progression could be determined by a points system, with stimulus duration set dynamically to identify participants’ optimal ability.</p>
+<p>—&gt; measuring processing speed</p>
+<p>Simple reaction time tasks involve capturing the speed at which individuals respond to the occurrence of a stimulus, without any choice or inhibition demands when the stimulus occurs.</p>
+<p><span class="citation" data-cites="cepeda2013">Cepeda et al. (<a href="#ref-cepeda2013" role="doc-biblioref">2013</a>)</span> assessed the validity of a range of processing speed tasks, and recommended use of simpler PS tasks as more complex tasks had stronger correlations with executive control …</p>
+<p>Further research using stripped back SRT tasks … verify whether previous findings of associations between processing speed and <strong>cognitive functioning, QoL, academic performance, …</strong> may be confounded by the complexity of the PS task thus the associations attributable to other involved domains.</p>
+<p>—&gt; Current study</p>
+<p>Aim: The present study seeks to validate and optimize a simple reaction time task by (1) testing the impact of gamification on processing speed and task engagement and (2) assessing the optimal parameter values (number of trials and ISI range) for a robust yet efficient measure.</p>
+<ul>
+<li><p>Justification: moving target stimuli - more ecologically valid (e.g., driving, sports … not so many circumstances where processing speed important for a precise visual frame in which the target will appear…)</p></li>
+<li><p>Justification: variation in target size - as before, more ecologically valid</p></li>
+<li><p>Here we define processing speed as <strong>[define]</strong>.</p></li>
+</ul>
+</section>
+<section id="methods" class="level2">
+<h2 data-anchor-id="methods">Methods</h2>
+<section id="participants" class="level3">
+<h3 data-anchor-id="participants">Participants</h3>
+<p>Participants were recruited from the University of Sussex participant pool online via SONA (<em>ref</em>) and were awarded with course credits. Fluency in English was the only requirement for participation. Participants provided informed consent at the beginning of the experiment, and reaffirm their consent after being debriefed when asked to continue to the next screen on which their data would be saved. Participants could stop the experiment at any time. However, because it was hosted ____y, DoggoNogo data was saved on completion of the game. Therefore, any participants for whom we obtained incomplete data were deleted, with the assumption that non-completion indicated a withdrawal of consent.</p>
+<p>Data from <strong>N</strong> participants was originally obtained, however <strong><em>[any exclusions other than incomplete data?]</em></strong>. The final sample consisted of <strong>N</strong> participants (Mean age = <strong>X</strong>, SD = <strong>X</strong>, range: [<strong>X</strong>,<strong>X</strong>]; Gender: <strong>X</strong>% women, <strong>X</strong>% men, <strong>X</strong>% non-binary; Education: High school, <strong>X</strong>%; Bachelor, <strong>X</strong>%; Master, <strong>X</strong>%; Doctorate, <strong>X</strong>%; Other, <strong>X</strong>%).</p>
+<p>Ethical approval was obtained from a Psychology School Research Ethics Officer at the University of Sussex (ER/BMT26/6).</p>
+</section>
+<section id="measures" class="level3">
+<h3 data-anchor-id="measures">Measures</h3>
+<p>Participants completed two computer-based simple reaction time tasks: a gamified version (DoggoNogo) and a non-gamified version (SRT). The order of tasks was counterbalanced across participants. Both tasks involved three blocks with opportunities for breaks in-between. Participants responded using the down arrow on their keyboard.</p>
+<p>After each of the tasks participants responded to three short questions about their experience. To assess task enjoyment, participants rated the statement “How much did you enjoy the previous task?” on an 8-point likert scale from 0 = “boring” to 7 = “fun”. They then provided an estimation of task duration in minutes, “Without checking the time, how long do you think you spent doing the previous task?”, and finally indicated their tolerance of the task by rating the statement: “How would you feel if you had to do the same task again one more time?” on a 9-point likert scale from -4 = “very annoyed” to 4 “very happy”.</p>
+<p>After completing both tasks, participants had an opportunity to provide written feedback and rated their overall enjoyment of the experiment on a scale from 0 to 4.</p>
+</section>
+<section id="doggonogo" class="level3">
+<h3 data-anchor-id="doggonogo">DoggoNogo</h3>
+<ul class="task-list">
+<li><label><input type="checkbox">Add indicated missing details</label></li>
+<li><label><input type="checkbox">Tidy up</label></li>
+</ul>
+<p>DoggoNogo was written in Unity (<em>ref</em>). The game is preceded by a short visual narrative introducing Doggo’s background and the aim of saving the malnourished dog. In the game, participants must catch bones for Doggo by pressing the down arrow as quickly as possible whenever a bone appears on screen. Game performance ____ Doggo’s health, and this is reflected by changes in character appearance on each level.</p>
+<p>The game is set in a garden with Doggo centered. Doggo remains relatively static throughout, but makes a small ‘jump’ whenever the down arrow is pressed. The bone size varied (<strong>details</strong>) as did position on the screen (<strong>details</strong>) and rotation. Participants received performance feedback on each trial to indicate whether the bone was caught (earn points), missed (no change in points), or if a premature response was made (lose points); the cumulative performance is visible throughout as health bars and numeric score.</p>
+<p>The number of trials per block was dependent on participant performance; participants had to obtain <strong>2000?</strong> points in each block before proceeding to the next/finishing.</p>
+<p>Bones appear following interstimulus intervals (ISIs) of durations randomly obtained on each trial from a uniform distribution between 1000ms and 4000ms.</p>
+<p>Points were obtained by catching bones by pressing the down arrow on the keyboard, and both success and number of points depend on participant RT relative to their cumulative median RT. Premature responses received -100 points (but minimum total score is limited to zero), RTs longer than double the participants cumulative medium were ‘missed’ and yielded 0 points and RTs longer than participant cumulative medians were ‘slow’ and obtained 0 points. RTs shorter than participant cumulative medians were fast and yielded a score based on the following: RT is clamped to the range between 150ms and double the participants cumulative median RT (<span class="math inline">2\text{RT}_{\text{Median}}</span>), normalised and subtracted from 1. The result is multiplied by the score range (i.e., <span class="math inline">200-100 = 100</span>) and added to the minimum score (<span class="math inline">100</span>). This is the participants final score, unless it exceeds 200, in which case the participant obtains 200 points.</p>
+<p><span class="math inline">\text{Score} = \text{Score}_{\text{min}} + (1-\frac{\text{RT}_{\text{Clamped}} - \text{RT}_{\text{min}}}{2\text{RT}_{\text{Median}}-\text{RT}_{\text{min}}}) \times (\text{Score}_{\text{min}}-\text{Score}_{\text{max}})</span></p>
+<p><span class="math inline">\therefore \text{Score} = 100 + (1-\frac{\text{RT}_{\text{clamped}} - 150}{2\text{RT}_{\text{Median}}-150}) \times 100</span></p>
+<p>For example, taking the initial RT bounds that were set to <span class="math inline">\text{RT}_{\text{min}} = 150</span> and <span class="math inline">2\text{RT}_{\text{Median}} = 600</span>, with score limits set to <span class="math inline">[100,200]</span>:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>RT (ms)</th>
+<th>Clamped RT</th>
+<th>Score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>120</td>
+<td>150</td>
+<td>200</td>
+</tr>
+<tr class="even">
+<td>500</td>
+<td>500</td>
+<td>122</td>
+</tr>
+<tr class="odd">
+<td>700</td>
+<td>600</td>
+<td>100</td>
+</tr>
+</tbody>
+</table>
+<p>DoggoNogo was completed after between <strong>lower - set to min 10 trials per level</strong> and <strong>upper</strong> trials (<em>M</em> = <strong>X</strong>, <em>SD</em> = <strong>X</strong>).</p>
+</section>
+<section id="srt" class="level3">
+<h3 data-anchor-id="srt">SRT</h3>
+<ul class="task-list">
+<li><label><input type="checkbox">Development</label></li>
+<li><label><input type="checkbox">Layout</label></li>
+<li><label><input type="checkbox">Procedure - blocks, trials</label></li>
+<li><label><input type="checkbox">Dynamic ISI</label></li>
+<li><label><input type="checkbox">Responding - premature consequences, late, …</label></li>
+</ul>
+<p>The SRT was written using JSPsych (<em>ref</em>)</p>
+<p>Participants were informed that during the task they would see a fixation cross (+) followed by a red square. They were instructed to press the down arrow on their keyboard as fast as possible when the red square appears. The display background was white and fixation cross appeared as a black plus (+) symbol in the middle of the screen. The fixation cross was ____ the the interstimulus interval (ISI) which was a value randomly selected from a uniform distribution ranging 1000-4000(ms). Premature responses ____ a message and reset the trial with a new ISI value - thus preventing participants from skipping through the experiment. At the end of the ISI, the fixation cross was replaced with a red square (target stimulus) which appeared in a random location (vertical and horizontal offsets from centre each randomly selected within <span class="math inline">\pm90\%</span> of the screen width and height) and size (randomly selected from a discrete uniform distribution from 50px to 200px, in steps of 10px) on the screen. If participants did not respond to the target stimulus within 600ms, the ____ was marked as ___ aand they progressed to the next trial. There were three blocks of 50 trials each (150 trials in total), separated by breaks of choice duration.</p>
+</section>
+</section>
+<section id="analysis" class="level2">
+<h2 data-anchor-id="analysis">Analysis</h2>
+</section>
+<section id="results" class="level2">
+<h2 data-anchor-id="results">Results</h2>
+</section>
+<section id="discussion" class="level2">
+<h2 data-anchor-id="discussion">Discussion</h2>
+</section>
+<section id="references" class="level2">
+<h2 data-anchor-id="references">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-basner2013" class="csl-entry" role="listitem">
+Basner, M., Rao, H., Goel, N., &amp; Dinges, D. F. (2013). Sleep deprivation and neurobehavioral dynamics. <em>Current Opinion in Neurobiology</em>, <em>23</em>(5), 854–863. <a href="https://doi.org/10.1016/j.conb.2013.02.008">https://doi.org/10.1016/j.conb.2013.02.008</a>
+</div>
+<div id="ref-bougard2015" class="csl-entry" role="listitem">
+Bougard, C., Moussay, S., Espié, S., &amp; Davenne, D. (2016). The effects of sleep deprivation and time of day on cognitive performance. <em>Biological Rhythm Research</em>, <em>47</em>(3), 401–415. <a href="https://doi.org/10.1080/09291016.2015.1129696">https://doi.org/10.1080/09291016.2015.1129696</a>
+</div>
+<div id="ref-cepeda2013" class="csl-entry" role="listitem">
+Cepeda, N. J., Blackwell, K. A., &amp; Munakata, Y. (2013). Speed isn<span>’</span>t everything: Complex processing speed measures mask individual differences and developmental changes in executive control. <em>Developmental Science</em>, <em>16</em>(2), 269–286. <a href="https://doi.org/10.1111/desc.12024">https://doi.org/10.1111/desc.12024</a>
+</div>
+<div id="ref-cole2007" class="csl-entry" role="listitem">
+Cole, M. W., &amp; Schneider, W. (2007). The cognitive control network: Integrated cortical regions with dissociable functions. <em>NeuroImage</em>, <em>37</em>(1), 343–360. <a href="https://doi.org/10.1016/j.neuroimage.2007.03.071">https://doi.org/10.1016/j.neuroimage.2007.03.071</a>
+</div>
+<div id="ref-jakobsen2011" class="csl-entry" role="listitem">
+Jakobsen, L. H., Sorensen, J. M., Rask, I. K., Jensen, B. S., &amp; Kondrup, J. (2011a). Validation of reaction time as a measure of cognitive function and quality of life in healthy subjects and patients. <em>Nutrition</em>, <em>27</em>(5), 561–570. <a href="https://doi.org/10.1016/j.nut.2010.08.003">https://doi.org/10.1016/j.nut.2010.08.003</a>
+</div>
+<div id="ref-jakobsen2011a" class="csl-entry" role="listitem">
+Jakobsen, L. H., Sorensen, J. M., Rask, I. K., Jensen, B. S., &amp; Kondrup, J. (2011b). Validation of reaction time as a measure of cognitive function and quality of life in healthy subjects and patients. <em>Nutrition</em>, <em>27</em>(5), 561–570. <a href="https://doi.org/10.1016/j.nut.2010.08.003">https://doi.org/10.1016/j.nut.2010.08.003</a>
+</div>
+<div id="ref-little2024" class="csl-entry" role="listitem">
+Little, B., Anwyll, M., Norsworthy, L., Corbett, L., Schultz-Froggatt, M., &amp; Gallagher, P. (2023). Processing speed and sustained attention in bipolar disorder and major depressive disorder: A systematic review and meta<span>-</span>analysis. <em>Bipolar Disorders</em>, <em>26</em>(2), 109–128. <a href="https://doi.org/10.1111/bdi.13396">https://doi.org/10.1111/bdi.13396</a>
+</div>
+<div id="ref-lumsden2016" class="csl-entry" role="listitem">
+Lumsden, J., Edwards, E. A., Lawrence, N. S., Coyle, D., &amp; Munafò, M. R. (2016). Gamification of Cognitive Assessment and Cognitive Training: A Systematic Review of Applications and Efficacy. <em>JMIR Serious Games</em>, <em>4</em>(2), e5888. <a href="https://doi.org/10.2196/games.5888">https://doi.org/10.2196/games.5888</a>
+</div>
+<div id="ref-mcpherson2007" class="csl-entry" role="listitem">
+McPherson, J., &amp; Burns, N. R. (2007). Gs Invaders: Assessing a computer game-like test of processing speed. <em>Behavior Research Methods</em>, <em>39</em>(4), 876–883. <a href="https://doi.org/10.3758/BF03192982">https://doi.org/10.3758/BF03192982</a>
+</div>
+<div id="ref-mcpherson2008" class="csl-entry" role="listitem">
+McPherson, J., &amp; Burns, N. R. (2008). Assessing the validity of computer-game-like tests of processing speed and working memory. <em>Behavior Research Methods</em>, <em>40</em>(4), 969–981. <a href="https://doi.org/10.3758/BRM.40.4.969">https://doi.org/10.3758/BRM.40.4.969</a>
+</div>
+<div id="ref-panagiotaropoulou2019a" class="csl-entry" role="listitem">
+Panagiotaropoulou, G., Thrapsanioti, E., Pappa, E., Grigoras, C., Mylonas, D., Karavasilis, E., Velonakis, G., Kelekis, N., &amp; Smyrnis, N. (2019). Hypo-activity of the dorsolateral prefrontal cortex relates to increased reaction time variability in patients with schizophrenia. <em>NeuroImage: Clinical</em>, <em>23</em>, 101853. <a href="https://doi.org/10.1016/j.nicl.2019.101853">https://doi.org/10.1016/j.nicl.2019.101853</a>
+</div>
+<div id="ref-pedersen2023" class="csl-entry" role="listitem">
+Pedersen, M. K., Díaz, C. M. C., Wang, Q. J., Alba-Marrugo, M. A., Amidi, A., Basaiawmoit, R. V., Bergenholtz, C., Christiansen, M. H., Gajdacz, M., Hertwig, R., Ishkhanyan, B., Klyver, K., Ladegaard, N., Mathiasen, K., Parsons, C., Rafner, J., Villadsen, A. R., Wallentin, M., Zana, B., &amp; Sherson, J. F. (2023). Measuring Cognitive Abilities in the Wild: Validating a Population-Scale Game-Based Cognitive Assessment. <em>Cognitive Science</em>, <em>47</em>(6), e13308. <a href="https://doi.org/10.1111/cogs.13308">https://doi.org/10.1111/cogs.13308</a>
+</div>
+<div id="ref-robison2023" class="csl-entry" role="listitem">
+Robison, M. K., &amp; Nguyen, B. (2023). Competition and reward structures nearly eliminate time-on-task performance decrements: Implications for theories of vigilance and mental effort. <em>Journal of Experimental Psychology: Human Perception and Performance</em>, <em>49</em>(9), 1256–1270. <a href="https://doi.org/10.1037/xhp0001148">https://doi.org/10.1037/xhp0001148</a>
+</div>
+<div id="ref-rommelse2020" class="csl-entry" role="listitem">
+Rommelse, N., Luman, M., &amp; Kievit, R. (2020). Slow processing speed: a cross-disorder phenomenon with significant clinical value, and in need of further methodological scrutiny. <em>European Child &amp; Adolescent Psychiatry</em>, <em>29</em>(10), 1325–1327. <a href="https://doi.org/10.1007/s00787-020-01639-9">https://doi.org/10.1007/s00787-020-01639-9</a>
+</div>
+<div id="ref-sivakolundu2020" class="csl-entry" role="listitem">
+Sivakolundu, D. K., West, K. L., Zuppichini, M., Turner, M. P., Abdelkarim, D., Zhao, Y., Spence, J. S., Lu, H., Okuda, D. T., &amp; Rypma, B. (2020). The neurovascular basis of processing speed differences in humans: A model-systems approach using multiple sclerosis. <em>NeuroImage</em>, <em>215</em>, 116812. <a href="https://doi.org/10.1016/j.neuroimage.2020.116812">https://doi.org/10.1016/j.neuroimage.2020.116812</a>
+</div>
+<div id="ref-suarez2021" class="csl-entry" role="listitem">
+Suarez, S., Eynard, B., &amp; Granon, S. (2021). A dissociation of attention, executive function and reaction to difficulty: Development of the MindPulse test, a novel digital neuropsychological test for precise quantification of perceptual-motor decision-making processes. <em>Frontiers in Neuroscience</em>, <em>15</em>. <a href="https://doi.org/10.3389/fnins.2021.650219">https://doi.org/10.3389/fnins.2021.650219</a>
+</div>
+<div id="ref-wadley2021" class="csl-entry" role="listitem">
+Wadley, V. G., Bull, T. P., Zhang, Y., Barba, C., Bryan, R. N., Crowe, M., Desiderio, L., Deutsch, G., Erus, G., Geldmacher, D. S., Go, R., Lassen-Greene, C. L., Mamaeva, O. A., Marson, D. C., McLaughlin, M., Nasrallah, I. M., Owsley, C., Passler, J., Perry, R. T., … Kennedy, R. E. (2021). Cognitive Processing Speed Is Strongly Related to Driving Skills, Financial Abilities, and Other Instrumental Activities of Daily Living in Persons With Mild Cognitive Impairment and Mild Dementia. <em>The Journals of Gerontology: Series A</em>, <em>76</em>(10), 1829–1838. <a href="https://doi.org/10.1093/gerona/glaa312">https://doi.org/10.1093/gerona/glaa312</a>
+</div>
+<div id="ref-woods2015" class="csl-entry" role="listitem">
+Woods, D. L., Wyma, J. M., Yund, E. W., Herron, T. J., &amp; Reed, B. (2015). Factors influencing the latency of simple reaction time. <em>Frontiers in Human Neuroscience</em>, <em>9</em>. <a href="https://doi.org/10.3389/fnhum.2015.00131">https://doi.org/10.3389/fnhum.2015.00131</a>
+</div>
+</div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
