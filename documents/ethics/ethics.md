@@ -25,6 +25,8 @@ The gamified version will be a similar task but with gamified graphics, mechanic
 
 - Post-task questionnaires: After each task, participants will be asked to rate their enjoyment of the task, how long they feel the task lasted and how happy they would be to repeat it.
 
+- Convergent validity measure: Participants will complete a 9-item Raven's progressive matrices (Bilker et al., 2012) which is used to assess fluid intelligence
+
 - Risks: There are no risks involved in this study.
 
 **Section A**
