@@ -11,9 +11,16 @@
         <script src="https://unpkg.com/@jspsych/plugin-survey@2.0.0"></script>
         <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe"></script>
 
+        <script src="./plugin-rpm.js"></script>
+        <script src="./plugin-screen-check.js"></script>
+        <script src="https://unpkg.com/@jspsych/plugin-call-function@1.1.2"></script>
+
+        
         <!-- Procedure files -->
+        <script src="init-jspsych.js"></script>
         <script src="demographics.js"></script>
         <script src="tasks.js"></script>
+        <script src="rpm-tfa.js"></script>
 
         <!-- Stylesheet -->
         <link
@@ -28,6 +35,7 @@
     </head>
     <body></body>
     <script>
+
         // Initialize experiment =================================================
         var jsPsych = initJsPsych({
             // show_progress_bar: true,
@@ -43,6 +51,7 @@
                 }
             },
         })
+
         // Participant ID
         const participantID = jsPsych.randomization.randomID(10)
         const taskorder = jsPsych.randomization.shuffle([
@@ -66,9 +75,15 @@
 
         if (taskorder === "DoggoFirst") {
             timeline.push(DoggoNogo)
+            timeline.push(rpmPreload)
+            timeline.push(rpmInstructions)
+            timeline.push(rpmTask)
             timeline.push(SimpleRT)
         } else {
             timeline.push(SimpleRT)
+            timeline.push(rpmPreload)
+            timeline.push(rpmInstructions)
+            timeline.push(rpmTask)
             timeline.push(DoggoNogo)
         }
 
