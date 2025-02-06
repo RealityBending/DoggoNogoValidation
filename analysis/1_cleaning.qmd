@@ -242,6 +242,22 @@ df_simpleRT <- filter(df_simpleRT, !Participant %in% exclusions$shape)
 ```
 
 
+```{r}
+# Removal of trials faster than 150ms and slower than 1000ms (as pre-reg'd)
+rt_exclusions <- list()
+rt_exclusions[["doggo"]] <- df_doggo |>
+  dplyr::filter(RT < .15 | RT > 1)
+rt_exclusions[["simple"]] <- df_simpleRT |> 
+  dplyr::filter(RT < .15 | RT > 1)
+
+df_doggo <- df_doggo |> 
+  dplyr::filter(RT >= .15 & RT <= 1)
+df_simpleRT <- df_simpleRT |> 
+  dplyr::filter(RT >= .15 & RT <= 1)
+```
+
+We removed `r nrow(rt_exclusions$doggo)` doggo/nogo trials and `r nrow(rt_exclusions$simple)` simple RT trials in which participants responded faster than 150ms or slower than 1000ms.
+
 ## Final Sample
 
 The final sample includes `r report::report_participants(df |> dplyr::select(Age, Gender, Education), age="Age", gender="Gender", education="Education")`.
