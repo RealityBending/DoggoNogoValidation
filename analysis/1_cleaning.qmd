@@ -24,7 +24,6 @@ library(easystats)
 library(patchwork)
 library(ggside)
 library(ggdist)
-library(rworldmap)
 ```
 
 ```{r}
@@ -146,7 +145,7 @@ exclusions <- list()
 
 ```{r}
 data_nvalid <- rbind(
-  summarize(df_doggo, n_valid=sum((Response_Type != "early") & (Response_Type != "missed")), .by="Participant") |> 
+  summarize(df_doggo, n_valid=max(Valid_Trial_Count), .by="Participant") |> 
     mutate(Task = "DoggoNogo") |> 
     mutate(Participant = fct_reorder(Participant, n_valid)),
   summarize(df_simpleRT, n_valid=sum(!is.na(RT)), .by="Participant") |> 
@@ -177,6 +176,7 @@ df_simpleRT <- filter(df_simpleRT, !Participant %in% exclusions$n_valid)
 
 ### Reaction Time
 
+#### Distribution Shape
 
 ```{r}
 data_rtdist <- rbind(
@@ -214,7 +214,8 @@ p_shape2 <- data_shape |>
 
 p_shape2 | p_shape1
 
-exclusions$shape <- unique(as.character(filter(data_shape, Outlier == "Outlier")$Participant))
+# exclusions$shape <- unique(as.character(filter(data_shape, Outlier == "Outlier")$Participant))
+exclusions$shape <- c()
 ```
 
 
@@ -242,12 +243,56 @@ df_simpleRT <- filter(df_simpleRT, !Participant %in% exclusions$shape)
 ```
 
 
+#### Early Presses
+
 ```{r}
+df <- df_doggo |> 
+  mutate(n_trials = max(Valid_Trial_Count), .by="Participant") |> 
+  filter(Response_Type == "early") |> 
+  summarise(DoggoNogo_EarlyPresses = n() / max(n_trials), .by=c("Participant")) |> 
+  full_join(df, by = join_by(Participant)) |> 
+  mutate(DoggoNogo_EarlyPresses = ifelse(is.na(DoggoNogo_EarlyPresses), 0, DoggoNogo_EarlyPresses))
+
+df <- df_simpleRT |> 
+  mutate(n_trials = sum(!is.na(RT)), .by="Participant") |> 
+  filter(is.na(RT)) |> 
+  summarise(SimpleRT_EarlyPresses = n() / max(n_trials), .by=c("Participant")) |> 
+  full_join(df, by = join_by(Participant)) |> 
+  mutate(SimpleRT_EarlyPresses = ifelse(is.na(SimpleRT_EarlyPresses), 0, SimpleRT_EarlyPresses))
+
+df |> 
+  ggplot(aes(x=DoggoNogo_EarlyPresses, y=SimpleRT_EarlyPresses)) +
+  geom_point() | 
+  df |>
+  select(Participant, DoggoNogo_EarlyPresses, SimpleRT_EarlyPresses) |> 
+  pivot_longer(-Participant) |> 
+  ggplot(aes(x=name, y=value, fill=name)) +
+  geom_boxplot() +
+  scale_y_sqrt()
+```
+
+```{r}
+df_doggo <- filter(df_doggo, Response_Type != "early")
+df_simpleRT <- filter(df_simpleRT, !is.na(RT))
+```
+
+
+#### Extreme Responses
+
+```{r}
+df_doggo |>
+  filter(RT < 2) |> 
+  ggplot(aes(x=RT)) +
+  geom_density(color="red") +
+  geom_density(data=df_simpleRT, color="orange") +
+  geom_vline(xintercept=c(0.15, 1), linetype="dashed", color="red")
+
+
 # Removal of trials faster than 150ms and slower than 1000ms (as pre-reg'd)
 rt_exclusions <- list()
-rt_exclusions[["doggo"]] <- df_doggo |>
+rt_exclusions$doggo <- df_doggo |>
   dplyr::filter(RT < .15 | RT > 1)
-rt_exclusions[["simple"]] <- df_simpleRT |> 
+rt_exclusions$simple <- df_simpleRT |> 
   dplyr::filter(RT < .15 | RT > 1)
 
 df_doggo <- df_doggo |> 
@@ -362,29 +407,6 @@ df |>
     axis.text.y = element_blank(),
     axis.title.y = element_blank()
   )
-```
-
-### Country
-
-```{r}
-#| message: false
-#| warning: false
-
-world_map <- df |> dplyr::group_by(Participant) |> 
-  dplyr::mutate(ISO3 = rworldmap::rwmGetISO3(Country)) |> 
-  dplyr::group_by(ISO3) |> 
-  dplyr::summarise(Country = Country, 
-                   `Participant Country of Residence` = n()) |> 
-  unique() |> 
-  joinCountryData2Map(joinCode = "ISO3", nameJoinColumn = "ISO3") |> 
-  mapCountryData(nameColumnToPlot = "Participant Country of Residence",
-                 colourPalette = viridis::turbo(n = 100, begin = 0.1, end = 0.9),
-                 catMethod = "fixedWidth",
-                 missingCountryCol = "darkgrey")#,
-                 # addLegend = F, 
-                 # ylim = c(-10,60),
-                 # aspect = 1.1)
-# do.call(addMapLegend, c(world_map, legendWidth = 0.5, legendMar = 4))
 ```
 
 

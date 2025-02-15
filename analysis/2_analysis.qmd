@@ -93,16 +93,18 @@ dflong <- df |>
 
 
 get_bf <- function(dflong, outcome="Enjoyment", y=5, y1=y, y2=y) {
-  if(outcome=="Repeat") dflong$Score <- dflong$Score + 4
+  
+  # Doggo vs. Simple when both first tasks
   dat <- filter(dflong, TaskOrder=="First task", Question==outcome) |> 
     filter(!is.na(Score))
   rez1 <- BayesFactor::ttestBF(formula=Score ~ Task, data=dat) |> 
     parameters::parameters() |> 
     mutate(Mean_Doggo = mean(dat$Score[dat$Task=="DoggoNogo"]),
            Mean_Simple = mean(dat$Score[dat$Task=="Simple"]),
-           Ratio = Mean_Doggo / Mean_Simple,
+           Diff = Mean_Doggo - Mean_Simple,
            x=1, y=y, color="DoggoNogo")
   
+  # Simple vs. Doggo when Simple is after Doggo 
   dat <- filter(dflong, Condition=="DoggoFirst", Question==outcome) |> 
     select(Participant, Task, Score) |>
     pivot_wider(names_from = Task, values_from = Score) |> 
@@ -111,9 +113,10 @@ get_bf <- function(dflong, outcome="Enjoyment", y=5, y1=y, y2=y) {
     parameters::parameters() |> 
     mutate(Mean_Doggo = mean(dat$DoggoNogo),
            Mean_Simple = mean(dat$Simple),
-           Ratio = Mean_Simple / Mean_Doggo,
+           Diff = Mean_Simple - Mean_Doggo,
            x=1.75, y=y1, color="Simple")
   
+  # Doggo vs. Simple vs. when Doggo is after Simple 
   dat <- filter(dflong, Condition=="SimpleFirst", Question==outcome) |> 
     select(Participant, Task, Score) |>
     pivot_wider(names_from = Task, values_from = Score) |> 
@@ -122,24 +125,25 @@ get_bf <- function(dflong, outcome="Enjoyment", y=5, y1=y, y2=y) {
     parameters::parameters() |> 
     mutate(Mean_Doggo = mean(dat$DoggoNogo),
            Mean_Simple = mean(dat$Simple),
-           Ratio = Mean_Doggo / Mean_Simple,
+           Diff = Mean_Doggo - Mean_Simple,
            x=2.25, y=y2, color="DoggoNogo")
   
   rez <- rbind(rez1, rez2, rez3)
+  
   if(outcome=="Duration Δ") {
-    rez$Ratio <- ifelse(sign(rez$Median) %in% c(1, 0),
+    rez$Diff <- ifelse(sign(rez$Median) %in% c(1, 0),
                         paste0("+", insight::format_value(rez$Median, zap_small=TRUE)),
                         insight::format_value(rez$Median, zap_small=TRUE))
   } else {
-    rez$Ratio <- ifelse(sign(rez$Ratio - 1) %in% c(1, 0),
-                        paste0("+", insight::format_percent(rez$Ratio - 1, digits=0)),
-                        paste0("-", insight::format_percent(1 - rez$Ratio, digits=0)))
+    rez$Diff <- ifelse(sign(rez$Diff) %in% c(1, 0),
+                        paste0("+", insight::format_percent(rez$Diff / 7, digits=0)),
+                        paste0("-", insight::format_percent(abs(rez$Diff / 7), digits=0)))
   }
   
   rez |> 
-    select(Mean_Doggo, Mean_Simple, Median, Ratio, BF, x, y, color) |> 
+    select(Mean_Doggo, Mean_Simple, Median, Diff, BF, x, y, color) |> 
     mutate(Question = outcome,
-           Label = paste0(insight::format_value(Ratio),
+           Label = paste0(Diff,
                           insight::format_bf(BF, stars_only =TRUE)))
 }
 
@@ -161,7 +165,7 @@ p1 <- dflong  |>
   geom_line(aes(group=Participant, x=jitter_x, y=jitter_y, color=linecolor), alpha=0.1) +
   geom_point2(aes(color=Task, x=jitter_x, y=jitter_y), alpha=0.3, size=3) +
   ggdist::stat_halfeye(aes(x=position, fill=Task, side=side), alpha=0.5, scale=3,
-                       key_glyph = "rect") +
+                       point_interval = "mean_qi", key_glyph = "rect") +
   geom_label(data=mutate(rez, Question = fct_relevel(Question, "Enjoyment", "Duration Δ", "Repeat")),
             aes(x=x, y=y, label=Label, color=color), size=3) +
   facet_wrap(~Question, scales = "free_y", ncol=3) +
@@ -204,16 +208,17 @@ df_rt <- rbind(
 #| fig-width: 7
 #| fig-height: 8
 
-mdog_poly2 <- glmmTMB::glmmTMB(RT ~ poly(ISI, 2) + (poly(ISI, 2)|Participant), 
+# TODO: adjust random slopes once convergence is fixed
+mdog_poly2 <- glmmTMB::glmmTMB(RT ~ poly(ISI, 2) + (poly(ISI, 1)|Participant), 
                                 data=filter(df_rt, Task=="DoggoNogo"))
-mdog_poly3 <- glmmTMB::glmmTMB(RT ~ poly(ISI, 3) + (poly(ISI, 2)|Participant), 
+mdog_poly3 <- glmmTMB::glmmTMB(RT ~ poly(ISI, 3) + (poly(ISI, 1)|Participant), 
                                data=filter(df_rt, Task=="DoggoNogo"))
 mdog_gam <- mgcv::gamm(RT ~ s(ISI), random=list(Participant=~1),
                        data=filter(df_rt, Task=="DoggoNogo"))
 
-msimple_poly2 <- glmmTMB::glmmTMB(RT ~ poly(ISI, 2) + (poly(ISI, 2)|Participant), 
+msimple_poly2 <- glmmTMB::glmmTMB(RT ~ poly(ISI, 2) + (poly(ISI, 1)|Participant), 
                                   data=filter(df_rt, Task=="SimpleRT"))
-msimple_poly3 <- glmmTMB::glmmTMB(RT ~ poly(ISI, 3) + (poly(ISI, 2)|Participant), 
+msimple_poly3 <- glmmTMB::glmmTMB(RT ~ poly(ISI, 3) + (poly(ISI, 1)|Participant), 
                                   data=filter(df_rt, Task=="SimpleRT"))
 msimple_gam <- mgcv::gamm(RT ~ s(ISI), random=list(Participant=~1),
                           data=filter(df_rt, Task=="SimpleRT"))
