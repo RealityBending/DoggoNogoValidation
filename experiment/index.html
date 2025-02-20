@@ -10,9 +10,7 @@
         <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@2.0.0"></script>
         <script src="https://unpkg.com/@jspsych/plugin-survey@2.0.0"></script>
         <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe"></script>
-
-        <script src="plugin-rpm.js"></script>
-        <script src="plugin-screen-check.js"></script>
+        <script src="https://unpkg.com/@jspsych/plugin-html-button-response@2.1.0"></script>
         <script src="https://unpkg.com/@jspsych/plugin-call-function@1.1.2"></script>
 
         
@@ -20,15 +18,16 @@
         <script src="init-jspsych.js"></script>
         <script src="demographics.js"></script>
         <script src="tasks.js"></script>
-        <script src="rpm-tfa.js"></script>
+        <script src="ravens.js"></script>
 
         <!-- Stylesheet -->
         <link
             rel="stylesheet"
             href="https://unpkg.com/@jspsych/plugin-survey@2.0.0/css/survey.css"
         />
+
         <link
-            href="https://unpkg.com/jspsych@7.3.4/css/jspsych.css"
+            href="https://unpkg.com/jspsych@7.3.4/css/jspsych.css" 
             rel="stylesheet"
             type="text/css"
         />
@@ -75,15 +74,15 @@
 
         if (taskorder === "DoggoFirst") {
             timeline.push(DoggoNogo)
-            timeline.push(rpmPreload)
-            timeline.push(rpmInstructions)
-            timeline.push(rpmTask)
+            timeline.push(ravens_preload)
+            timeline.push(ravens_instructions)
+            timeline.push(ravens_procedure())
             timeline.push(SimpleRT)
         } else {
             timeline.push(SimpleRT)
-            timeline.push(rpmPreload)
-            timeline.push(rpmInstructions)
-            timeline.push(rpmTask)
+            timeline.push(ravens_preload)
+            timeline.push(ravens_instructions)
+            timeline.push(ravens_procedure())
             timeline.push(DoggoNogo)
         }
 
