@@ -111,6 +111,15 @@ function ravens_maketrial() {
                     clearInterval(interval)
                 }
             }, 250)
+
+            // Stop timer when button clicked
+            document.querySelectorAll(".jspsych-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    document.querySelector("#clock").innerHTML = " ";
+                    clearInterval(interval);
+                });
+            });
+
         },
         on_finish: function (data) {
             data.error = data.response != data.correct
