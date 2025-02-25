@@ -27,7 +27,7 @@ for (file in files) {
   # Initialize participant-level data
   dat <- rawdata[rawdata$screen == "browser_info",]
 
-  if (!dat$researcher %in% c("SONA")) { # UNCOMMENT
+  if (!dat$researcher %in% c("SONA")) {
     next
   }
 
@@ -54,6 +54,17 @@ for (file in files) {
   demog$Gender <- ifelse(demog$Gender == "other", "Other", demog$Gender)
   demog$Education <- ifelse(demog$Education == "other", "Other", demog$Education)
   data_ppt <- cbind(data_ppt, demog)
+  
+  
+  # RPM
+  if ("ravens_trial" %in% rawdata$screen){
+    rpm <- rawdata[rawdata$screen == "ravens_trial", c("item", "error")]
+    rpm$item <- paste0("rpm_", rpm$item)
+    rpm$error <- ifelse(rpm$error == "false", 1, 0) # recoding error var to 1 = correct, 0 = incorrect
+    rpm_dat <- with(rpm, 
+         tapply(error, item, c)) |> t()
+    data_ppt <- cbind(data_ppt, rpm_dat)
+  }
 
   # Feedback
   feedback <- lapply(jsonlite::fromJSON(rawdata[rawdata$screen == "experiment_feedback", "response"]), function(x) if (is.null(x)) NA else x)
