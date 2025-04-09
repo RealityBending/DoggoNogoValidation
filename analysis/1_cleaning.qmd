@@ -165,7 +165,7 @@ data_nvalid |>
 exclusions$n_valid <- as.character(filter(data_nvalid, Task=="SimpleRT" & data_nvalid$n_valid < 100)$Participant)
 ```
 
-We removed `r length(exclusions$n_valid)` (`r length(exclusions$n_valid) / nrow(df)`) participants who missed more than one-third of trials in the simple RT task.
+We removed `r length(exclusions$n_valid)` (`r round(length(exclusions$n_valid) / nrow(df)*100,2)`%) participants who missed more than one-third of trials in the simple RT task.
 
 ```{r}
 df <- filter(df, !Participant %in% exclusions$n_valid)

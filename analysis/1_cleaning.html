@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.549">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -33,7 +33,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -68,12 +68,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="1_cleaning_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="1_cleaning_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script src="1_cleaning_files/libs/core-js-2.5.3/shim.min.js"></script>
+
 <script src="1_cleaning_files/libs/react-18.2.0/react.min.js"></script>
+
 <script src="1_cleaning_files/libs/react-18.2.0/react-dom.min.js"></script>
-<script src="1_cleaning_files/libs/reactwidget-2.0.0/react-tools.js"></script>
+
+<script src="1_cleaning_files/libs/reactwidget-1.0.0/react-tools.js"></script>
+
 <script src="1_cleaning_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+
 <link href="1_cleaning_files/libs/reactable-0.4.4/reactable.css" rel="stylesheet">
+
 <script src="1_cleaning_files/libs/reactable-binding-0.4.4/reactable.js"></script>
+
 
 
 </head>
@@ -154,7 +161,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>df_simpleRT <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"../data/rawdata_simpleRT.csv"</span>)</span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>df_doggo <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"../data/rawdata_doggonogo.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The initial sample of complete data consisted of 160 participants (Mean age = 19.8, SD = 3.4, range: [18, 53]; Gender: 83.1% women, 15.6% men, 1.25% non-binary; Education: Bachelor, 16.88%; Doctorate, 1.25%; High school, 80.00%; Master, 0.62%; Other, 1.25%), for a total trial number of 43910.</p>
+<p>The initial sample of complete data consisted of 183 participants (Mean age = 19.9, SD = 3.9, range: [18, 53]; Gender: 83.1% women, 15.8% men, 1.09% non-binary; Education: Bachelor, 16.39%; Doctorate, 1.09%; High school, 80.33%; Master, 0.55%; Other, 1.64%), for a total trial number of 50380.</p>
 <section id="recruitment-history" class="level3">
 <h3 class="anchored" data-anchor-id="recruitment-history">Recruitment History</h3>
 <div class="cell">
@@ -190,7 +197,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="experiment-duration" class="level3">
 <h3 class="anchored" data-anchor-id="experiment-duration">Experiment Duration</h3>
-<p>The experiment’s median duration is 20.51 min (50% HDI [18.82, 21.77]). The median duration of DoggoNogo was 8.35 min (50% HDI [7.17, 8.68]) and the median duration of the simple RT task was 8.18 min (50% HDI [7.21, 8.20]).</p>
+<p>The experiment’s median duration is 20.91 min (50% HDI [18.70, 22.06]). The median duration of DoggoNogo was 8.37 min (50% HDI [7.62, 9.10]) and the median duration of the simple RT task was 8.24 min (50% HDI [7.24, 8.35]).</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -270,23 +277,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  gt<span class="sc">::</span><span class="fu">opt_interactive</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="dnydokmrlz" class=".gt_table" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#dnydokmrlz table {
+<div id="givyxbqvxn" class=".gt_table" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#givyxbqvxn table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#dnydokmrlz thead, #dnydokmrlz tbody, #dnydokmrlz tfoot, #dnydokmrlz tr, #dnydokmrlz td, #dnydokmrlz th {
+#givyxbqvxn thead, #givyxbqvxn tbody, #givyxbqvxn tfoot, #givyxbqvxn tr, #givyxbqvxn td, #givyxbqvxn th {
   border-style: none;
 }
 
-#dnydokmrlz p {
+#givyxbqvxn p {
   margin: 0;
   padding: 0;
 }
 
-#dnydokmrlz .gt_table {
+#givyxbqvxn .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -312,12 +319,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-left-color: #D3D3D3;
 }
 
-#dnydokmrlz .gt_caption {
+#givyxbqvxn .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#dnydokmrlz .gt_title {
+#givyxbqvxn .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -329,7 +336,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-width: 0;
 }
 
-#dnydokmrlz .gt_subtitle {
+#givyxbqvxn .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -341,7 +348,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-top-width: 0;
 }
 
-#dnydokmrlz .gt_heading {
+#givyxbqvxn .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -353,13 +360,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#dnydokmrlz .gt_bottom_border {
+#givyxbqvxn .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#dnydokmrlz .gt_col_headings {
+#givyxbqvxn .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -374,7 +381,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#dnydokmrlz .gt_col_heading {
+#givyxbqvxn .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -394,7 +401,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   overflow-x: hidden;
 }
 
-#dnydokmrlz .gt_column_spanner_outer {
+#givyxbqvxn .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -406,15 +413,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 4px;
 }
 
-#dnydokmrlz .gt_column_spanner_outer:first-child {
+#givyxbqvxn .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#dnydokmrlz .gt_column_spanner_outer:last-child {
+#givyxbqvxn .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#dnydokmrlz .gt_column_spanner {
+#givyxbqvxn .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -426,11 +433,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   width: 100%;
 }
 
-#dnydokmrlz .gt_spanner_row {
+#givyxbqvxn .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#dnydokmrlz .gt_group_heading {
+#givyxbqvxn .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -456,7 +463,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   text-align: left;
 }
 
-#dnydokmrlz .gt_empty_group_heading {
+#givyxbqvxn .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -471,15 +478,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   vertical-align: middle;
 }
 
-#dnydokmrlz .gt_from_md > :first-child {
+#givyxbqvxn .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#dnydokmrlz .gt_from_md > :last-child {
+#givyxbqvxn .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#dnydokmrlz .gt_row {
+#givyxbqvxn .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -498,7 +505,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   overflow-x: hidden;
 }
 
-#dnydokmrlz .gt_stub {
+#givyxbqvxn .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -511,7 +518,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#dnydokmrlz .gt_stub_row_group {
+#givyxbqvxn .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -525,15 +532,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   vertical-align: top;
 }
 
-#dnydokmrlz .gt_row_group_first td {
+#givyxbqvxn .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#dnydokmrlz .gt_row_group_first th {
+#givyxbqvxn .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#dnydokmrlz .gt_summary_row {
+#givyxbqvxn .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -543,16 +550,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#dnydokmrlz .gt_first_summary_row {
+#givyxbqvxn .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#dnydokmrlz .gt_first_summary_row.thick {
+#givyxbqvxn .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#dnydokmrlz .gt_last_summary_row {
+#givyxbqvxn .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -562,7 +569,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#dnydokmrlz .gt_grand_summary_row {
+#givyxbqvxn .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -572,7 +579,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#dnydokmrlz .gt_first_grand_summary_row {
+#givyxbqvxn .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -582,7 +589,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-top-color: #D3D3D3;
 }
 
-#dnydokmrlz .gt_last_grand_summary_row_top {
+#givyxbqvxn .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -592,11 +599,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#dnydokmrlz .gt_striped {
+#givyxbqvxn .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#dnydokmrlz .gt_table_body {
+#givyxbqvxn .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -605,7 +612,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#dnydokmrlz .gt_footnotes {
+#givyxbqvxn .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -619,7 +626,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#dnydokmrlz .gt_footnote {
+#givyxbqvxn .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -628,7 +635,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#dnydokmrlz .gt_sourcenotes {
+#givyxbqvxn .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -642,7 +649,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#dnydokmrlz .gt_sourcenote {
+#givyxbqvxn .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -650,77 +657,77 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#dnydokmrlz .gt_left {
+#givyxbqvxn .gt_left {
   text-align: left;
 }
 
-#dnydokmrlz .gt_center {
+#givyxbqvxn .gt_center {
   text-align: center;
 }
 
-#dnydokmrlz .gt_right {
+#givyxbqvxn .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#dnydokmrlz .gt_font_normal {
+#givyxbqvxn .gt_font_normal {
   font-weight: normal;
 }
 
-#dnydokmrlz .gt_font_bold {
+#givyxbqvxn .gt_font_bold {
   font-weight: bold;
 }
 
-#dnydokmrlz .gt_font_italic {
+#givyxbqvxn .gt_font_italic {
   font-style: italic;
 }
 
-#dnydokmrlz .gt_super {
+#givyxbqvxn .gt_super {
   font-size: 65%;
 }
 
-#dnydokmrlz .gt_footnote_marks {
+#givyxbqvxn .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#dnydokmrlz .gt_asterisk {
+#givyxbqvxn .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#dnydokmrlz .gt_indent_1 {
+#givyxbqvxn .gt_indent_1 {
   text-indent: 5px;
 }
 
-#dnydokmrlz .gt_indent_2 {
+#givyxbqvxn .gt_indent_2 {
   text-indent: 10px;
 }
 
-#dnydokmrlz .gt_indent_3 {
+#givyxbqvxn .gt_indent_3 {
   text-indent: 15px;
 }
 
-#dnydokmrlz .gt_indent_4 {
+#givyxbqvxn .gt_indent_4 {
   text-indent: 20px;
 }
 
-#dnydokmrlz .gt_indent_5 {
+#givyxbqvxn .gt_indent_5 {
   text-indent: 25px;
 }
 
-#dnydokmrlz .katex-display {
+#givyxbqvxn .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#dnydokmrlz div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#givyxbqvxn div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
-<div id="dnydokmrlz" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="dnydokmrlz">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Feedback":["Interesting study. However, was frustrating when i would click so fast that i registered as a double click at times.","One of the issues with Psychological research today is the vast majority of it is people carrying out studies simply because they found a 'gap' in the literature. In actuality, some things are simply not worth studying. Unfortunately, this study appears to fall into this camp.","i enjoyed the dog part most. in part 1, it could have other coloured boxes as well for more attention focuses reactions","my hand went numb whilst participating in the study, which I think impacted my reaction time ","definitely something different the first task was fun I enjoyed doing it compared to the second one , for me at least the first time having something interactive and fun in a study.  ","i dont like ai art","loved it","the first task felt easier as the background was plain but more boring. The second task felt harder as the background was distracting and it meant i kept missing it so got bored quicker","I was distracted by the thought that dogs do not eat bones to gain weight.","Cute dog :)","doggo game kept saying almost which was infuriating","Don't use the down arrow as it forces the participant to put their hand in a weird position for too long, use the enter key or left click instead because it is more comfortable and therefore should better represent reaction time","Initially in both tasks I was unsure whether the *only* objects would be bones, or red squares and I was worried I might click when a different kind of object would appear :)","it gets rather repeative ","No comments","For the second task, you can see the navigator on the screen. That might be a subconscious distractor ","didnt like the doggy one ","woof","the background of the first task made it difficult to see some of the bones appearing","no nothing cheers","the puppy experiment was so fun!"]},"columns":[{"id":"Feedback","name":"Feedback","type":"character","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","html":true,"align":"left"}],"defaultPageSize":10,"showPageSizeOptions":false,"pageSizeOptions":[10,25,50,100],"paginationType":"numbers","showPagination":true,"showPageInfo":true,"minRows":1,"height":"auto","theme":{"color":"#333333","backgroundColor":"#FFFFFF","stripedColor":"rgba(128,128,128,0.05)","style":{"font-family":"system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif","fontSize":"16px"},"tableStyle":{"borderTopStyle":"solid","borderTopWidth":"2px","borderTopColor":"#D3D3D3"},"headerStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"groupHeaderStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"cellStyle":{"fontWeight":"normal"}},"elementId":"dnydokmrlz","dataKey":"6519cbd1ef12d456832afb5d56ae1181"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.columns.0.style"],"jsHooks":[]}</script>
+<div id="givyxbqvxn" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="givyxbqvxn">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Feedback":["Interesting study. However, was frustrating when i would click so fast that i registered as a double click at times.","One of the issues with Psychological research today is the vast majority of it is people carrying out studies simply because they found a 'gap' in the literature. In actuality, some things are simply not worth studying. Unfortunately, this study appears to fall into this camp.","i enjoyed the dog part most. in part 1, it could have other coloured boxes as well for more attention focuses reactions","my hand went numb whilst participating in the study, which I think impacted my reaction time ","definitely something different the first task was fun I enjoyed doing it compared to the second one , for me at least the first time having something interactive and fun in a study.  ","i dont like ai art",".","loved it","the first task felt easier as the background was plain but more boring. The second task felt harder as the background was distracting and it meant i kept missing it so got bored quicker","I was distracted by the thought that dogs do not eat bones to gain weight.","I really liked the game aspect of this study ","Cute dog :)","doggo game kept saying almost which was infuriating","Don't use the down arrow as it forces the participant to put their hand in a weird position for too long, use the enter key or left click instead because it is more comfortable and therefore should better represent reaction time","Initially in both tasks I was unsure whether the *only* objects would be bones, or red squares and I was worried I might click when a different kind of object would appear :)","it gets rather repeative ","No comments","For the second task, you can see the navigator on the screen. That might be a subconscious distractor ","didnt like the doggy one ","woof","the background of the first task made it difficult to see some of the bones appearing","no nothing cheers","The game could be a tiny bit buggy, e.g. I would press when I saw a bone and it wouldn't be registered","the puppy experiment was so fun!"]},"columns":[{"id":"Feedback","name":"Feedback","type":"character","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","html":true,"align":"left"}],"defaultPageSize":10,"showPageSizeOptions":false,"pageSizeOptions":[10,25,50,100],"paginationType":"numbers","showPagination":true,"showPageInfo":true,"minRows":1,"height":"auto","theme":{"color":"#333333","backgroundColor":"#FFFFFF","stripedColor":"rgba(128,128,128,0.05)","style":{"font-family":"system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif","fontSize":"16px"},"tableStyle":{"borderTopStyle":"solid","borderTopWidth":"2px","borderTopColor":"#D3D3D3"},"headerStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"groupHeaderStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"cellStyle":{"fontWeight":"normal"}},"elementId":"givyxbqvxn","dataKey":"c44b67e61480beb7aadc07dfe95dec37"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.columns.0.style"],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -769,7 +776,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>exclusions<span class="sc">$</span>n_valid <span class="ot">&lt;-</span> <span class="fu">as.character</span>(<span class="fu">filter</span>(data_nvalid, Task<span class="sc">==</span><span class="st">"SimpleRT"</span> <span class="sc">&amp;</span> data_nvalid<span class="sc">$</span>n_valid <span class="sc">&lt;</span> <span class="dv">100</span>)<span class="sc">$</span>Participant)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>We removed 6 (0.0375) participants who missed more than one-third of trials in the simple RT task.</p>
+<p>We removed 6 (0.0327869) participants who missed more than one-third of trials in the simple RT task.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -944,13 +951,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(RT <span class="sc">&gt;=</span> .<span class="dv">15</span> <span class="sc">&amp;</span> RT <span class="sc">&lt;=</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>We removed 100 doggo/nogo trials and 50 simple RT trials in which participants responded faster than 150ms or slower than 1000ms.</p>
+<p>We removed 111 doggo/nogo trials and 59 simple RT trials in which participants responded faster than 150ms or slower than 1000ms.</p>
 </section>
 </section>
 </section>
 <section id="final-sample" class="level2">
 <h2 class="anchored" data-anchor-id="final-sample">Final Sample</h2>
-<p>The final sample includes 154 participants (Mean age = 19.6, SD = 2.1, range: [18, 40]; Gender: 82.5% women, 16.2% men, 1.30% non-binary; Education: Bachelor, 16.88%; Doctorate, 0.65%; High school, 80.52%; Master, 0.65%; Other, 1.30%).</p>
+<p>The final sample includes 177 participants (Mean age = 19.8, SD = 3.1, range: [18, 51]; Gender: 82.5% women, 16.4% men, 1.13% non-binary; Education: Bachelor, 16.38%; Doctorate, 0.56%; High school, 80.79%; Master, 0.56%; Other, 1.69%).</p>
 <section id="age" class="level3">
 <h3 class="anchored" data-anchor-id="age">Age</h3>
 <div class="cell">
@@ -1148,18 +1155,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -1191,7 +1187,47 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -1226,7 +1262,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');

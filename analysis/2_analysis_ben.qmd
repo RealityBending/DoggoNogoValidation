@@ -1,7 +1,15 @@
 ---
-title: "Doggo Nogo Validation - Analysis"
-format: html
-editor: visual
+title: "DoggoNogoValidation - Data Analysis"
+editor: source
+format:
+  html:
+    code-fold: true
+    self-contained: false
+    toc: true
+execute: 
+  cache: false
+editor_options: 
+  chunk_output_type: inline
 ---
 
 ```{r setup, include=FALSE}
@@ -10,17 +18,355 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, results = "
 # source("1_cleaning.qmd")
 ```
 
-```{r}
+```{r packages}
+packages <- c("tidyverse", "BayesFactor", "effectsize")
+missing_packages <- packages[!(packages %in% installed.packages() [, "Package"])]
+
+if(length(missing_packages)){
+  install.packages(missing_packages)
+}
+
+library(tidyverse)
 library(BayesFactor)
+library(effectsize)
+
+
+convert_to_words <- function(x) {
+  if (x >= 1e15) {
+    return(">1Q")
+  } else if (x >= 1e12) {
+    return(paste0(round(x / 1e12, 1), "T"))
+  } else if (x >= 1e9) {
+    return(paste0(round(x / 1e9, 1), "B"))
+  } else if (x >= 1e6) {
+    return(paste0(round(x / 1e6, 1), "M"))
+  } else if (x >= 1e3) {
+    return(paste0(round(x / 1e3, 1), "K"))
+  } else {
+    return(as.character(x))
+  }
+}
+
+set.seed(123)
 ```
 
-```{r}
+```{r data}
 df <- read.csv("../data/data_participants.csv")
-df_srt <- read.csv("../data/data_simple.csv")
-df_dog <- read.csv("../data/data_dog.csv")
+df_srt <- read.csv("../data/data_simpleRT.csv")
+df_dog <- read.csv("../data/data_doggonogo.csv")
+
+df_srt <- merge(df_srt, df, by = "Participant")
+df_dog <- merge(df_dog, df, by = "Participant")
 ```
 
-```{r}
+# Pre-registered analyses
+
+## Correlations
+
+```{r correlations}
+# Hypothesis 1: The validity of the gamified version will be equivalent to that of the non-gamified version
+## The correlation between individual task indices of processing speed (e.g., median RT) should be high between the two versions
+  # mean, median, mode, SD, MAD, IQR
+set.seed(123)
+dog_ind <- df_dog |> 
+  dplyr::filter(Valid_Trial) |> # Didn't pre-reg that we would exclude invalid trials... 
+  dplyr::select(Participant, RT) |> 
+  dplyr::group_by(Participant) |> 
+  dplyr::summarise(mean = mean(RT),
+                   median = median(RT),
+                   mode = suppressWarnings(modeest::mlv(RT, method="meanshift")),
+                   sd = sd(RT),
+                   mad = mad(RT),
+                   iqr = IQR(RT),
+                   task = "doggo")
+
+srt_ind <- df_srt |> 
+  dplyr::select(Participant, RT) |> 
+  dplyr::group_by(Participant) |> 
+  dplyr::summarise(mean = mean(RT),
+                   median = median(RT),
+                   mode = suppressWarnings(modeest::mlv(RT, method="meanshift")),
+                   sd = sd(RT),
+                   mad = mad(RT),
+                   iqr = IQR(RT),
+                   task = "srt")
+
+indices <- rbind(dog_ind, srt_ind)
+
+# cors <- data.frame()
+# for (i in c("mean", "median", "mode", "sd", "mad", "iqr")){
+#   set.seed(123)
+#   result <- psych::corr.test(indices[indices$task == "doggo", i], indices[indices$task == "srt", i])
+#   bres <- BayesFactor::correlationBF(y = unlist(indices[indices$task == "doggo", i]), x = unlist(indices[indices$task == "srt", i]), ci = "HDI")
+#   resultdf <- data.frame(formatC(result$r, format="f", 2), 
+#                          ifelse(result$p < .001, "<.001", paste0("=", formatC(result$p, format = "f", 3))),
+#                          formatC(parameters::parameters(bres)$Median, format = "f", 2),
+#                          paste0(parameters::parameters(bres, ci_method = "HDI")$CI_low |> round(2), ", ", parameters::parameters(bres, ci_method = "HDI")$CI_high |> round(2)),
+#                          parameters::parameters(bres)$pd,
+#                          BayesFactor::extractBF(bres)$bf) 
+#   names(resultdf) <- c("r", "p", "Median_rho", "95% CI", "pd", "BF")
+#   rownames(resultdf) <- ifelse(i %in% c("mean", "median", "mode"), stringr::str_to_title(i), stringr::str_to_upper(i))
+#   cors <- rbind(cors, resultdf)
+#   }
+# 
+# cors$BF <- lapply(as.numeric(cors$BF), convert_to_words) |> unlist()
+# 
+# paste0("The correlation between task indices were: ", paste(paste0("r_{", rownames(cors), "} = ", cors$r, ", p ", cors$p), collapse = "; "))
+# paste0("The median correlations between task indices were: ", paste(paste0("Median $\rho_{", rownames(cors), "}$ = ", formatC(cors$Median_rho, format = "f", 2), ", 95% HDI [", cors$`95% CI`, "], pd = ", cors$pd*100,  "% , BF = ", formatC(cors$BF, format = "g")), collapse = "; "))
+# 
+# cors
+
+
+iter = 1000
+out <- data.frame()
+r_vals <- data.frame()
+r_full <- data.frame()
+
+prior_dat <- data.frame(
+  y = dbeta(seq(0, 1, length.out = iter), 1/(1/3), 1/(1/3)),
+  x = seq(-1, 1, length.out = iter))
+
+for (i in dplyr::setdiff(names(indices), c("Participant", "task"))){
+  bf_r <- BayesFactor::correlationBF(y = indices[indices$task == "doggo",][[i]], x = indices[indices$task == "srt", ][[i]], ci = "HDI", rscale = "medium")
+  post_r <- BayesFactor::posterior(bf_r, iterations = iter)
+
+  r_vals <- bind_rows(r_vals, as.data.frame(post_r) |> dplyr::select(rho) |> dplyr::mutate(indices = i))
+  rvals <- as.data.frame(post_r)$rho
+  r_est <- round(median(rvals), 2)
+  r_mad <- round(mad(rvals), 2)
+  r_hdi <- bayestestR::hdi(rvals, ci = .95)
+  r_pd <- bayestestR::pd(rvals)$pd
+  r_rope <- bayestestR::rope(rvals, rope = c(-0.1, 0.1), ci = .95, ci_method = "HDI")
+  r_es <- effectsize::interpret_r(rvals, rules = "cohen1988")
+  
+  r_full <- bind_rows(r_full, data.frame(indices = i, bf = BayesFactor::extractBF(bf_r)$bf, r_est = r_est, r_mad = r_mad, r_hdi = r_hdi, r_pd = r_pd, r_rope = r_rope))
+  
+  r_es_tbl <- data.frame(r_es) |> 
+    dplyr::group_by(r_es) |> 
+    dplyr::summarise(n = n()/iter) |> 
+    tidyr::pivot_wider(names_from = r_es, values_from = n) |> 
+    dplyr::mutate(i = i)
+  
+  out <- dplyr::bind_rows(out, r_es_tbl)
+}
+
+r_full |> 
+  dplyr::select(indices, r_est, r_mad, r_hdi.CI_low, r_hdi.CI_high, r_pd, bf) |> 
+  dplyr::rowwise() |> 
+  dplyr::mutate(`95% CI (HDI)` = paste0("[", formatC(r_hdi.CI_low, 2, format = "f"), ", ", formatC(r_hdi.CI_high, 2, format = "f"), "]"),
+                bf = convert_to_words(bf), .after = "r_est") |> 
+  dplyr::select(-c(r_hdi.CI_low, r_hdi.CI_high))
+
+out[,c("i", "small", "moderate", "large")]
+
+
+indices_long <- indices |> 
+  tidyr::pivot_longer(cols = c(mean, median, mode, sd, mad, iqr), names_to = "indices", values_to = "value") |> 
+  tidyr::pivot_wider(names_from = task, values_from = value)
+
+
+# Correlations visualised
+ggplot2::ggplot(indices_long, aes(x = doggo, y = srt)) +
+  ggplot2::geom_point() +
+  ggplot2::geom_smooth(method = "lm", 
+                       fullrange = T, 
+                       color = "#232323", 
+                       fill = "#646464") +
+  cowplot::theme_cowplot() +
+  ggplot2::facet_wrap(~indices, scales = "free")
+
+# Trace Plot of posterior distribution
+r_vals |> 
+  dplyr::mutate(i = 1:nrow(r_vals)) |> 
+  ggplot(aes(x = i, y = rho)) +
+  geom_line(color = "#232323") +
+  labs(y = "Correlation coefficient") +
+  cowplot::theme_cowplot() +
+  ggplot2::facet_wrap(~indices, scales = "free")
+
+# Prior vs posterior distribution
+as.data.frame(r_vals) |> 
+  ggplot2::ggplot(aes(x = rho)) +
+  ggplot2::geom_area(data = prior_dat, aes(x = x, y = y), 
+                     fill = "lightgrey", alpha = .8) +
+  ggplot2::geom_vline(xintercept = 0, linetype = "dashed") +
+  ggplot2::geom_density(fill = "darkgrey") +
+  cowplot::theme_cowplot() +
+  ggplot2::labs(x = "Correlation Coefficient", y = "Probability") +
+  ggplot2::facet_wrap(~indices)
+
+r_final <- merge(r_vals, r_full, by = "indices") 
+r_final |> 
+  dplyr::mutate(HDI = ifelse(rho > r_hdi.CI_high, "Outside CI", ifelse(rho < r_hdi.CI_low, "Outside CI", "Within CI"))) |> 
+  ggplot2::ggplot(aes(x = rho, fill = HDI)) +
+  ggplot2::geom_histogram(bins = 150) +
+  ggplot2::annotate("rect", alpha = 0.2, fill = "#7d7d7d", xmin = -0.1, xmax = 0.1, ymin = -Inf, ymax = Inf) +
+  ggplot2::geom_text(aes(x = 0, y = 0, label = "ROPE")) +
+  ggplot2::scale_fill_manual(values = c("Outside CI" = "#232323", "Within CI" = "#646464")) +
+  ggplot2::labs(fill = "95% HDI", x="r", y="Frequency") +
+  cowplot::theme_cowplot()  +
+  ggplot2::theme(axis.title.x = element_text(face = "italic"),
+                 legend.position = "bottom",
+                 legend.justification = "center") +
+  ggplot2::facet_wrap(~indices, scale = "free") +
+  ggplot2::geom_vline(
+    data = r_final |> dplyr::group_by(indices) |> dplyr::summarise(median_rho = median(rho), .groups = "drop"),
+    aes(xintercept = median_rho), colour = "black", linewidth = 0.5, linetype = "dashed")
+```
+
+## T-tests
+
+```{r ttests}
+set.seed(123)
+# Hypothesis 2: The gamified version will be more engaging than the non-gamified version.
+## Higher ratings of task enjoyment for the gamified version.
+## RT variability (e.g., SD(RTs)) should be lower for the gamified version.
+
+tdat <- df |> 
+  dplyr::select(Assessment_Enjoyment_DoggoNogo, Assessment_Enjoyment_Simple, Participant) |> 
+  tidyr::pivot_longer(cols = c("Assessment_Enjoyment_DoggoNogo", "Assessment_Enjoyment_Simple"), names_to = "Task", values_to = "Enjoyment") |>
+  dplyr::mutate(Task = stringr::str_remove(Task, "Assessment_Enjoyment_"))
+
+t_means <- tdat |> 
+  dplyr::group_by(Task) |> 
+  dplyr::summarise(mean = round(mean(Enjoyment, na.rm = T), 2),
+                   sd = round(sd(Enjoyment, na.rm = T), 2))
+bf_t <- BayesFactor::ttestBF(formula = Enjoyment ~ Task, data = tdat)
+bf_t_rep <- round(BayesFactor::extractBF(bf_t)$bf, 2)
+t_dat <- effectsize(bf_t, test = "all") |> data.frame()
+
+# Reporting of results
+paste0(
+  "A Bayesian t-test was conducted using `ttestBF` from the BayesFactor package [@BayesFactor], using default priors ($\\sqrt{2}/2$) to compare the hypothesis that there are differences in enjoyment ratings between the simple SRT and the gamified (DoggoNogo) version of the SRT ($H_1$), and the null hypothesis, that no such difference exists ($H_0$). Overall, ", 
+  t_means[t_means$mean == max(t_means$mean),]$Task,
+  " received higher enjoyment scores (M = ",
+  max(t_means$mean),
+  ", SD = ",
+  t_means[t_means$mean == max(t_means$mean),]$sd,
+  ") than ",
+  t_means[t_means$mean == min(t_means$mean),]$Task,
+  " (M = ",
+  min(t_means$mean),
+  ", SD = ",
+  t_means[t_means$mean == min(t_means$mean),]$sd,
+  "). The result, $\\delta$ = ",
+  round(t_dat$Cohens_d, 2),
+  ", 95% CI [",
+  round(t_dat$CI_low, 2), 
+  ", ",
+  round(t_dat$CI_high, 2),
+  "], $BF_{10} = ",
+  convert_to_words(bf_t_rep),
+  " indicates ",
+  effectsize::interpret_bf(bf_t_rep),
+  " $H_1$ which is ",
+  ifelse(bf_t_rep > 3, "sufficient", "insufficient"),
+  " to discard $H_0$ in favour of $H_1$. The distribution of enjoyment ratings by task can be seen in FIGURE."
+)
+
+# Distribution of ratings
+tdat  |> 
+  ggplot2::ggplot(aes(x = Task, y = Enjoyment)) +
+  ggplot2::geom_boxplot(staplewidth = 0.2, outliers = F, fill = "#646464", alpha = 0.5) +
+  ggplot2::geom_point(position = position_jitter(width = 0.1), aes(alpha = 0.5), show.legend = F, colour = "#232323") +
+  cowplot::theme_cowplot()
+
+
+sddat <- merge(
+  df_dog |> 
+    dplyr::filter(Valid_Trial) |>  
+    dplyr::group_by(Participant) |> 
+    dplyr::summarise(DoggoNogo = sd(RT)),
+
+  df_srt |> 
+    dplyr::group_by(Participant) |> 
+    dplyr::summarise(SRT = sd(RT))
+) |> 
+  tidyr::pivot_longer(cols = c(DoggoNogo, SRT), names_to = "Task", values_to = "SD") 
+
+
+# Standard deviation of reaction times
+t_means2 <- sddat |> 
+  dplyr::group_by(Task) |> 
+  dplyr::summarise(mean = round(mean(SD, na.rm = T), 2),
+                   sd = round(sd(SD, na.rm = T), 2))
+bf_t2 <- BayesFactor::ttestBF(formula = SD ~ Task, data = sddat)
+bf_t_rep2 <- round(BayesFactor::extractBF(bf_t2)$bf, 2)
+t_dat2 <- effectsize(bf_t2, test = "all") |> data.frame()
+
+# Reporting of results
+paste0(
+  "A Bayesian t-test was conducted using `ttestBF` from the BayesFactor package [@BayesFactor], using default priors ($\\sqrt{2}/2$) to compare the hypothesis that there are differences in RT SDs between the simple SRT and the gamified (DoggoNogo) version of the SRT ($H_1$), and the null hypothesis, that no such difference exists ($H_0$). Overall, ", 
+  t_means2[t_means2$mean == max(t_means2$mean),]$Task,
+  " received larger RT SDs (M = ",
+  max(t_means2$mean),
+  ", SD = ",
+  t_means2[t_means2$mean == max(t_means2$mean),]$sd,
+  ") than ",
+  t_means2[t_means2$mean == min(t_means2$mean),]$Task,
+  " (M = ",
+  min(t_means2$mean),
+  ", SD = ",
+  t_means2[t_means2$mean == min(t_means2$mean),]$sd,
+  "). The result, $\\delta$ = ",
+  round(t_dat2$Cohens_d, 2),
+  ", 95% CI [",
+  round(t_dat2$CI_low, 2), 
+  ", ",
+  round(t_dat2$CI_high, 2),
+  "], $BF_{10} = ",
+  convert_to_words(bf_t_rep2),
+  " indicates ",
+  effectsize::interpret_bf(bf_t_rep2),
+  " $H_1$ which is ",
+  ifelse(bf_t_rep2 > 3, "sufficient", "insufficient"),
+  " to discard $H_0$ in favour of $H_1$. The distribution of SDs by task can be seen in FIGURE."
+)
+
+sddat  |> 
+  ggplot2::ggplot(aes(x = Task, y = SD)) +
+  ggplot2::geom_boxplot(staplewidth = 0.2, outliers = F, fill = "#646464", alpha = 0.5) +
+  ggplot2::geom_point(position = position_jitter(width = 0.1), aes(alpha = 0.5), show.legend = F, colour = "#232323") +
+  cowplot::theme_cowplot()
+```
+
+## Exploratory
+
+```{r exploratory}
+# Exploratory analyses: relationships between demographic variables and processing speed
+# Gender
+  # Female set as intercept/reference level
+
+# Four participants indicated their highest education level as 'other'. These were:
+  # A-Levels, a levels, collage, Vocational Training after High School
+  # Given that the majority were university students we can assume that the majority had a levels and those likely put 'High school' - therefore, re-categorising 'collage' and 'a levels' as 'high school'.
+
+edat <- bind_rows(
+  df_dog |> 
+    dplyr::filter(Valid_Trial) |> 
+    dplyr::select(RT, Participant, Gender, Age, Education, Education.Comment) |> 
+    dplyr::mutate(Task = "DoggoNogo"),
+  
+  df_srt |> 
+    dplyr::select(RT, Participant, Gender, Age, Education, Education.Comment) |> 
+    dplyr::mutate(Task = "SRT")
+) |> 
+  dplyr::mutate(Gender = factor(Gender),
+                Education = dplyr::case_when(
+                  Education.Comment == "A-Levels" ~ "High school",
+                  Education.Comment == "a levels" ~ "High school",
+                  Education.Comment == "collage" ~ "High school", 
+                  TRUE ~ Education)) |> 
+  dplyr::mutate(Education = factor(Education, levels = c("High school", "Bachelor", "Master", "Doctorate", "Other")))
+
+
+
+
+```
+
+## ...
+
+```{r, include = F}
 srt_rt <- df_srt |> dplyr::filter(!is.na(RT))
 dog_rt <- df_dog |> dplyr::filter(Response_Type != "early" & Response_Type != "missed")
 
