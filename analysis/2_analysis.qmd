@@ -209,21 +209,21 @@ df_rt <- rbind(
 #| fig-height: 8
 
 # TODO: adjust random slopes once convergence is fixed
-mdog_poly2 <- glmmTMB::glmmTMB(RT ~ poly(ISI, 2) + (poly(ISI, 1)|Participant), 
+mdog_poly2 <- glmmTMB::glmmTMB(RT ~ poly(ISI, 2) + (poly(ISI, 2)|Participant), 
                                 data=filter(df_rt, Task=="DoggoNogo"))
-mdog_poly3 <- glmmTMB::glmmTMB(RT ~ poly(ISI, 3) + (poly(ISI, 1)|Participant), 
+mdog_poly3 <- glmmTMB::glmmTMB(RT ~ poly(ISI, 3) + (poly(ISI, 2)|Participant),  # FIX
                                data=filter(df_rt, Task=="DoggoNogo"))
 mdog_gam <- mgcv::gamm(RT ~ s(ISI), random=list(Participant=~1),
                        data=filter(df_rt, Task=="DoggoNogo"))
 
-msimple_poly2 <- glmmTMB::glmmTMB(RT ~ poly(ISI, 2) + (poly(ISI, 1)|Participant), 
+msimple_poly2 <- glmmTMB::glmmTMB(RT ~ poly(ISI, 2) + (poly(ISI, 2)|Participant), 
                                   data=filter(df_rt, Task=="SimpleRT"))
-msimple_poly3 <- glmmTMB::glmmTMB(RT ~ poly(ISI, 3) + (poly(ISI, 1)|Participant), 
+msimple_poly3 <- glmmTMB::glmmTMB(RT ~ poly(ISI, 3) + (poly(ISI, 3)|Participant), 
                                   data=filter(df_rt, Task=="SimpleRT"))
 msimple_gam <- mgcv::gamm(RT ~ s(ISI), random=list(Participant=~1),
                           data=filter(df_rt, Task=="SimpleRT"))
 
-test_bf(mdog_poly2, mdog_poly3, mdog_gam)
+test_bf(mdog_poly3, mdog_poly2, mdog_gam)
 test_bf(msimple_poly2, msimple_poly3, msimple_gam)
 
 pred_all <- rbind(
@@ -257,6 +257,7 @@ p1 <- pred_all |>
   # scale_x_continuous(expand = c(0, 0), breaks=c(0.2, 1, 2, 3, 4)) +
   scale_color_viridis_d(option="plasma") +
   scale_linetype_manual(values=c("Poly2"="solid", "GAM" = "dashed", "Poly3"="dotted")) +
+  scale_y_log10() +
   theme_abyss() +
   theme(legend.position = "none") +
   facet_wrap(~Task) +
@@ -378,6 +379,48 @@ df_stability |>
   scale_color_manual(values=c("Mean"="#FF9800", "Median"="#E91E63", "Mode"="#9C27B0",
                               "SD"="#4CAF50", "MAD"="#2196F3", "IQR"="#795548")) +
   scale_x_continuous(expand=c(0, 0.1)) 
+```
+
+### Convergent
+
+#### Raven's Progressive Matrices
+
+
+```{r}
+#| fig-width: 7
+#| fig-height: 14
+
+
+dat <- df_stability |> 
+  full_join(select(df, Participant, starts_with("RPM_")), by = "Participant") |> 
+  summarize(Mean_RPMRT = cor(Mean_Cumulative, RPM_RT, use = "pairwise.complete.obs"), 
+            Median_RPMRT = cor(Median_Cumulative, RPM_RT, use = "pairwise.complete.obs"),
+            Mode_RPMRT = cor(Mode_Cumulative, RPM_RT, use = "pairwise.complete.obs"),
+            SD_RPMRT = cor(SD_Cumulative, RPM_RT, use = "pairwise.complete.obs"),
+            MAD_RPMRT = cor(MAD_Cumulative, RPM_RT, use = "pairwise.complete.obs"),
+            IQR_RPMRT = cor(IQR_Cumulative, RPM_RT, use = "pairwise.complete.obs"),
+            Mean_RPMCor = cor(Mean_Cumulative, RPM_Correct, use = "pairwise.complete.obs"), 
+            Median_RPMCor = cor(Median_Cumulative, RPM_Correct, use = "pairwise.complete.obs"),
+            Mode_RPMCor = cor(Mode_Cumulative, RPM_Correct, use = "pairwise.complete.obs"),
+            SD_RPMCor = cor(SD_Cumulative, RPM_Correct, use = "pairwise.complete.obs"),
+            MAD_RPMCor = cor(MAD_Cumulative, RPM_Correct, use = "pairwise.complete.obs"),
+            IQR_RPMCor = cor(IQR_Cumulative, RPM_Correct, use = "pairwise.complete.obs"),
+            .by=c("Task", "Trial")) |> 
+  pivot_longer(cols = -c(Task, Trial), names_to = "Index", values_to = "r") |> 
+  separate(Index, into = c("Index", "Measure"), sep = "_") |>
+  mutate(Measure = ifelse(Measure == "RPMRT", "RPM - RT", "RPM - %Correct")) 
+
+dat |> 
+  ggplot(aes(x = Trial, y = r, linetype=Task)) +
+  geom_hline(yintercept=0, linetype="dashed", color="gray") +
+  geom_line(aes(color=Index), linewidth=1, alpha=0.9) +
+  theme_abyss() +
+  labs(title="Difference Between Tasks", y="Difference", x="Trial Number") +
+  scale_color_manual(values=c("Mean"="#FF9800", "Median"="#E91E63", "Mode"="#9C27B0",
+                              "SD"="#4CAF50", "MAD"="#2196F3", "IQR"="#795548")) +
+  scale_x_continuous(expand=c(0, 0.1)) +
+  facet_wrap(~Measure) +
+  coord_cartesian(ylim=c(-0.5, 0.5)) 
 ```
 
 

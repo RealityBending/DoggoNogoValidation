@@ -52,8 +52,7 @@ The initial sample of complete data consisted of `r report::report_participants(
 # Consecutive count of participants per day (as area)
 df |>
   mutate(Date = Experiment_StartDate) |> 
-  group_by(Date, Recruitment) |> 
-  summarize(N = n()) |> 
+  summarize(N = n(), .by = c("Date", "Recruitment")) |> 
   ungroup() |>
   complete(Date, Recruitment, fill = list(N = 0)) |> 
   group_by(Recruitment) |>
@@ -302,6 +301,35 @@ df_simpleRT <- df_simpleRT |>
 ```
 
 We removed `r nrow(rt_exclusions$doggo)` doggo/nogo trials and `r nrow(rt_exclusions$simple)` simple RT trials in which participants responded faster than 150ms or slower than 1000ms.
+
+### Raven's Progressive Matrices
+
+
+```{r}
+dfrpm <- df |> 
+  select(Participant, starts_with("RPM_")) |> 
+  pivot_longer(-Participant, names_to = "RPM", values_to = "Score") |> 
+  separate(RPM, into = c("RPM", "Item", "Outcome"), sep = "_") |>
+  pivot_wider(names_from = Outcome, values_from = Score) |> 
+  summarize(
+    RPM_Correct = sum(Error == 0) / n(),
+    RPM_RT = mean(RT[Error == 0]),
+    .by=c("Participant")
+  ) 
+
+df <- df |> 
+  select(-starts_with("RPM_")) |> 
+  full_join(dfrpm, by = "Participant") 
+
+df |> 
+  ggplot(aes(x=RPM_Correct, y=RPM_RT)) +
+  geom_point() +
+  geom_smooth(method="lm") +
+  ggside::geom_xsidedensity(fill="blue", alpha=0.5) +
+  ggside::geom_ysidedensity(fill="blue", alpha=0.5) 
+```
+
+
 
 ## Final Sample
 

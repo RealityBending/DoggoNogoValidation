@@ -3,6 +3,8 @@ using Random
 using DataFrames, CSV
 using Serialization
 using Mooncake
+# using Enzyme
+# using ReverseDiff
 
 include("1_models_definition.jl")
 include(Downloads.download("https://raw.githubusercontent.com/RealityBending/scripts/main/data_poly.jl"))
@@ -49,8 +51,10 @@ function sample_and_save(m, df, name="name"; pt=false, optim=false)
         # posteriors = sample(fit, NUTS(), 400; init_params=d)
 
         # MCMC
-        # posteriors = sample(fit, NUTS(), MCMCThreads(), 200, 8)
+        # posteriors = sample(fitted, NUTS(), MCMCThreads(), 200, 8)
         posteriors = sample(fitted, NUTS(; adtype=AutoMooncake(; config=nothing)), 400; initial_params=initial_params)
+        # posteriors = sample(fitted, NUTS(; adtype=AutoReverseDiff()), 400; initial_params=initial_params)
+        # posteriors = sample(fitted, NUTS(; adtype=AutoEnzyme(; mode=Enzyme.Reverse)), 400; initial_params=initial_params)
         # posteriors = sample(fitted, NUTS(), 400; initial_params=initial_params)
         # posteriors = sample(fit, externalsampler(MCHMC(200, 0.01; adaptive=true)), 200)
     else
@@ -68,6 +72,7 @@ function sample_and_save(m, df, name="name"; pt=false, optim=false)
     # See https://github.com/TuringLang/Turing.jl/issues/2309
     out = Dict("fit" => fitted, "model" => "model_" * name, "pt" => pt, "posteriors" => posteriors, "duration" => duration)
     Serialization.serialize("models/" * name * ".turing", out)
+    println("Duration: $duration minutes")
     return out
 end
 
