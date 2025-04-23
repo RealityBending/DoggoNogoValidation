@@ -1,0 +1,194 @@
+---
+title: "DoggoNogoValidation - Data Analysis"
+editor: source
+editor_options: 
+  chunk_output_type: console
+format:
+  html:
+    code-fold: true
+    self-contained: false
+    toc: true
+execute: 
+  cache: false
+---
+
+
+## Data Preparation
+
+```{r}
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(easystats)
+library(patchwork)
+library(ggside)
+library(ggdist)
+library(patchwork)
+library(brms)
+library(cmdstanr)
+library(cogmod)
+
+options(brms.backend = "cmdstanr")
+
+# colors <- c("DoggoNogo" = "#FF9800", "Simple" = "#795548", "SimpleRT" = "#795548")
+colors = c(
+    "Linear"="#1A237E",
+    "Gaussian"="#3F51B5",
+    "ExGaussian"="#2196F3",
+    "LogNormal"="#03A9F4",
+    "InverseGaussian"="#00BCD4",
+    "Weibull"="#FF5722",
+    "LogWeibull"="#F44336",
+    "InverseWeibull"="#E91E63",
+    "Gamma"="#9C27B0",
+    "InverseGamma"="#673AB7",
+    "LNR"="#CDDC39",
+    "LBA"="#FFEB3B",
+    "RDM"="#FFC107"
+)
+```
+
+```{r}
+#| code-fold: false
+
+df_simpleRT <- read.csv("../data/data_simpleRT.csv")
+df_dog <- read.csv("../data/data_doggonogo.csv")
+```
+
+## Models
+
+::: {.panel-tabset}
+
+### Gaussian
+
+```{r}
+#| code-fold: false
+
+f <- bf(
+  RT ~ 0 + Intercept + poly(ISI, 2) + (0 + Intercept + poly(ISI, 2) | Participant)
+)
+```
+
+```{r}
+m_normal_simple <- brm(f,
+  data = df_simpleRT[1:1000,], 
+  init = 0,
+  chains = 4, iter = 500, backend = "cmdstanr"
+)
+
+m_normal_simple
+```
+
+```{r}
+m_normal_doggo <- brm(f,
+  data = df_dog[1:1000,], 
+  init = 0,
+  chains = 4, iter = 500, backend = "cmdstanr"
+)
+
+m_normal_doggo
+```
+
+:::
+
+
+## Model Comparison
+
+```{r}
+#| code-fold: false
+
+pred <- rbind(
+  estimate_prediction(m_normal_simple, iterations = 100, keep_iterations = 100) |> 
+    mutate(Model = "Gaussian", Task = "SimpleRT") |> 
+    reshape_iterations(),
+  estimate_prediction(m_normal_doggo, iterations = 100, keep_iterations = 100) |> 
+    mutate(Model = "Gaussian", Task = "DoggoNogo") |> 
+    reshape_iterations()
+) 
+
+rbind(mutate(df_simpleRT[c("Participant", "RT")], Task = "SimpleRT"),
+      mutate(df_dog[c("Participant", "RT")], Task = "DoggoNogo")) |> 
+  ggplot(aes(x=RT)) +
+  geom_histogram(aes(y=after_stat(density)), bins = 120, fill = "black") +
+  geom_line(data=pred, aes(color = Model, x=iter_value, group = interaction(Task, iter_group)), 
+            stat="density", alpha = 0.3) +
+  scale_color_manual(values = colors, guide = "none") +
+  facet_grid(Model~Task, switch = "y") +
+  labs(x = "Response Time (s)", title = "Posterior Predictive Check" ) +
+  theme_minimal() +
+  theme(strip.placement = "outside",
+        axis.title.y = element_blank(),
+        strip.text.x = element_text(size = rel(1.2), face = "bold"),
+        strip.text.y = element_text(size = rel(1.2)))
+```
+
+## ISI
+
+```{r}
+#| code-fold: false
+
+grid <- data.frame(ISI = c(1, 1.5, 2, 2.5, 3, 3.5, 4))
+pred_rts <- rbind(
+  estimate_prediction(m_normal_simple, iterations = 1000, keep_iterations=1000, data = grid) |> 
+    mutate(Model = "Gaussian", Task = "SimpleRT"),
+  estimate_prediction(m_normal_doggo, iterations = 1000, keep_iterations=1000, data = grid) |> 
+    mutate(Model = "Gaussian", Task = "DoggoNogo") 
+) |> 
+  mutate(ISI = as.factor(ISI))
+
+iters <- reshape_iterations(pred_rts)
+
+pred_rts[pred_rts$Task == "DoggoNogo", ] |> 
+  ggplot(aes(x=ISI)) +
+  stat_halfeye(data = iters[iters$Task == "SimpleRT",], aes(y=iter_value, fill = Task, color = Task), 
+               side = "left", alpha = 0.2, position = position_nudge(-.02)) +
+  stat_halfeye(data = iters[iters$Task == "DoggoNogo",], aes(y=iter_value, fill = Task, color = Task), 
+               side = "right", alpha = 0.8) +
+  geom_smooth(aes(y = Predicted, group=1), se = FALSE, method = "lm", formula = "y ~ poly(x, 2)",
+              color = "#FF5722") +
+  scale_fill_manual(values = c("SimpleRT" = "#795548", "DoggoNogo" = "#FF9800")) +
+  scale_color_manual(values = c("SimpleRT" = "#795548", "DoggoNogo" = "#FF9800")) +
+  theme_minimal() 
+```
+
+```{r}
+#| code-fold: false
+
+pred_effects <- rbind(
+  estimate_relation(m_normal_simple, iterations = 100, length = 20, predict = "mu") |> 
+    mutate(Model = "Gaussian", Task = "SimpleRT", Parameter = "mu"),
+  estimate_relation(m_normal_doggo, iterations = 100, length = 20, predict = "mu") |> 
+    mutate(Model = "Gaussian", Task = "DoggoNogo", Parameter = "mu") 
+) 
+
+pred_effects |> 
+  ggplot(aes(x=ISI, y = Predicted)) +
+  geom_ribbon(aes(ymin = CI_low, ymax = CI_high, fill = Model), alpha = 0.2) +
+  geom_line(aes(color = Model)) +
+  scale_color_manual(values = colors, guide = "none") +
+  facet_grid(Model~Task * Parameter, switch = "y") +
+  labs(x = "Inter-Stimulus Interval (ISI)", title = "Effect of ISI on Model Parameters" ) +
+  theme_minimal() +
+  theme(strip.placement = "outside",
+        axis.title.y = element_blank(),
+        strip.text.x = element_text(size = rel(1.2), face = "bold"),
+        strip.text.y = element_text(size = rel(1.2)))
+```
+
+## Reliability
+
+```{r}
+#| code-fold: false
+
+dvour <- rbind(
+  mutate(performance::performance_dvour(m_normal_simple), Task = "SimpleRT"),
+  mutate(performance::performance_dvour(m_normal_doggo), Task = "DoggoNogo")
+) |> 
+  pivot_wider(names_from = "Task", values_from = "D_vour") |> 
+  mutate(ReliabilityChange = (DoggoNogo - SimpleRT) / (1 - SimpleRT)) 
+
+dvour
+
+# Reliability Gain Index: DoggoNogo reduces the unreliability (error) by 9.09% compared to SimpleRT
+```
