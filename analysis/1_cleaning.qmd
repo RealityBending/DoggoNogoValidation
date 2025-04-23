@@ -140,143 +140,103 @@ data.frame(Feedback = df$Experiment_Feedback) |>
 exclusions <- list()
 ```
 
-### Task performance
-
-```{r}
-data_nvalid <- rbind(
-  summarize(df_doggo, n_valid=max(Valid_Trial_Count), .by="Participant") |> 
-    mutate(Task = "DoggoNogo") |> 
-    mutate(Participant = fct_reorder(Participant, n_valid)),
-  summarize(df_simpleRT, n_valid=sum(!is.na(RT)), .by="Participant") |> 
-    mutate(Task = "SimpleRT")
-) 
-
-data_nvalid |> 
-  ggplot(aes(x=Participant, y = n_valid, fill = Task)) +
-  geom_bar(position = "dodge", stat = "identity") +
-  theme_minimal() +
-  theme(axis.text.x = element_blank()) +
-  ggside::geom_ysidedensity(alpha=0.5, color=NA) +
-  ggside::theme_ggside_void() 
-```
-
-```{r}
-exclusions$n_valid <- as.character(filter(data_nvalid, Task=="SimpleRT" & data_nvalid$n_valid < 100)$Participant)
-```
-
-We removed `r length(exclusions$n_valid)` (`r round(length(exclusions$n_valid) / nrow(df)*100,2)`%) participants who missed more than one-third of trials in the simple RT task.
-
-```{r}
-df <- filter(df, !Participant %in% exclusions$n_valid)
-df_doggo <- filter(df_doggo, !Participant %in% exclusions$n_valid)
-df_simpleRT <- filter(df_simpleRT, !Participant %in% exclusions$n_valid)
-```
-
-
-### Reaction Time
-
-#### Distribution Shape
-
-```{r}
-data_rtdist <- rbind(
-  df_doggo |> 
-    filter(Response_Type != "early" & Response_Type != "missed") |>
-    select(Participant, RT) |>
-    mutate(Task = "DoggoNogo"),
-  df_simpleRT |>
-    filter(!is.na(RT)) |>
-    select(Participant, RT) |>
-    mutate(Task = "SimpleRT"))
-
-data_shape <- data_rtdist |> 
-  summarize(Kurtosis = kurtosis(RT)$Kurtosis, 
-            Skewness = skewness(RT)$Skewness, 
-            .by=c("Participant", "Task")) |> 
-  mutate(Outlier = ifelse(Skewness < 0.5 & Kurtosis < 0.5, "Outlier", "Normal"))
-
-p_shape1 <- data_shape |> 
-  mutate(Participant = fct_reorder(Participant, Skewness, .fun=mean)) |>
-  ggplot(aes(x=Participant, y = Skewness, fill = Task)) +
-  geom_bar(position = "dodge", stat = "identity") +
-  theme_minimal() +
-  theme(axis.text.x = element_blank()) +
-  ggside::geom_ysidedensity(alpha=0.5, color=NA) 
-
-p_shape2 <- data_shape |> 
-  ggplot(aes(x=Skewness, y=Kurtosis)) +
-  geom_rect(ymin=-Inf, ymax=0.5, xmin=-Inf, xmax=0.5, alpha=0.2, fill="#FFCDD2") +
-  geom_point(aes(color=Task)) +
-  geom_smooth(aes(color=Task, fill=Task), method = "loess", formula = 'y ~ x') +
-  ggside::geom_ysidedensity(aes(fill=Task), alpha=0.5, color=NA) +
-  ggside::geom_xsidedensity(aes(fill=Task), alpha=0.5, color=NA) +
-  theme_minimal() 
-
-p_shape2 | p_shape1
-
-# exclusions$shape <- unique(as.character(filter(data_shape, Outlier == "Outlier")$Participant))
-exclusions$shape <- c()
-```
-
-
-```{r}
-#| fig-width: 15
-#| fig-height: 15
-
-data_rtdist |>
-  merge(data_shape, by=c("Participant", "Task")) |>
-  ggplot(aes(x=RT, color=Outlier)) +
-  geom_density(aes(group=interaction(Participant, Task, Outlier)), alpha=0.3) +
-  theme_minimal() +
-  scale_color_manual(values = c("Normal" = "black", "Outlier" = "red")) +
-  facet_grid(Task~Outlier) +
-  theme_minimal() +
-  theme(axis.text.y = element_blank())
-```
-
-We removed `r length(exclusions$shape)` (`r length(exclusions$shape) / nrow(df)`) participants who had an outlying joint-score of skewness and kurtosis.
-
-```{r}
-df <- filter(df, !Participant %in% exclusions$shape)
-df_doggo <- filter(df_doggo, !Participant %in% exclusions$shape)
-df_simpleRT <- filter(df_simpleRT, !Participant %in% exclusions$shape)
-```
-
-
-#### Early Presses
+### Early Presses
 
 ```{r}
 df <- df_doggo |> 
-  mutate(n_trials = max(Valid_Trial_Count), .by="Participant") |> 
-  filter(Response_Type == "early") |> 
-  summarise(DoggoNogo_EarlyPresses = n() / max(n_trials), .by=c("Participant")) |> 
-  full_join(df, by = join_by(Participant)) |> 
-  mutate(DoggoNogo_EarlyPresses = ifelse(is.na(DoggoNogo_EarlyPresses), 0, DoggoNogo_EarlyPresses))
+  summarise(DoggoNogo_EarlyPresses = sum(Response_Type == "early") / n(), .by=c("Participant")) |> 
+  full_join(df, by = join_by(Participant)) 
 
 df <- df_simpleRT |> 
-  mutate(n_trials = sum(!is.na(RT)), .by="Participant") |> 
-  filter(is.na(RT)) |> 
-  summarise(SimpleRT_EarlyPresses = n() / max(n_trials), .by=c("Participant")) |> 
-  full_join(df, by = join_by(Participant)) |> 
-  mutate(SimpleRT_EarlyPresses = ifelse(is.na(SimpleRT_EarlyPresses), 0, SimpleRT_EarlyPresses))
+  summarise(SimpleRT_EarlyPresses = sum(is.na(RT)) / n(), .by=c("Participant")) |> 
+  full_join(df, by = join_by(Participant)) 
 
-df |> 
+p_early1 <- df |> 
   ggplot(aes(x=DoggoNogo_EarlyPresses, y=SimpleRT_EarlyPresses)) +
-  geom_point() | 
-  df |>
+  geom_point()  +
+  geom_smooth(data = df[df$DoggoNogo_EarlyPresses < 0.1 & df$SimpleRT_EarlyPresses < 0.25, ],
+              method = 'loess', formula = 'y ~ x') +
+  geom_vline(xintercept = 0.1, linetype = "dashed", color = "red") +
+  geom_hline(yintercept = 0.25, linetype = "dashed", color = "red") +
+  scale_y_sqrt(labels = scales::percent) +
+  scale_x_continuous(labels = scales::percent) +
+  theme_minimal()
+
+p_early2 <- df |>
   select(Participant, DoggoNogo_EarlyPresses, SimpleRT_EarlyPresses) |> 
   pivot_longer(-Participant) |> 
   ggplot(aes(x=name, y=value, fill=name)) +
   geom_boxplot() +
-  scale_y_sqrt()
+  geom_hline(yintercept = 0.25, linetype = "dashed", color = "red") +
+  scale_y_sqrt(labels = scales::percent) +
+  scale_fill_manual(values = c("#FF9800", "#795548"), guide = "none") +
+  theme_minimal()
+
+p_early1 | p_early2
 ```
 
 ```{r}
+exclusions$n_early_doggo <- df[df$DoggoNogo_EarlyPresses > 0.1, "Participant"]
+exclusions$n_early_simple <- df[df$SimpleRT_EarlyPresses > 0.25, "Participant"]
+```
+
+We removed `r length(exclusions$n_early_simple)` (`r insight::format_percent(length(exclusions$n_early_simple) / nrow(df))`) participants from the SimpleRT data for whom more than 25% of trials were early presses.
+We removed `r length(exclusions$n_early_doggo)` (`r insight::format_percent(length(exclusions$n_early_doggo) / nrow(df))`) participants from the DoggoNogo data for whom more than 10% of trials were early presses.
+
+
+```{r}
+df_doggo <- filter(df_doggo, !Participant %in% exclusions$n_early_doggo)
 df_doggo <- filter(df_doggo, Response_Type != "early")
+df_simpleRT <- filter(df_simpleRT, !Participant %in% exclusions$n_early_simple)
 df_simpleRT <- filter(df_simpleRT, !is.na(RT))
 ```
 
 
-#### Extreme Responses
+### Task performance (Valid Trials)
+
+```{r}
+data_nvalid <- rbind(
+  summarize(df_doggo, n_valid=max(Valid_Trial_Count), .by="Participant") |> 
+    mutate(Task = "DoggoNogo"),
+  summarize(df_simpleRT, n_valid=sum(!is.na(RT)), .by="Participant") |> 
+    mutate(Task = "SimpleRT")
+) 
+
+describe_distribution(data_nvalid, by="Task")
+# Outliers Doggo: c(116.11-16.64*qnorm(.99), 111.16+16.64*qnorm(.99))
+
+data_nvalid |> 
+  ggplot(aes(x=Participant, y = n_valid)) +
+  geom_bar(data=mutate(filter(data_nvalid, Task == "DoggoNogo"), Participant = fct_reorder(Participant, n_valid)), 
+           fill = "#FF9800", position = "dodge", stat = "identity") +
+  geom_bar(data=mutate(filter(data_nvalid, Task == "SimpleRT"), Participant = fct_reorder(Participant, n_valid)), 
+           fill = "#795548", position = "dodge", stat = "identity") +
+  geom_hline(data = data.frame(Task = c("DoggoNogo", "DoggoNogo", "SimpleRT"), y = c(77, 155, 125)),
+             aes(yintercept = y), linetype = "dashed", color = "red") +
+  facet_wrap(~Task, scales = "free_x") +
+  ggside::geom_ysidedensity(aes(fill = Task), alpha=1, color=NA) +
+  scale_fill_manual(values = c("#FF9800", "#795548"), guide = "none") +
+  theme_minimal() +
+  ggside::theme_ggside_void()  +
+  theme(axis.text.x = element_blank(),
+        panel.grid.major.x = element_blank()) 
+```
+
+```{r}
+exclusions$n_valid_simple <- as.character(filter(data_nvalid, Task=="SimpleRT" & data_nvalid$n_valid < 125)$Participant)
+exclusions$n_valid_doggo <- as.character(filter(data_nvalid, Task=="DoggoNogo" & data_nvalid$n_valid > 155)$Participant)
+```
+
+We removed `r length(exclusions$n_valid_simple)` (`r insight::format_percent(length(exclusions$n_valid_simple) / nrow(df))`) participants from the SimpleRT data who missed more than than 25 trials.
+We removed `r length(exclusions$n_valid_doggo)` (`r insight::format_percent(length(exclusions$n_valid_doggo) / nrow(df))`) participants from the DoggoNogo data who has more than 155 valid trials (> 99% percentile).
+
+```{r}
+df_doggo <- filter(df_doggo, !Participant %in% exclusions$n_valid_simple)
+df_simpleRT <- filter(df_simpleRT, !Participant %in% exclusions$n_valid_doggo)
+```
+
+
+### Extreme Responses
 
 ```{r}
 df_doggo |>
@@ -300,7 +260,42 @@ df_simpleRT <- df_simpleRT |>
   dplyr::filter(RT >= .15 & RT <= 1)
 ```
 
-We removed `r nrow(rt_exclusions$doggo)` doggo/nogo trials and `r nrow(rt_exclusions$simple)` simple RT trials in which participants responded faster than 150ms or slower than 1000ms.
+We removed `r nrow(rt_exclusions$doggo)` (`r insight::format_percent(nrow(rt_exclusions$doggo) / nrow(df_doggo))`) doggo/nogo trials and `r nrow(rt_exclusions$simple)` (`r insight::format_percent(nrow(rt_exclusions$simple) / nrow(df_simpleRT))`) simple RT trials in which participants responded faster than 150ms or slower than 1000ms.
+
+
+### Distribution Shape
+
+```{r}
+data_rtdist <- rbind(
+  df_doggo |> 
+    filter(Response_Type != "early" & Response_Type != "missed") |>
+    select(Participant, RT) |>
+    mutate(Task = "DoggoNogo"),
+  df_simpleRT |>
+    filter(!is.na(RT)) |>
+    select(Participant, RT) |>
+    mutate(Task = "SimpleRT"))
+
+data_shape <- data_rtdist |> 
+  summarize(Kurtosis = kurtosis(RT)$Kurtosis, 
+            Skewness = skewness(RT)$Skewness, 
+            .by=c("Participant", "Task")) |> 
+  mutate(Outlier = ifelse(Skewness < 0.5 & Kurtosis < 0.5, "Outlier", "Normal"))
+
+
+p_shape1 <- data_shape |> 
+  ggplot(aes(x=Skewness, y=Kurtosis)) +
+  # geom_rect(ymin=-Inf, ymax=0.5, xmin=-Inf, xmax=0.5, alpha=0.2, fill="#FFCDD2") +
+  geom_point(aes(color=Task)) +
+  geom_smooth(aes(color=Task, fill=Task), method = "loess", formula = 'y ~ x') +
+  ggside::geom_ysidedensity(aes(fill=Task), alpha=0.5, color=NA) +
+  ggside::geom_xsidedensity(aes(fill=Task), alpha=0.5, color=NA) +
+  scale_fill_manual(values = c("#FF9800", "#795548")) +
+  scale_color_manual(values = c("#FF9800", "#795548")) +
+  theme_minimal() 
+p_shape1
+```
+
 
 ### Raven's Progressive Matrices
 
@@ -322,11 +317,13 @@ df <- df |>
   full_join(dfrpm, by = "Participant") 
 
 df |> 
+  filter(!is.na(RPM_Correct) & !is.na(RPM_RT)) |>
   ggplot(aes(x=RPM_Correct, y=RPM_RT)) +
   geom_point() +
-  geom_smooth(method="lm") +
+  geom_smooth(method="lm", formula = 'y ~ x') +
   ggside::geom_xsidedensity(fill="blue", alpha=0.5) +
-  ggside::geom_ysidedensity(fill="blue", alpha=0.5) 
+  ggside::geom_ysidedensity(fill="blue", alpha=0.5) +
+  theme_minimal()
 ```
 
 
