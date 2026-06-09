@@ -1,5 +1,5 @@
 ---
-title: "**Validation of a Gamified Measure of Processing Speed**"
+title: "**Gamification Meets Cognitive Computational Modelling: Validating the Doggo/Nogo Reaction Time Task**"
 shorttitle: "TO DO"
 author:
   - name: Dominique Makowski
@@ -60,95 +60,32 @@ numbered-lines: true
 floatsintext: true
 bibliography: bibliography.bib
 format:
-  apaquarto-docx: default
-  apaquarto-html: default
   apaquarto-pdf:
     documentmode: jou
     keep-tex: true
+  apaquarto-docx: default
 ---
 
-TO DO
+# Introduction
 
--   [ ] Make tense consistent throughout
--   [ ] Add results
+TODO.
 
-## Research Transparency Statement
+# Study 1: The Effect of Gamification on Empirical Indices
 
-Conflicts of interest: None. Funding: None. Artificial intelligence: No artificial intelligence assisted technologies were used in this research or the creation of this article. Ethics: This research received approval from a Psychology School Research Ethics Officer at the University of Sussex (ER/BMT26/6).
-
-Preregistration: The hypotheses, methods and analysis plan were preregistered on the Open Science Framework (OSF; [https://doi.org/10.17605/OSF.IO/FUMQC](#0)) prior to data collection. Any deviations or additions are explicated in text. All study materials, primary data, and analysis scripts are publicly available at [https://github.com/RealityBending/DoggoNogoValidation](#0).
-
-## Introduction
-
---\> Processing Speed relevance
-
-Processing speed is an element of cognitive control that can be described as the duration between being exposed to a stimulus and purposefully responding to it. Quick processing has been considered facilitative of cognitive efficiency (e.g., being able to complete an exam in the allocated time) and personal safety; a driver breaks on seeing a car pull into the road ahead; medical staff move away from a patient on hearing 'clear'. Processing speed can be compromised temporarily, for example, from sleep deprivation [@basner2013; @bougard2015] (**refs**) or intoxication (**refs**). It can also be chronically impaired, for example, in demyelinating diseases such as multiple sclerosis [@sivakolundu2020] (**refs**), or psychiatric conditions such as schizophrenia [@panagiotaropoulou2019a] or bipolar disorder [@little2024]. When processing speed is compromised, response time (RT) increases; the student may not get through all the exam questions; the driver may crash; the medic may receive a nasty shock.
-
-Investigations into individual differences in processing speed has yielded inconsistent results. For instance, some research suggests that females have longer processing speeds than males (**refs)** [@jakobsen2011] while others found no difference (*refs*). Likewise, there is evidence of slowing with age (*refs*), however @woods2015 \_\_\_\_ed that this was primarily due to motor demands rather than stimulus detection.
-
-Research into the correlates of processing speed have highlighted associations with academic achievement (*refs*), intelligence (*refs*), cognitive functions (*refs*)
-
-... and research suggests that processing speed is correlated with everyday functioning/instrumental activities of daily living [@jakobsen2011a; @wadley2021].
-
-From a neural standpoint, changes in processing speed may occur as a result of disruption in the broader cognitive control network, described by @cole2007 as comprising the anterior cingulate cortex/pre-supplementary motor area, dorsolateral prefrontal cortex, inferior frontal junction, anterior insular cortex, dorsal pre-motor cortex, and posterior parietal cortex. Specifically, processing speed has been associated with abnormal activity in the dorsolateral prefrontal cortex [@panagiotaropoulou2019a], and reduced fronto-parietal activation [@basner2013].
-
-Despite the identified associations, processing speed has been poorly defined and operationalized throughout the literature [@rommelse2020] ... casting doubt on the validity of these claims.
-
-For instance, the 'Coding' and 'Symbol search' sub-tests of the Wechsler Intelligence Scales are posited to assess processing speed (**ref**). These pen-and-paper tasks allow respondents 2 minutes to match as many symbols to numbers as possible according to a key (Coding), or to identify whether or not target symbols are present among a series of symbols (Symbol search). Each is multi-\_\_\_\_\_, involving short-term memory demands, incorporates motor-speed and visual scanning, and thus fail to isolate processing speed (**ref**).
-
-tech advances ... increase in the application and development of computerised tasks ...
-
----\> gamification
-
-Gamification is being applied increasingly to cognitive tasks **(ref)**, with researchers \_\_\_\_ing with expectations of improvements in participant motivation, long-term engagement, ecological validity, and suitability for target age groups or disorders [@lumsden2016].
-
-In their review @lumsden2016 investigated gamified cognitive assessments, and found that studies were limited by targeting multiple domains. Furthermore, only two gamified tasks had been developed for the measure of processing speed [@mcpherson2007; @mcpherson2008], neither of which measured simple reaction time, and both failed to disentangle processing speed from working memory. @lumsden2016 asserted that gamification does not improve data quality despite improving participant experience, and recommended the development of single-domain gamified tasks and the incorporation of non-gamified versions for comparison. Following these recommendations, @robison2023 applied gamification to a simple RT task, investigating its effects on performance and vigilance decrement (i.e., the tendency for RTs to increase over time). Comparing their task to pre-existing data from a non-gamified psychomotor vigilance task (PVT), they found that gamification produced better performance and lower vigilance decrement when the game involved a competitive aspect, but only produced better performance and lower vigilance decrement in non-competitive games when there was a point-system.
-
-In addition to gamifying cognitive assessments, @suarez2021 developed MindPulse, which aims to disentangle the components of RT. While ... promising ... software developed for profit; need something more widely accessible (open source).
-
-@pedersen2023 included an additive procedure in their game *Rat Catch*, such that level 1 assessed simple reaction time, presenting the stimulus for decreasing durations, before proceeding to choice reaction time. Comparing gamified tasks to standard tasks, the authors assessed game reliability with Cronbach’s α which indicated good reliability across dimensions, and good convergent validity. However, parameters were static across participants. A disadvantage of this is that a brief distraction could yield unreliable game data for a participant. To avoid this issue, participant progression could be determined by a points system, with stimulus duration set dynamically to identify participants’ optimal ability.
-
----\> measuring processing speed
-
-Simple reaction time tasks involve capturing the speed at which individuals respond to the occurrence of a stimulus, without any choice or inhibition demands when the stimulus occurs.
-
-@cepeda2013 assessed the validity of a range of processing speed tasks, and recommended use of simpler PS tasks as more complex tasks had stronger correlations with executive control ...
-
-Further research using stripped back SRT tasks ... verify whether previous findings of associations between processing speed and **cognitive functioning, QoL, academic performance, ...** may be confounded by the complexity of the PS task thus the associations attributable to other involved domains.
-
----\> Current study
-
-The present study seeks to validate and optimize a simple reaction time task by (1) testing the impact of gamification on processing speed and task engagement and (2) assessing the optimal parameter values (number of trials and ISI range) for a robust yet efficient measure.
-
--   Justification: moving target stimuli - more ecologically valid (e.g., driving, sports ... not so many circumstances where processing speed important for a precise visual frame in which the target will appear...)
-
--   Justification: variation in target size - as before, more ecologically valid
-
--   Here we define processing speed as **\[define\]**.
 
 ## Methods
 
 ### Participants
 
-Participants were recruited online from the University of Sussex participant pool via Sona Systems (<https://www.sona-systems.com/>) and were awarded with course credits. Fluency in English was the only requirement for participation. Participants provided informed consent at the beginning of the experiment, and reaffirmed their consent after being debriefed when asked to continue to the next screen at which point their data would be saved. Participants could stop the experiment at any time. However, because it was hosted externally, data from the DoggoNogo (gamified) task was saved on completion of the game. Therefore, any participants for whom we obtained incomplete data were deleted, with the assumption that non-completion indicated a withdrawal of consent.
+TODO.
 
-Data from **N** participants was originally obtained, however ***\[any exclusions other than incomplete data?\]***. The final sample consisted of **N** participants (Mean age = **X**, SD = **X**, range: \[**X**,**X**\]; Gender: **X**% women, **X**% men, **X**% non-binary; Education: High school, **X**%; Bachelor, **X**%; Master, **X**%; Doctorate, **X**%; Other, **X**%).
+### Procedure
 
-### Measures
+After providing consent and demographic information, participants completed the gamified (Doggo/Nogo) and non-gamified (Simple RT) reaction time tasks in a counterbalanced order across participants. Both tasks involved three blocks with opportunities for breaks in-between. After each task, participants rated their task enjoyment (0 = "boring" to 7 = "fun"), estimated task duration (in minutes), and willingness to repeat the task (*"How would you feel if you had to do the same task again one more time?"*, -4 = "very annoyed" to 4 = "very happy"). The 9-item Raven's Progressive Matrices [RPM, @bilker2012] was also included in-between the two reaction time tasks (it was included after data collection started and was thus not preregistered and not available for **N = X** participant).
 
-After providing consent and demographic information, participants completed two computer-based simple reaction time tasks: a gamified version (DoggoNogo) and a non-gamified version (SRT). The order of tasks was counterbalanced across participants. Both tasks involved three blocks with opportunities for breaks in-between. Participants responded using the down arrow on their keyboard.
+### Doggo/Nogo
 
-After each of the tasks participants responded to three short questions about their experience. To assess task enjoyment, participants rated the statement "How much did you enjoy the previous task?" on an 8-point likert scale from 0 = "boring" to 7 = "fun". They then provided an estimation of task duration in minutes, "Without checking the time, how long do you think you spent doing the previous task?", and finally indicated their willingness to repeat the task by rating the statement: "How would you feel if you had to do the same task again one more time?" on a 9-point likert scale from -4 = "very annoyed" to 4 "very happy".
-
-After the first of the two reaction time tasks, participants completed a 9-item Raven's Progressive Matrices [RPM, @bilker2012]. This task was implemented for the purpose of assessing convergent validity after data collection began, and therefore was not preregistered and was only completed by **N (X%)** of the final sample.
-
-After completing both reaction time tasks and the RPM, participants had an opportunity to provide written feedback and rated their overall enjoyment of the experiment on a visual star-rating scale from 0 to 4.
-
-### DoggoNogo
-
-DoggoNogo was written in Unity (version 2022.3.13f1; <https://unity.com/>)[^1]. The game is preceded by a short visual narrative introducing Doggo's background and the aim of saving the malnourished dog. In the game, participants must catch bones for Doggo by pressing the down arrow as quickly as possible whenever a bone appears on screen. Game performance determines Doggo's health, and this is reflected by the health bars throughout gameplay as well as changes in character appearance on each level.
-
-[^1]: The development version of DoggoNogo can be accessed on GitHub at <https://github.com/SussexPsychologySoftware/DoggoNogo>
+<!-- DoggoNogo was written in Unity (version 2022.3.13f1; <https://unity.com/>)[^The development version of DoggoNogo can be accessed on GitHub at <https://github.com/SussexPsychologySoftware/DoggoNogo>]. The game starts with a short visual narrative introducing the dog's (named Doggo) background. In the game, participants must catch bones for Doggo by pressing the down arrow as quickly as possible whenever a bone appears on screen. Game performance determines Doggo's health, and this is reflected by the health bars throughout gameplay as well as changes in character appearance on each level.
 
 The game is set in a garden with Doggo centered. Doggo remains static throughout, but makes a small 'jump' whenever the down arrow is pressed. The bone size varied (30-70% of the original size) as did position on the screen (randomized whilst avoiding overlap with Doggo or the health bars) and rotation (a random value between 0 and 360 degrees). Participants received performance feedback on each trial to indicate whether the bone was caught (points earned), missed (no change in points), or if a premature response was made (points lost); the cumulative performance is visible throughout as health bars and a numeric score.
 
@@ -170,106 +107,28 @@ For example, taking the initial RT bounds that were set to $\text{RT}_{\text{min
 | 500     | 500        | 122   |
 | 700     | 600        | 100   |
 
-DoggoNogo was completed after between **lower - set to min 10 trials per level** and **upper** trials (*M* = **X**, *SD* = **X**).
+DoggoNogo was completed after between **lower - set to min 10 trials per level** and **upper** trials (*M* = **X**, *SD* = **X**). -->
 
-### SRT
+### Simple RT
 
-The SRT was written using jsPsych version 8.0.2 [@deleeuw2023]. Participants were informed that during the task they would see a fixation cross (+) followed by a red square. They were instructed to press the down arrow on their keyboard as fast as possible when the red square appears. The display background was white and the fixation cross appeared as a black plus (+) symbol in the middle of the screen. The fixation cross was visible for the interstimulus interval (ISI) duration; a value randomly selected for each trial from a uniform distribution ranging 1000-4000(ms). Premature responses elicited a message ("Too fast! Wait until the red square appears") and reset the trial with a new ISI value - thus preventing participants from skipping through the experiment. At the end of the ISI, the fixation cross was replaced with a red square (target stimulus) which appeared in a random location (vertical and horizontal offsets from centre each randomly selected within $\pm90\%$ of the screen width and height) and size (randomly selected from a discrete uniform distribution from 50px to 200px, in steps of 10px) on the screen. If participants did not respond to the target stimulus within 600ms, their RT was recorded as null and they progressed to the next trial. There were three blocks of 50 trials each (150 trials in total), separated by breaks of choice duration.
+<!-- The Simple RT task was written using jsPsych version 8.0.2 [@deleeuw2023]. Participants were informed that during the task they would see a fixation cross (+) followed by a red square. They were instructed to press the down arrow on their keyboard as fast as possible when the red square appears. The display background was white and the fixation cross appeared as a black plus (+) symbol in the middle of the screen. The fixation cross was visible for the interstimulus interval (ISI) duration; a value randomly selected for each trial from a uniform distribution ranging 1000-4000(ms). Premature responses elicited a message ("Too fast! Wait until the red square appears") and reset the trial with a new ISI value - thus preventing participants from skipping through the experiment. At the end of the ISI, the fixation cross was replaced with a red square (target stimulus) which appeared in a random location (vertical and horizontal offsets from centre each randomly selected within $\pm90\%$ of the screen width and height) and size (randomly selected from a discrete uniform distribution from 50px to 200px, in steps of 10px) on the screen. If participants did not respond to the target stimulus within 600ms, their RT was recorded as null and they progressed to the next trial. There were three blocks of 50 trials each (150 trials in total), separated by breaks of choice duration. -->
 
-## Analytic Procedure
+# Study 2: Computational Cognitive Modelling
 
-All preprocessing and analyses were conducted in R version 4.4.1 [@base].
+## Methods  
 
-### Preprocessing
+### The Models
 
-The preprocessing file can be found at `analysis/0_preprocessing.R` in the experiment repository. Raw data was in .csv format for the SRT, and JSON format for Doggo/Nogo. Preprocessing therefore involved restructuring of the data as well as calculating times and durations, anonymising, and removing participant data where withdrawal of consent was implied.
+# Data Availability
 
-Data cleaning procedures can be found at `analysis/1_cleaning.qmd`. Here, reaction time distributions from each task were calculated for each participant. Participants were excluded if their RT distributions for either task were non-typical; specifically, negatively skewed and platykurtic distributions, which indicate poor engagement. Participants who missed more than one-third of trials in the SRT were removed. Trials that were premature, faster than 150ms or slower than 1000ms were also removed.
+Data, code, and all materials are available at https://github.com/RealityBending/InteroceptionScale.
 
-### Confirmatory analyses
+# Acknowledgements
 
-Our pre-registered inference criteria was Bayes Factors exceeding 3.
 
-To assess the validity of our gamified task, we computed Bayesian correlations between pairs of reaction time indices (i.e., mean, median, mode, SD, MAD, IQR) for the two tasks, capturing interindividual variability, using the `BayesFactor` package @BayesFactor.
-
--   95% HDI and probability of direction (neither pre-registered - justification for inclusion/choices)
-
-We also computed cumulative correlations between indices across trials in order to identify how the relationship may change as a function of the number of trials. **DETAILS**
-
-We computed Bayesian t-tests to assess differences between gamified and non-gamified reaction time indices. **DETAILS**
-
-### **Exploratory analyses**
-
-In relation to our exploratory analyses, to investigate the relationship between processing speed and demographic variables, we **PLAN DETAILS**.
-
-Finally, with the aim of optimizing the robustness and efficiency of Doggo/Nogo, we assessed the optimal values for ISI and number of trials by modelling the effect of ISI on RT, and assessing the convergence of RT indices between tasks as a function of the number of trials. **MORE DETAILS**.
-
-## Results
-
-### Confirmatory
-
-Bayesian correlations were conducted using `correlationBF()` from the `BayesFactor` package [@BayesFactor], using a shifted and scaled $Beta (\frac{1}{3}, \frac{1}{3})$ (“medium”) prior distribution, for the the hypothesis that there exists a non-zero relationship between tasks across RT indices $H_1$. The posterior distribution was approximated using Markov Chain Monte Carlo (MCMC; 1000 iterations). The region of practical equivalence (ROPE) was based on @cohen1988, with values $|r| < .01$ considered negligible, and a 95% Highest Density Interval (HDI) was calculated. The relationship between tasks for each index of RT can be seen in FIGURE.
-
-![](images/correlations-1.png)
-
-|        |  $\rho_{Median}$ | $\rho_{MAD}$ | 95% CI (HDI)   |  pd | BF10   |
-|:-------|-----------------:|--------------|:---------------|----:|:-------|
-| Mean   |             0.56 | .04          | \[0.47, 0.65\] |   1 | \>1Q   |
-| Median |             0.54 | .04          | \[0.46, 0.63\] |   1 | \>1Q   |
-| Mode   |             0.47 | .05          | \[0.38, 0.56\] |   1 | 2.7T   |
-| SD     |             0.38 | .05          | \[0.28, 0.48\] |   1 | 42.4M  |
-| MAD    |             0.40 | .05          | \[0.29, 0.50\] |   1 | 237.9M |
-| IQR    |             0.39 | .05          | \[0.28, 0.49\] |   1 | 76.5M  |
-
-: 95% CI (HDI) = Credible interval (highest density interval). pd = probability of direction. BF10 = Bayes factor (H1/H0). M = Million. T = Trillion. Q = Quadrillion.
-
-Results indicate very strong evidence in favour of our hypothesis, $BF_{10} > 40\ Million$ across all indices with the median values of correlation coefficient posteriors ranging from .38 to .56 and all credible intervals had lower bounds of .28 or more. The probabiltiy of direction are 100% for being positive across all indices, $P_{in\ rope} = 0 (0.00\%)$; there were no cases of overlap between the ROPE and 95% HDI (FIGURE). Overall, these results indicate that for each RT index (i.e., mean, median, mode, SD, MAD, IQR), increases in a given index for the simple version of the SRT are associated with increases in the same RT index for the gamified SRT (DoggoNogo).
-
-![](images/correlations-2.png){#traceCor}
-
-![](images/correlations-3.png){#probCor}
-
-![](images/correlations-4.png){#ropeCor}
-
-Probabilities of different effect sizes as categorised by @cohen1988 can be seen in TABLE .
-
-|        | Small |  Moderate |     Large |
-|:-------|------:|----------:|----------:|
-| Mean   | 0.000 |     0.110 | **0.890** |
-| Median | 0.000 |     0.149 | **0.851** |
-| Mode   | 0.000 | **0.731** |     0.269 |
-| SD     | 0.058 | **0.935** |     0.007 |
-| MAD    | 0.038 | **0.936** |     0.026 |
-| IQR    | 0.056 | **0.929** |     0.015 |
-
-A Bayesian t-test was conducted using `ttestBF` from the `BayesFactor` package [@BayesFactor], using default priors ($\sqrt{2}/2$) to compare the hypothesis that there are differences in enjoyment ratings between the simple SRT and the gamified (DoggoNogo) version of the SRT ($H_1$), and the null hypothesis, that no such difference exists ($H_0$). Overall, DoggoNogo received higher enjoyment scores (M = 3.49, SD = 1.93) than Simple (M = 2, SD = 1.71). The result, $\delta$ = 0.8, 95% CI [0.62, 0.99], $BF_{10} = 532.3\ Trillion$ indicates extreme evidence in favour of $H_1$ which is sufficient to discard $H_0$ in favour of $H_1$. The distribution of enjoyment ratings by task can be seen in FIGURE.
-
-![](images/ttests-1.png)
-
-An additional Bayesian t-test was conducted, again using default priors ($\sqrt{2}/2$) to compare the hypothesis that there are differences in RT SDs between the simple SRT and the gamified (DoggoNogo) version of the SRT ($H_1$), and the null hypothesis, that no such difference exists ($H_0$). Overall, DoggoNogo received larger RT SDs (M = 0.07, SD = 0.02) than SRT (M = 0.06, SD = 0.01). The result, $\delta$ = 0.66, 95% CI \[0.48, 0.85\], $BF_{10} = 11.9\ Billion$ indicates extreme evidence in favour of $H_1$ which is sufficient to discard $H_0$ in favour of $H_1$. The distribution of SDs by task can be seen in FIGURE.
-
-![](images/ttests-2.png)
-
-### Exploratory
-
--   [ ] Relationship between demographic variables and processing speed
-
-    -   [ ] Gender
-
-    -   [ ] Age
-
-    -   [ ] Education
-
--   [ ] Optimal parameter values - model effect of ISI on RT and investigate the convergence of performance indices as a function of the number of trials
-
-## Discussion
-
--   [ ] Findings
-
--   [ ] Implications
-
--   [ ] Limitations
-
--   [ ] Conclusions
+We would like to thank the dissertation students from the University of Sussex for their help in data collection.
 
 ## References
+
+::: {#refs}
+:::

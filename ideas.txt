@@ -7,3 +7,4 @@
 - TODO
   - Remove time
   - Increase trials for doggo
+- Proactive, Reactive, and Attentional Dynamics: An Integrative Model of Cognitive Control: https://www.biorxiv.org/content/10.1101/2024.10.01.615613v2

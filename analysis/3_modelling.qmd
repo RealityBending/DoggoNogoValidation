@@ -90,20 +90,76 @@ m_normal_doggo <- brm(f,
 m_normal_doggo
 ```
 
+### Ex-Gaussian
+
+```{r}
+#| code-fold: false
+
+f <- bf(
+  RT ~ 0 + Intercept + poly(ISI, 2) + (0 + Intercept + poly(ISI, 2) | Participant),
+  sigma ~ 0 + Intercept + poly(ISI, 2) + (0 + Intercept + poly(ISI, 2) | Participant),
+  beta ~ 0 + Intercept + poly(ISI, 2) + (0 + Intercept + poly(ISI, 2) | Participant),
+  family = exgaussian(link_sigma = "softplus", link_beta = "softplus")
+)
+```
+
+```{r}
+m_exgauss_simple <- brm(f,
+  data = df_simpleRT[1:1000,], 
+  init = 0,
+  chains = 4, iter = 500, backend = "cmdstanr"
+)
+
+m_exgauss_simple
+```
+
+```{r}
+m_exgauss_doggo <- brm(f,
+  data = df_dog[1:1000,], 
+  init = 0,
+  chains = 4, iter = 500, backend = "cmdstanr"
+)
+
+m_exgauss_doggo
+```
+
+
 :::
 
 
 ## Model Comparison
 
+### Duration
+
+```{r}
+rbind(
+  mutate(attributes(m_normal_simple$fit)$metadata$time$chain, Model="Gaussian", Task="SimpleRT"),
+  mutate(attributes(m_normal_doggo$fit)$metadata$time$chain, Model="Gaussian", Task="DoggoNogo"),
+  mutate(attributes(m_exgauss_simple$fit)$metadata$time$chain, Model="ExGaussian", Task="SimpleRT"),
+  mutate(attributes(m_exgauss_doggo$fit)$metadata$time$chain, Model="ExGaussian", Task="DoggoNogo")
+) |> 
+  mutate(Model = fct_relevel(Model, "Gaussian", "ExGaussian"),
+         total = total / 60) |>
+  ggplot(aes(x = Model, y = total, fill = Model)) +
+  geom_boxplot() +
+  labs(y = "Sampling Duration (min)") +
+  scale_y_log10() +
+  scale_fill_manual(values = c("#FF9800", "#FF5722", "#795548")) +
+  theme_minimal() +
+  facet_wrap(~Task)
+```
+
+### Posterior Predictive Check
+
 ```{r}
 #| code-fold: false
 
 pred <- rbind(
-  estimate_prediction(m_normal_simple, iterations = 100, keep_iterations = 100) |> 
-    mutate(Model = "Gaussian", Task = "SimpleRT") |> 
+  estimate_prediction(m_exgauss_simple, iterations = 100, keep_iterations = 100) |> 
+    mutate(Model = "ExGaussian", Task = "SimpleRT") |> 
     reshape_iterations(),
-  estimate_prediction(m_normal_doggo, iterations = 100, keep_iterations = 100) |> 
-    mutate(Model = "Gaussian", Task = "DoggoNogo") |> 
+  estimate_prediction(m_exgauss_doggo, iterations = 100, keep_iterations = 100) |> 
+    mutate(Model = "ExGaussian", Task = "DoggoNogo") |> 
     reshape_iterations()
 ) 
 
@@ -130,10 +186,10 @@ rbind(mutate(df_simpleRT[c("Participant", "RT")], Task = "SimpleRT"),
 
 grid <- data.frame(ISI = c(1, 1.5, 2, 2.5, 3, 3.5, 4))
 pred_rts <- rbind(
-  estimate_prediction(m_normal_simple, iterations = 1000, keep_iterations=1000, data = grid) |> 
-    mutate(Model = "Gaussian", Task = "SimpleRT"),
-  estimate_prediction(m_normal_doggo, iterations = 1000, keep_iterations=1000, data = grid) |> 
-    mutate(Model = "Gaussian", Task = "DoggoNogo") 
+  estimate_prediction(m_exgauss_simple, iterations = 1000, keep_iterations=1000, data = grid) |> 
+    mutate(Model = "ExGaussian", Task = "SimpleRT"),
+  estimate_prediction(m_exgauss_doggo, iterations = 1000, keep_iterations=1000, data = grid) |> 
+    mutate(Model = "ExGaussian", Task = "DoggoNogo") 
 ) |> 
   mutate(ISI = as.factor(ISI))
 
@@ -156,18 +212,27 @@ pred_rts[pred_rts$Task == "DoggoNogo", ] |>
 #| code-fold: false
 
 pred_effects <- rbind(
-  estimate_relation(m_normal_simple, iterations = 100, length = 20, predict = "mu") |> 
-    mutate(Model = "Gaussian", Task = "SimpleRT", Parameter = "mu"),
-  estimate_relation(m_normal_doggo, iterations = 100, length = 20, predict = "mu") |> 
-    mutate(Model = "Gaussian", Task = "DoggoNogo", Parameter = "mu") 
+  estimate_relation(m_exgauss_simple, iterations = 100, length = 20, predict = "mu") |> 
+    mutate(Model = "ExGaussian", Task = "SimpleRT", Parameter = "mu"),
+  estimate_relation(m_exgauss_simple, iterations = 100, length = 20, predict = "sigma") |> 
+    mutate(Model = "ExGaussian", Task = "SimpleRT", Parameter = "sigma"),
+  estimate_relation(m_exgauss_simple, iterations = 100, length = 20, predict = "beta") |> 
+    mutate(Model = "ExGaussian", Task = "SimpleRT", Parameter = "beta"),
+  estimate_relation(m_exgauss_doggo, iterations = 100, length = 20, predict = "mu") |> 
+    mutate(Model = "ExGaussian", Task = "DoggoNogo", Parameter = "mu"),
+  estimate_relation(m_exgauss_doggo, iterations = 100, length = 20, predict = "sigma") |> 
+    mutate(Model = "ExGaussian", Task = "DoggoNogo", Parameter = "sigma"),
+  estimate_relation(m_exgauss_doggo, iterations = 100, length = 20, predict = "beta") |> 
+    mutate(Model = "ExGaussian", Task = "DoggoNogo", Parameter = "beta") 
 ) 
 
 pred_effects |> 
   ggplot(aes(x=ISI, y = Predicted)) +
-  geom_ribbon(aes(ymin = CI_low, ymax = CI_high, fill = Model), alpha = 0.2) +
-  geom_line(aes(color = Model)) +
-  scale_color_manual(values = colors, guide = "none") +
-  facet_grid(Model~Task * Parameter, switch = "y") +
+  geom_ribbon(aes(ymin = CI_low, ymax = CI_high, fill = Task), alpha = 0.2) +
+  geom_line(aes(color = Task), linewidth = 1) +
+  scale_color_manual(values = c("SimpleRT" = "#795548", "DoggoNogo" = "#FF9800")) +
+  scale_fill_manual(values = c("SimpleRT" = "#795548", "DoggoNogo" = "#FF9800")) +
+  facet_wrap(~Parameter, scales ="free", strip.position = "left") +
   labs(x = "Inter-Stimulus Interval (ISI)", title = "Effect of ISI on Model Parameters" ) +
   theme_minimal() +
   theme(strip.placement = "outside",
@@ -182,8 +247,8 @@ pred_effects |>
 #| code-fold: false
 
 dvour <- rbind(
-  mutate(performance::performance_dvour(m_normal_simple), Task = "SimpleRT"),
-  mutate(performance::performance_dvour(m_normal_doggo), Task = "DoggoNogo")
+  mutate(performance::performance_dvour(m_exgauss_simple), Task = "SimpleRT"),
+  mutate(performance::performance_dvour(m_exgauss_doggo), Task = "DoggoNogo")
 ) |> 
   pivot_wider(names_from = "Task", values_from = "D_vour") |> 
   mutate(ReliabilityChange = (DoggoNogo - SimpleRT) / (1 - SimpleRT)) 
