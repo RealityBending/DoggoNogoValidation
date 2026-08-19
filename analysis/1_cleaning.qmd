@@ -236,7 +236,7 @@ df_simpleRT <- filter(df_simpleRT, !Participant %in% exclusions$n_valid_doggo)
 ```
 
 
-### Extreme Responses
+### Extreme Slow Responses
 
 ```{r}
 df_doggo |>
@@ -247,20 +247,20 @@ df_doggo |>
   geom_vline(xintercept=c(0.15, 1), linetype="dashed", color="red")
 
 
-# Removal of trials faster than 150ms and slower than 1000ms (as pre-reg'd)
+# Removal of trials slower than 1000ms (as pre-reg'd)
 rt_exclusions <- list()
 rt_exclusions$doggo <- df_doggo |>
-  dplyr::filter(RT < .15 | RT > 1)
+  dplyr::filter(RT >= 1.5)
 rt_exclusions$simple <- df_simpleRT |> 
-  dplyr::filter(RT < .15 | RT > 1)
+  dplyr::filter(RT >= 1.5)
 
 df_doggo <- df_doggo |> 
-  dplyr::filter(RT >= .15 & RT <= 1)
+  dplyr::filter(RT < 1.5)
 df_simpleRT <- df_simpleRT |> 
-  dplyr::filter(RT >= .15 & RT <= 1)
+  dplyr::filter(RT < 1.5)
 ```
 
-We removed `r nrow(rt_exclusions$doggo)` (`r insight::format_percent(nrow(rt_exclusions$doggo) / nrow(df_doggo))`) doggo/nogo trials and `r nrow(rt_exclusions$simple)` (`r insight::format_percent(nrow(rt_exclusions$simple) / nrow(df_simpleRT))`) simple RT trials in which participants responded faster than 150ms or slower than 1000ms.
+We removed `r nrow(rt_exclusions$doggo)` (`r insight::format_percent(nrow(rt_exclusions$doggo) / nrow(df_doggo))`) doggo/nogo trials and `r nrow(rt_exclusions$simple)` (`r insight::format_percent(nrow(rt_exclusions$simple) / nrow(df_simpleRT))`) simple RT trials in which participants responded slower than 1.5s.
 
 
 ### Distribution Shape
