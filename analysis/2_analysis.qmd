@@ -155,7 +155,7 @@ rez <- rbind(
 
 ```{r}
 #| fig-width: 10
-#| fig-height: 7
+#| fig-height: 5
 #| fig-cap: "TODO."
 
 p1 <- dflong  |>
@@ -330,7 +330,7 @@ df_stability |>
 
 ```{r}
 #| fig-width: 7
-#| fig-height: 14
+#| fig-height: 5
 
 
 dat <- df_stability |> 
@@ -381,7 +381,7 @@ p_rpm
 
 ```{r}
 #| fig-width: 7
-#| fig-height: 14
+#| fig-height: 5
 
 get_d <- function(var1, var2) effectsize::cohens_d(x=v1~v2, data=na.omit(data.frame(v1 = var1, v2 = as.factor(var2))))$Cohens_d
 
@@ -428,7 +428,7 @@ p_sex
 
 ```{r}
 #| fig-width: 7
-#| fig-height: 14
+#| fig-height: 5
 
 dat <- df_stability |> 
   filter(Trial <= 100) |>
@@ -539,73 +539,75 @@ p_dvour
 ```
 
 
-## ISI
+<!-- ## ISI -->
+
+<!-- TODO: move that section to be estimated with Bayesian models. -->
 
 
-```{r}
-#| fig-width: 7
-#| fig-height: 8
-#| eval: false
+<!-- ```{r} -->
+<!-- #| fig-width: 7 -->
+<!-- #| fig-height: 8 -->
+<!-- #| eval: false -->
 
 
-# TODO: adjust random slopes once convergence is fixed
-mdog_poly2 <- glmmTMB::glmmTMB(RT ~ poly(ISI, 2) + (poly(ISI, 2)|Participant), 
-                                data=filter(df_rt, Task=="DoggoNogo"))
-mdog_poly3 <- glmmTMB::glmmTMB(RT ~ poly(ISI, 3) + (poly(ISI, 2)|Participant),  # FIX
-                               data=filter(df_rt, Task=="DoggoNogo"))
-mdog_gam <- mgcv::gamm(RT ~ s(ISI), random=list(Participant=~1),
-                       data=filter(df_rt, Task=="DoggoNogo"))
+<!-- # TODO: adjust random slopes once convergence is fixed -->
+<!-- mdog_poly2 <- glmmTMB::glmmTMB(RT ~ poly(ISI, 2) + (poly(ISI, 2)|Participant),  -->
+<!--                                 data=filter(df_rt, Task=="DoggoNogo")) -->
+<!-- mdog_poly3 <- glmmTMB::glmmTMB(RT ~ poly(ISI, 3) + (poly(ISI, 2)|Participant),  # FIX -->
+<!--                                data=filter(df_rt, Task=="DoggoNogo")) -->
+<!-- mdog_gam <- mgcv::gamm(RT ~ s(ISI), random=list(Participant=~1), -->
+<!--                        data=filter(df_rt, Task=="DoggoNogo")) -->
 
-msimple_poly2 <- glmmTMB::glmmTMB(RT ~ poly(ISI, 2) + (poly(ISI, 2)|Participant), 
-                                  data=filter(df_rt, Task=="SimpleRT"))
-msimple_poly3 <- glmmTMB::glmmTMB(RT ~ poly(ISI, 3) + (poly(ISI, 3)|Participant), 
-                                  data=filter(df_rt, Task=="SimpleRT"))
-msimple_gam <- mgcv::gamm(RT ~ s(ISI), random=list(Participant=~1),
-                          data=filter(df_rt, Task=="SimpleRT"))
+<!-- msimple_poly2 <- glmmTMB::glmmTMB(RT ~ poly(ISI, 2) + (poly(ISI, 2)|Participant),  -->
+<!--                                   data=filter(df_rt, Task=="SimpleRT")) -->
+<!-- msimple_poly3 <- glmmTMB::glmmTMB(RT ~ poly(ISI, 3) + (poly(ISI, 3)|Participant),  -->
+<!--                                   data=filter(df_rt, Task=="SimpleRT")) -->
+<!-- msimple_gam <- mgcv::gamm(RT ~ s(ISI), random=list(Participant=~1), -->
+<!--                           data=filter(df_rt, Task=="SimpleRT")) -->
 
-test_bf(mdog_poly2, mdog_poly3, mdog_gam)
-test_bf(msimple_poly2, msimple_poly3, msimple_gam)
+<!-- test_bf(mdog_poly2, mdog_poly3, mdog_gam) -->
+<!-- test_bf(msimple_poly2, msimple_poly3, msimple_gam) -->
 
-pred_all <- rbind(
-  modelbased::estimate_relation(mdog_gam, length=100, include_random = FALSE) |> 
-    mutate(Model = "GAM", Task="DoggoNogo", Participant=NA),
-  modelbased::estimate_relation(mdog_poly2, length=100, include_random = FALSE) |>
-    mutate(Model = "Poly2", Task="DoggoNogo"),
-  modelbased::estimate_relation(mdog_poly3, length=100, include_random = FALSE) |>
-    mutate(Model = "Poly3", Task="DoggoNogo"),
-  modelbased::estimate_relation(msimple_gam, length=100, include_random = FALSE) |>
-    mutate(Model = "GAM", Task="SimpleRT", Participant=NA),
-  modelbased::estimate_relation(msimple_poly2, length=100, include_random = FALSE) |>
-    mutate(Model = "Poly2", Task="SimpleRT"),
-  modelbased::estimate_relation(msimple_poly3, length=100, include_random = FALSE) |>
-    mutate(Model = "Poly3", Task="SimpleRT")
-)
+<!-- pred_all <- rbind( -->
+<!--   modelbased::estimate_relation(mdog_gam, length=100, include_random = FALSE) |>  -->
+<!--     mutate(Model = "GAM", Task="DoggoNogo", Participant=NA), -->
+<!--   modelbased::estimate_relation(mdog_poly2, length=100, include_random = FALSE) |> -->
+<!--     mutate(Model = "Poly2", Task="DoggoNogo"), -->
+<!--   modelbased::estimate_relation(mdog_poly3, length=100, include_random = FALSE) |> -->
+<!--     mutate(Model = "Poly3", Task="DoggoNogo"), -->
+<!--   modelbased::estimate_relation(msimple_gam, length=100, include_random = FALSE) |> -->
+<!--     mutate(Model = "GAM", Task="SimpleRT", Participant=NA), -->
+<!--   modelbased::estimate_relation(msimple_poly2, length=100, include_random = FALSE) |> -->
+<!--     mutate(Model = "Poly2", Task="SimpleRT"), -->
+<!--   modelbased::estimate_relation(msimple_poly3, length=100, include_random = FALSE) |> -->
+<!--     mutate(Model = "Poly3", Task="SimpleRT") -->
+<!-- ) -->
 
-pred_ppt <- rbind(
-  modelbased::estimate_relation(mdog_poly2, length=40, include_random = TRUE) |> 
-    mutate(Model = "Poly2", Task="DoggoNogo"),
-  modelbased::estimate_relation(msimple_poly2, length=40, include_random = TRUE) |>
-    mutate(Model = "Poly2", Task="SimpleRT")
-)
+<!-- pred_ppt <- rbind( -->
+<!--   modelbased::estimate_relation(mdog_poly2, length=40, include_random = TRUE) |>  -->
+<!--     mutate(Model = "Poly2", Task="DoggoNogo"), -->
+<!--   modelbased::estimate_relation(msimple_poly2, length=40, include_random = TRUE) |> -->
+<!--     mutate(Model = "Poly2", Task="SimpleRT") -->
+<!-- ) -->
 
-p1 <- pred_all |> 
-  ggplot(aes(x = ISI, y = Predicted)) +
-  geom_line(data=pred_ppt, aes(color=Participant), linewidth=1, alpha=0.5) +
-  geom_line(aes(linetype=Model), linewidth=2, color="white") +
-  # geom_hline(yintercept = 0.325, linetype = "dashed") +
-  # geom_vline(xintercept = c(1, 4), linetype = "dashed", color="red") +
-  # scale_x_continuous(expand = c(0, 0), breaks=c(0.2, 1, 2, 3, 4)) +
-  scale_color_viridis_d(option="plasma") +
-  scale_linetype_manual(values=c("Poly2"="solid", "GAM" = "dashed", "Poly3"="dotted")) +
-  scale_y_log10() +
-  theme_abyss() +
-  theme(legend.position = "none") +
-  facet_wrap(~Task) +
-  # coord_cartesian(xlim = c(0.2, 4.1)) +
-  labs(y = "RT - Response Time (s)", x = "ISI - Interstimulus Interval (s)",
-       title = "Effect of ISI")
-p1 
-```
+<!-- p1 <- pred_all |>  -->
+<!--   ggplot(aes(x = ISI, y = Predicted)) + -->
+<!--   geom_line(data=pred_ppt, aes(color=Participant), linewidth=1, alpha=0.5) + -->
+<!--   geom_line(aes(linetype=Model), linewidth=2, color="white") + -->
+<!--   # geom_hline(yintercept = 0.325, linetype = "dashed") + -->
+<!--   # geom_vline(xintercept = c(1, 4), linetype = "dashed", color="red") + -->
+<!--   # scale_x_continuous(expand = c(0, 0), breaks=c(0.2, 1, 2, 3, 4)) + -->
+<!--   scale_color_viridis_d(option="plasma") + -->
+<!--   scale_linetype_manual(values=c("Poly2"="solid", "GAM" = "dashed", "Poly3"="dotted")) + -->
+<!--   scale_y_log10() + -->
+<!--   theme_abyss() + -->
+<!--   theme(legend.position = "none") + -->
+<!--   facet_wrap(~Task) + -->
+<!--   # coord_cartesian(xlim = c(0.2, 4.1)) + -->
+<!--   labs(y = "RT - Response Time (s)", x = "ISI - Interstimulus Interval (s)", -->
+<!--        title = "Effect of ISI") -->
+<!-- p1  -->
+<!-- ``` -->
 
 
 ## Figures
